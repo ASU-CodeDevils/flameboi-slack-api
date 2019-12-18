@@ -152,42 +152,6 @@ mark is returned. If not, an empty white square is.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.block_kit_builder.block_util.get_divider_block">
-<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_divider_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_divider_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a divider block, which represents a line divider in a message.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The formatted divider block as a dict.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="src.block_kit_builder.block_util.get_image_block">
-<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_image_block</code><span class="sig-paren">(</span><em class="sig-param">image_url: str</em>, <em class="sig-param">alt_text: str</em>, <em class="sig-param">title: str = None</em>, <em class="sig-param">block_id: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_image_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an image block, which is a section containing an image from a URL.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>image_url</strong> (<em>str</em>) – The URL to the image.</p></li>
-<li><p><strong>alt_text</strong> (<em>str</em>) – Alternate text (appears on image hover).</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – The title of the image, default is None.</p></li>
-<li><p><strong>block_id</strong> (<em>str</em><em>, </em><em>optional</em>) – The block ID of the image, default is None.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The block as a dict.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="src.block_kit_builder.block_util.get_information_block">
 <code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_information_block</code><span class="sig-paren">(</span><em class="sig-param">info_link: str</em>, <em class="sig-param">info_text: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_information_block" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an information block, which is a section with an info icon followed by linked text.</p>
@@ -203,6 +167,21 @@ mark is returned. If not, an empty white square is.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.block_kit_builder.block_util.get_onboarding_block">
+<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_onboarding_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#src.block_kit_builder.block_util.get_onboarding_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
+website.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The onboarding message block as a list.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -229,15 +208,18 @@ mark is returned. If not, an empty white square is.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="src.block_kit_builder.block_util.get_text_block">
-<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_text_block</code><span class="sig-paren">(</span><em class="sig-param">text: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_text_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a text block formatted for block kit.</p>
+<dt id="src.block_kit_builder.block_util.get_text_block_with_accessory">
+<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_text_block_with_accessory</code><span class="sig-paren">(</span><em class="sig-param">text_object: src.block_kit_builder.composition_object.text_object.TextObject</em>, <em class="sig-param">accessory: src.block_kit_builder.block_element.block_element.BlockElement</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_text_block_with_accessory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a text block with an accessory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Markdown-supported text to display.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text_object</strong> (<em>TextObject</em>) – The text block object.</p></li>
+<li><p><strong>accessory</strong> (<em>LayoutBlock</em>) – The accessory object.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The formatted text block as a dict.</p>
+<dd class="field-even"><p>The text block with an accessory layout block.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
@@ -247,7 +229,7 @@ mark is returned. If not, an empty white square is.</p>
 
 <dl class="function">
 <dt id="src.block_kit_builder.block_util.get_text_block_with_image">
-<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_text_block_with_image</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">image_url: str</em>, <em class="sig-param">alt_text: str</em>, <em class="sig-param">title: str = None</em>, <em class="sig-param">block_id: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_text_block_with_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">src.block_kit_builder.block_util.</code><code class="sig-name descname">get_text_block_with_image</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">image_url: str</em>, <em class="sig-param">alt_text: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_util.get_text_block_with_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a text block with an image to the right of it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -255,8 +237,6 @@ mark is returned. If not, an empty white square is.</p>
 <li><p><strong>text</strong> (<em>str</em>) – The text in the text block.</p></li>
 <li><p><strong>image_url</strong> (<em>str</em>) – The URL to the image.</p></li>
 <li><p><strong>alt_text</strong> (<em>str</em>) – Alternate text (appears on image hover).</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – The title of the image, default is None.</p></li>
-<li><p><strong>block_id</strong> (<em>str</em><em>, </em><em>optional</em>) – The block ID of the image, default is None.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -277,26 +257,6 @@ mark is returned. If not, an empty white square is.</p>
 <dd><p>Constructs block payloads that act as formatted messages for Slack. For more information on blocks, see
 <a class="reference external" href="https://api.slack.com/block-kit">https://api.slack.com/block-kit</a>.</p>
 <dl class="method">
-<dt id="src.block_kit_builder.block_generator.BlockGenerator.get_message_block">
-<code class="sig-name descname">get_message_block</code><span class="sig-paren">(</span><em class="sig-param">text: str</em>, <em class="sig-param">channel: str</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_generator.BlockGenerator.get_message_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sends a message to a channel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>str</em>) – Markdown-supported message.</p></li>
-<li><p><strong>channel</strong> (<em>str</em>) – The channel where the message will be posted.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The response from the message payload.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="src.block_kit_builder.block_generator.BlockGenerator.get_message_payload">
 <code class="sig-name descname">get_message_payload</code><span class="sig-paren">(</span><em class="sig-param">blocks: list</em>, <em class="sig-param">view_type: str = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.block_kit_builder.block_generator.BlockGenerator.get_message_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a message block payload used to post messages in a specific channel.</p>
@@ -313,21 +273,6 @@ defaults to None</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="src.block_kit_builder.block_generator.BlockGenerator.get_onboarding_block">
-<em class="property">static </em><code class="sig-name descname">get_onboarding_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#src.block_kit_builder.block_generator.BlockGenerator.get_onboarding_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
-website.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The onboarding message block as a list.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
