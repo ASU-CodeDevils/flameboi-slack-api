@@ -2,8 +2,7 @@
 config.yaml
 *.swp
 *.egg
-docs/build/doctrees
-docs/source
+sphinx/
 *.pyc
 *.un~
 # Testing / code coverage output
