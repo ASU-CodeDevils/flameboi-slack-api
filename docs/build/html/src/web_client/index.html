@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>web_client &mdash; Flameboi - CodeDevils Slack API 1.01 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/css/favicon.ico"/>
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:'../../',
+        VERSION:'1.01',
+        COLLAPSE_INDEX:false,
+        FILE_SUFFIX:'.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+
+    
+
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Flameboi - CodeDevils Slack API 1.01 documentation" href="../../index.html"/>
+        <link rel="prev" title="block_kit_builder" href="../block_kit_builder/index.html"/> 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="icon icon-home"> Flameboi - CodeDevils Slack API</a>
+        <form class="wy-form" action="../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search document" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix">
+        
+        
+            <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../license.html#mit-license">MIT License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../help.html">Help</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">src</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#module-src.config">src module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../block_kit_builder/index.html">block_kit_builder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../block_kit_builder/index.html#module-src.block_kit_builder.block_util">block_util</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_kit_builder/index.html#module-src.block_kit_builder.block_generator">block_generator</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">web_client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.web_client.request">request</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href="/">Flameboi - CodeDevils Slack API</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <ul class="wy-breadcrumbs">
+  <li><a href="../../index.html">Table of Contents</a> &raquo;</li>
+  <li><a href="">web_client</a></li>
+  <li class="wy-breadcrumbs-aside"><a href="https://docs.google.com/forms/d/1T5QGnYb_QnQoMO7T_eatq02miPTY40WVe3cgGphNAdY/viewform?entry.1952574704&entry.241692674=Flameboi%20-%20CodeDevils%20Slack%20API%3A%20src/web_client/index" target="_blank">Give Doc Feedback</a>
+  </li>
+</ul>
+<hr/>
+
+          
+  <div class="section" id="web-client">
+<h1>web_client<a class="headerlink" href="#web-client" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="module-src.web_client.request">
+<span id="request"></span><h2>request<a class="headerlink" href="#module-src.web_client.request" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.web_client.request.get">
+<code class="sig-prename descclassname">src.web_client.request.</code><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">params: dict = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.web_client.request.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a GET request against a specified URL.
+:param url: The URL endpoint.
+:param params: Additional request parameters.
+:return: The response as a dict.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="src.web_client.request.post">
+<code class="sig-prename descclassname">src.web_client.request.</code><code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">url: str</em>, <em class="sig-param">data: dict = None</em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.web_client.request.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a POST request against a specified URL.
+:param url: The URL endpoint.
+:param data: Request body to send with request.
+:return: The response as a dict.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          <footer>
+  
+    <div class="rst-footer-buttons">
+      
+      
+        <a href="../block_kit_builder/index.html" class="btn btn-neutral" title="block_kit_builder"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <p style="font-size: 85%">
+      Copyright &copy; CodeDevils - An Arizona State University (ASU) Student Organization - 2019
+    <br/>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+    <br/>
+    These works by <a xmlns:cc="http://creativecommons.org/ns#" href="http://open.edx.org" property="cc:attributionName" rel="cc:attributionURL">edX Inc.</a>
+    are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+  </p>
+
+ 
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+</body>
+</html>

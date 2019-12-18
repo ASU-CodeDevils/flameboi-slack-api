@@ -2,7 +2,8 @@
 config.yaml
 *.swp
 *.egg
-build
+docs/build/doctrees
+docs/source
 *.pyc
 *.un~
 # Testing / code coverage output
