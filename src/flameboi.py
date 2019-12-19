@@ -58,8 +58,9 @@ class FlameboiSlackApi:
         :rtype: dict
         """
         user = self.get_user_by_email(email=user_email)
+        channel = self.get_channel_id(channel_name='general')
         try:
-            response = self.user_client.channels_invite(channel='#flameboi-playground', user=user['id'])
+            response = self.user_client.channels_invite(channel=channel, user=user['id'])
             # response = self.bot_client.channels_invite(channel='#general', user=user['id'])
 
             if not response['ok']:
@@ -106,6 +107,38 @@ class FlameboiSlackApi:
                 self._print_slack_error(response)
         except Exception as e:
             raise Exception(f'Failed to retrieve list of users from workspace: {str(e)}')
+
+    def get_channel_id(self, channel_name: str) -> str:
+        """
+        Returns the channel ID based on the name. If no ID is found, then none is returned.
+
+        :param channel_name: The name of the channel as a string (w/o the leading hashtag).
+        :type channel_name: str
+        :return: The channel id as a string.
+        :rtype: str
+        """
+        try:
+            channel_list = self.get_channel_list()
+            for channel in channel_list:
+                if channel['name'] == channel_name:
+                    return channel['id']
+        except Exception as e:
+            raise Exception(f'Failed to obtain channel id: {str(e)}')
+
+    def get_channel_list(self) -> dict:
+        """
+        Returns the list of channels available to the bot.
+
+        :return: The list of channels as a dict.
+        :rtype: dict
+        """
+        try:
+            response = self.bot_client.channels_list()
+            if response['ok']:
+                return response['channels']
+            self._print_slack_error(response)
+        except Exception as e:
+            raise Exception(f'Failed to obtain channels list: {str(e)}')
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
         """

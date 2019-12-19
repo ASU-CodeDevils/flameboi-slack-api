@@ -170,6 +170,37 @@ from the team.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="src.flameboi.FlameboiSlackApi.get_channel_id">
+<code class="sig-name descname">get_channel_id</code><span class="sig-paren">(</span><em class="sig-param">channel_name: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#src.flameboi.FlameboiSlackApi.get_channel_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channel ID based on the name. If no ID is found, then none is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>channel_name</strong> (<em>str</em>) – The name of the channel as a string (w/o the leading hashtag).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The channel id as a string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.flameboi.FlameboiSlackApi.get_channel_list">
+<code class="sig-name descname">get_channel_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#src.flameboi.FlameboiSlackApi.get_channel_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of channels available to the bot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The list of channels as a dict.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="src.flameboi.FlameboiSlackApi.get_slack_client">
 <code class="sig-name descname">get_slack_client</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.flameboi.FlameboiSlackApi.get_slack_client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the slack web client. Used for if the commands in this module do not suffice for specific use cases.</p>
