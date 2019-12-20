@@ -13,7 +13,6 @@ class FlameboiSlackApi:
     def __init__(self):
         logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
-        self.onboarding_tutorials_sent = {}
         self.config = load_config()
         self.messenger = BlockGenerator(self.config)
         self.bot_client = slack.WebClient(token=self.config['app_credentials']['oauth']['bot_user_access_token'],
@@ -57,9 +56,9 @@ class FlameboiSlackApi:
         :return: The response of the member addition request.
         :rtype: dict
         """
-        user = self.get_user_by_email(email=user_email)
-        channel = self.get_channel_id(channel_name='general')
         try:
+            user = self.get_user_by_email(email=user_email)
+            channel = self.get_channel_id(channel_name='general')
             response = self.user_client.channels_invite(channel=channel, user=user['id'])
             # response = self.bot_client.channels_invite(channel='#general', user=user['id'])
 
@@ -155,17 +154,6 @@ class FlameboiSlackApi:
 
         if not response['ok']:
             self._print_slack_error(response)
-
-        # Capture the timestamp of the message we've just posted so
-        # we can use it to update the message after a user
-        # has completed an onboarding task.
-        self.messenger.timestamp = response["ts"]
-
-        # Store the message sent in onboarding_tutorials_sent
-        if self.messenger.channel not in self.onboarding_tutorials_sent:
-            self.onboarding_tutorials_sent[self.messenger.channel] = {}
-        self.onboarding_tutorials_sent[self.messenger.channel][user_id] = self.messenger
-
         return response['message']
 
     def _print_slack_error(self, response):
