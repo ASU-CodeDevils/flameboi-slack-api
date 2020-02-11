@@ -1,3 +1,5 @@
+import os
+import ssl
 import slack
 import logging
 
@@ -12,11 +14,13 @@ class FlameboiSlackApi:
 
     def __init__(self):
         logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+        ssl_context = ssl.create_default_context(cafile=os.environ['WEBSOCKET_CLIENT_CA_BUNDLE'])
 
         self.config = load_config()
         self.messenger = BlockGenerator(self.config)
         self.bot_client = slack.WebClient(token=self.config['app_credentials']['oauth']['bot_user_access_token'],
-                                          headers={'Accept': 'application/json'})
+                                          headers={'Accept': 'application/json'},
+                                          ssl=ssl_context)
         self.user_client = slack.WebClient(token=self.config['app_credentials']['oauth']['access_token'],
                                            headers={'Accept': 'application/json'})
 
