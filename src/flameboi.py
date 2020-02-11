@@ -62,7 +62,7 @@ class FlameboiSlackApi:
         """
         try:
             user = self.get_user_by_email(email=user_email)
-            channel = self.get_channel_id(channel_name='general')
+            channel = self.get_channel_id(channel_name='hangout')
             response = self.user_client.channels_invite(channel=channel, user=user['id'])
             # response = self.bot_client.channels_invite(channel='#general', user=user['id'])
 
