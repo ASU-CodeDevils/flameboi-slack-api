@@ -1,5 +1,3 @@
-import os
-import ssl
 import slack
 import logging
 
@@ -17,10 +15,8 @@ class FlameboiSlackApi:
 
         self.config = load_config()
         self.messenger = BlockGenerator(self.config)
-        ssl_context = ssl.create_default_context(cafile=self.config['misc']['ssl_context'])
         self.bot_client = slack.WebClient(token=self.config['app_credentials']['oauth']['bot_user_access_token'],
-                                          headers={'Accept': 'application/json'},
-                                          ssl=ssl_context)
+                                          headers={'Accept': 'application/json'})
         self.user_client = slack.WebClient(token=self.config['app_credentials']['oauth']['access_token'],
                                            headers={'Accept': 'application/json'})
 
@@ -33,20 +29,34 @@ class FlameboiSlackApi:
         :return: The response from the message request as a dict.
         :rtype: dict
         """
-        response = None
-        try:
-            user = self.get_user_by_email(email=user_email)['id']
-            response = self.bot_client.conversations_open(users=[user])
-            if not response['ok']:
-                self._print_slack_error(response)
+        user = self.get_user_by_email(email=user_email)['user']['id']
+        response = self.bot_client.conversations_open(users=[user])
+        if not response['ok']:
+            return response
 
-            channel = response['channel']['id']
-            message = self.messenger.get_welcome_block(channel=channel)
-            return self._send_block_message(message=message)
+        channel = response['channel']['id']
+        message = self.messenger.get_welcome_block(channel=channel)
+        return self._send_block_message(message=message)
 
-        except Exception as e:
-            self._print_slack_error(response)
-            raise Exception(f'Error sending onboarding message: {str(e)}')
+    def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
+        """
+        Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
+        message.
+
+        :param channel: The name of the channel to send the message to.
+        :type channel: str
+        :param text: The message to send.
+        :type text: str
+        :param mention_email: The email of the user to mention, default is None.
+        :type mention_email: str
+        :return: The result of sending the message.
+        """
+
+        if mention_email:
+            username = self.get_user_by_email(mention_email)['user']['name']
+            text = '@{} {}'.format(username, text)
+        message = self.messenger.get_message_payload(text=text, channel=channel)
+        return self._send_block_message(message=message)
 
     def add_member(self, user_email: str) -> dict:
         """
@@ -60,17 +70,9 @@ class FlameboiSlackApi:
         :return: The response of the member addition request.
         :rtype: dict
         """
-        try:
-            user = self.get_user_by_email(email=user_email)
-            channel = self.get_channel_id(channel_name='hangout')
-            response = self.user_client.channels_invite(channel=channel, user=user['id'])
-            # response = self.bot_client.channels_invite(channel='#general', user=user['id'])
-
-            if not response['ok']:
-                self._print_slack_error(response)
-            return response['message']
-        except Exception as e:
-            raise Exception(f'Failed to add user <ID: {id}> to workspace: {str(e)}')
+        user = self.get_user_by_email(email=user_email)['user']
+        channel = self.get_channel_id(channel_name='hangout')
+        return self.user_client.channels_invite(channel=channel, user=user['id'])
 
     def get_slack_client(self):
         """
@@ -90,10 +92,7 @@ class FlameboiSlackApi:
         :return: The user as a dict.
         :rtype: dict
         """
-        response = self.bot_client.users_lookupByEmail(email=email)
-        if not response['ok']:
-            self._print_slack_error(response)
-        return response['user']
+        return self.bot_client.users_lookupByEmail(email=email)
 
     def get_users_list(self) -> dict:
         """
@@ -102,14 +101,7 @@ class FlameboiSlackApi:
         :return: A list of users. See https://api.slack.com/methods/users.list for format.
         :rtype: dict
         """
-        try:
-            response = self.bot_client.users_list()
-            if response['ok']:
-                return response['members']
-            else:
-                self._print_slack_error(response)
-        except Exception as e:
-            raise Exception(f'Failed to retrieve list of users from workspace: {str(e)}')
+        return self.bot_client.users_list()
 
     def get_channel_id(self, channel_name: str) -> str:
         """
@@ -120,13 +112,12 @@ class FlameboiSlackApi:
         :return: The channel id as a string.
         :rtype: str
         """
-        try:
-            channel_list = self.get_channel_list()
-            for channel in channel_list:
-                if channel['name'] == channel_name:
-                    return channel['id']
-        except Exception as e:
-            raise Exception(f'Failed to obtain channel id: {str(e)}')
+        channel_list = self.get_channel_list()
+        for channel in channel_list:
+            if channel['name'] == channel_name:
+                return channel['id']
+
+        return str(None)
 
     def get_channel_list(self) -> dict:
         """
@@ -135,13 +126,7 @@ class FlameboiSlackApi:
         :return: The list of channels as a dict.
         :rtype: dict
         """
-        try:
-            response = self.bot_client.channels_list()
-            if response['ok']:
-                return response['channels']
-            self._print_slack_error(response)
-        except Exception as e:
-            raise Exception(f'Failed to obtain channels list: {str(e)}')
+        return self.bot_client.channels_list()
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
         """
@@ -154,23 +139,4 @@ class FlameboiSlackApi:
         :return: The response from sending the message as a dict.
         :rtype: dict
         """
-        response = self.bot_client.chat_postMessage(**message)
-
-        if not response['ok']:
-            self._print_slack_error(response)
-        return response['message']
-
-    def _print_slack_error(self, response):
-        """
-        Prints a formatted slack API error message.
-
-        :param response: The HTTP response object as a dict.
-        :type response: Union[Future, SlackResponse]
-        :return: None
-        """
-        if not response['ok']:
-            logging.error(f'Error with Slack API: {response["error"]}\n')
-            logging.error(f'Messages:\n')
-            for message in response['response_metadata']['messages']:
-                logging.error(f'\t{message}\n')
-
+        return self.bot_client.chat_postMessage(**message)

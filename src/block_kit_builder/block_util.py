@@ -106,20 +106,20 @@ def get_onboarding_block() -> list:
         DividerBlock().render(),
         get_text_block_with_image(text="*Opportunities*\nLearn about exciting new job opportunities and internships"
                                        " from other members, and gain insight on how to succeed during interviews.",
-                                  image_url="https://cdn0.iconfinder.com/data/icons/education-340/100/Tilda_Icons_"
-                                            "1ed_cup-256.png",
+                                  image_url="https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
+                                            "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_cup-256.png",
                                   alt_text="Opportunities"),
         get_text_block_with_image(text="*Project Discussion*\nEver think about programming something real and "
                                        "usable with a team? Use this channel to join a project, discuss one, or "
                                        "even get one started.",
-                                  image_url="https://cdn0.iconfinder.com/data/icons/education-340/100/Tilda_Icons_"
-                                            "1ed_group-256.png",
+                                  image_url="https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
+                                            "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_group-256.png",
                                   alt_text="Project Discussion"),
         get_text_block_with_image(text="*Random*\nPost literally anything that you want! College is too boring to "
                                        "be serious all the time, so brighten someone's day up with a random thought"
                                        " or funny meme.",
-                                  image_url="https://cdn0.iconfinder.com/data/icons/education-340/99/Tilda_Icons_"
-                                            "1ed_speaker-256.png",
+                                  image_url="https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
+                                            "Ficons%2Feducation-340%2F99%2FTilda_Icons_1ed_speaker-256.png",
                                   alt_text="Random"),
         DividerBlock().render(),
         get_text_block_with_image(text="*CodeDevils Website*\nDid you know that I'm powered by the CodeDevils "
@@ -127,7 +127,7 @@ def get_onboarding_block() -> list:
                                        "application used to communicate with fellow members, register members to "
                                        "CodeDevils, and coordinate on projects.\n\nVisit the "
                                        "<https://www.codedevils.org|CodeDevils website> to learn more.",
-                                  image_url="https://www.codedevils.org/public/static/home/img/favicon.png",
+                                  image_url="https://www.codedevils.org/static/home/img/favicon.png",
                                   alt_text="CodeDevils Website"),
         DividerBlock().render()
     ]

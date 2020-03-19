@@ -22,7 +22,7 @@ class BlockGenerator:
         self.channel = channel if channel else config['defaults']['channel']
         self.username = config['display_information']['username']
         self.icon_emoji = config['display_information']['icon_emoji']
-        self.timestamp = str(datetime.now())
+        self.icon_url = config['display_information']['icon_url']
 
     def get_welcome_block(self, channel: str) -> dict:
         """
@@ -36,7 +36,8 @@ class BlockGenerator:
         self.channel = channel
         return self.get_message_payload(blocks=get_onboarding_block())
 
-    def get_message_payload(self, blocks: list, view_type: str = None) -> dict:
+    def get_message_payload(self, ts: datetime = None, text: str = None, channel: str = None, blocks: list = None,
+                            view_type: str = None, link_names: int = 1) -> dict:
         """
         Returns a message block payload used to post messages in a specific channel.
 
@@ -49,12 +50,14 @@ class BlockGenerator:
         :rtype: dict
         """
         payload = {
-            "ts": self.timestamp,
-            "channel": self.channel,
+            "ts": str(ts if ts else datetime.now()),
+            "channel": channel if channel else self.channel,
             "username": self.username,
             "icon_emoji": self.icon_emoji,
-            "blocks": blocks
+            "icon_url": self.icon_url,
         }
+        payload.update({'text': text}) if text else payload.update({'blocks': blocks})
+        payload.update({'link_names': link_names}) if link_names == 1 else payload.update({'link_names': 0})
 
         if view_type:
             payload.update({'type': view_type})
