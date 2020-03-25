@@ -17,3 +17,5 @@ __pycache__
 config
 slack.log
 venv/
+Pipfile
+Pipfile.lock
