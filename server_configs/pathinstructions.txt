@@ -1,0 +1,6 @@
+Ensure you add the following to path for bot credentials and authorizations.
+
+export CLIENT_ID='XXXXXXXXXXX.xxxxxxxxxx'
+export CLIENT_SECRET='xxXXxxXXXXXxxxxXXX'
+export VERIFICATION_TOKEN='xxxXXXxxXXxxX'
+export SLACK_BOT_TOKEN='xoxb-XXXXXXXXXXXX-xxxxxxxxxxxx-XXXXXXXXXXXXXXXXXXXXXXXX'
