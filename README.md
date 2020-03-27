@@ -42,3 +42,28 @@ If you are using a virtual enviroment, *ensure that you have activated your envi
 
 1. `cd /path/to/flameboi`
 1. `pip3 install -r requirements.txt`
+
+
+## Further Reading and Getting Help
+
+### Documentation
+
+#### Slack Documentation
+
+- [Getting started with Slack apps](https://api.slack.com/slack-apps)
+- [Slack Events API documentation](https://api.slack.com/events)
+- [Slack Web API documentation](https://api.slack.com/web)
+
+#### Documentation for Primary Tools
+
+- [virtualenv](https://virtualenv.pypa.io/en/latest/userguide/)
+- [flask](http://flask.pocoo.org/)
+- [python-slackclient](http://python-slackclient.readthedocs.io/en/latest/)
+
+#### Documentation for Other Helpful Tools
+- [slackeventsapi](https://github.com/ASU-CodeDevils/flameboi-slack-api)
+- [ngrok](https://ngrok.com/docs)
+- [postman](https://www.getpostman.com/docs/)
+- [Markdown CheatSheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+
+- [CodeDevils](https://codedevils.org)
