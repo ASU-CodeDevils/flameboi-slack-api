@@ -16,7 +16,8 @@ This is an optional step, but is reccomended to keep your local Python dependenc
 #### Ensure Virtualenv is Installed
 Ensure Virtualenv is installed by calling `virtualenv`
 
-> If virtualenv appears to not be installed, ensure that it is on your path. You can do this by adding the installation foler to the PATH variable within your profile. An example would be within ~/.bash_profile or ~/.bashrc, adding `PATH=$PATH:/home/pi/.local/bin`.
+> If virtualenv appears to not be installed, ensure that it is on your path. You can do this by adding the installation foler to the PATH variable within your profile. An example would be within ~/.bash_profile or ~/.bashrc, adding `PATH=$PATH:~/.local/bin`.
+>
 > Start an issue or post a question in CodeDevils Slack for further help in adding virtualenv to your path variable.
 
 #### Create a directory
