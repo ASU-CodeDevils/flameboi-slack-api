@@ -1,0 +1,29 @@
+[Unit]
+Description=skynet-service
+ConditionPathExists=/opt/flameboi/flameboi
+After=network.target
+ 
+# ensure that you have created a flameboi user that is in the adm group
+[Service]
+Type=simple
+User=flameboi
+Group=flameboi
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=5
+
+WorkingDirectory=/opt/flameboi/
+ExecStart=/opt/flameboi/app.py
+
+# make sure log directory exists and owned by syslog:adm (ubuntu) root:adm (debian)
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/log/skynet
+ExecStartPre=/bin/chown syslog:adm /var/log/flameboi
+ExecStartPre=/bin/chmod 755 /var/log/flameboi
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=flameboi
+ 
+[Install]
+WantedBy=multi-user.target
