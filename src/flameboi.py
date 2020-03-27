@@ -1,11 +1,11 @@
-import slack
-import logging
+# Primarly based on KevinThePepper's original code with some generic sample onboarding 
+# functions from PythOnBoarding 
 
-import os
+import logging
 import message
+import os
 from slackclient import SlackClient
 
-from .config import load_config
 from .block_kit_builder.block_generator import BlockGenerator
 
 authed_teams = {}

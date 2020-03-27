@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # Code as found on slack/Slack-Python-Onboarding-Tutorial github
+
 """
 A routing layer for the onboarding bot tutorial built using
 [Slack's Events API](https://api.slack.com/events-api) in Python

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# Utility module for use with PythOnBoarding's Router layer
 """
 Python Slack Message class for use with the pythOnBoarding bot
 """
