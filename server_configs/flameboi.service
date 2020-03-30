@@ -1,6 +1,6 @@
 [Unit]
 Description=flameboi-service
-ConditionPathExists=/opt/flameboi/app.py
+ConditionPathExists=/opt/flameboi/src/app.py
 After=network.target
  
 # ensure that you have created a flameboi user that is in the adm group
@@ -11,10 +11,10 @@ Group=flameboi
 LimitNOFILE=1024
 
 WorkingDirectory=/opt/flameboi/
-ExecStart=/opt/flameboi/venv/bin/python3 /opt/flameboi/app.py
+ExecStart=/opt/flameboi/venv/bin/python3 /opt/flameboi/src/app.py
 Restart=on-failure
 RestartSec=5
-EnvironmentFile=/opt/flameboi/.env
+EnvironmentFile=/opt/flameboi/server_configs/.env
 
 # make sure log directory exists and owned by root:adm (debian)
 PermissionsStartOnly=true
