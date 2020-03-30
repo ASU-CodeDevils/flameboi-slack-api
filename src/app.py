@@ -7,7 +7,7 @@ from flameboi import Flameboi
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
 
-# Initialize a Web API client
+# Initialize a Web API client and Slack Events adapter
 theBot = Flameboi(app)
 slack_web_client = theBot.getClient()
 slack_events_adapter = theBot.getAdapter()
@@ -21,22 +21,9 @@ def onboarding_message(payload):
     time stamp of this message so we can update this message in the future.
     """
     event = payload.get("event", {})
-    user_id = event.get("user", {})
-
-    # Get the id of the Slack user associated with the incoming event
     user_id = event.get("user", {}).get("id")
 
-    # Open a DM with the new user.
-    resp = slack_web_client.im_open(user=user_id)
-    channel_id = resp["channel"]["id"]
-
-    reply = ":tada: Hey, <@%s> Welcome and let us know if you need anything! :tada:" % user_id
-        
-    response = slack_web_client.chat_postMessage(
-            channel=channel_id,
-            text=reply
-            )
-    assert response["ok"]
+    assert send_onboarding_DM(user_id)["ok"]
 
 
 # ============= Reaction Added Events ============= #
