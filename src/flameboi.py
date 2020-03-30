@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
-from .block_kit_builder.block_generator import BlockGenerator
+from block_kit_builder.block_generator import BlockGenerator
 
 
 class Flameboi:
@@ -19,11 +19,17 @@ class Flameboi:
         load_dotenv()
         self.signing_secret = os.getenv("SLACK_SIGNING_SECRET")
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
-        logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
+        # Logging to /var/log/ for linux system
+        logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+        
+        # Logging to local dir for testing
+        #logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
         # self.config = load_config()
         # self.messenger = BlockGenerator(self.config)
         self.bot_client = WebClient(token=self.bot_token)
-        self.event_adapter = SlackEventAdapter(self.signing_secret, "/slack/events", app)
+        self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
 
 
     def getClient(self) -> WebClient:
