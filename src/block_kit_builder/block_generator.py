@@ -1,5 +1,6 @@
+import os
+from dotenv import load_dotenv
 from datetime import datetime
-
 from .block_util import *
 
 
@@ -19,10 +20,10 @@ class BlockGenerator:
             config, defaults to None
         :type channel: str, optional
         """
-        self.channel = channel if channel else config['defaults']['channel']
-        self.username = config['display_information']['username']
-        self.icon_emoji = config['display_information']['icon_emoji']
-        self.icon_url = config['display_information']['icon_url']
+        self.channel = channel if channel else os.getenv("DEFAULT_CHANNEL")
+        self.username = os.getenv("USERNAME")
+        self.icon_emoji = os.getenv("ICON_EMOJI")
+        self.icon_url = os.getenv("ICON_URL")
 
     def get_welcome_block(self, channel: str) -> dict:
         """
