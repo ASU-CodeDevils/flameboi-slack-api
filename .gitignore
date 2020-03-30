@@ -31,7 +31,7 @@ prop/*
 venv/
 
 # Credentials file
-server_configs/.env
+.env
 
 # Zappa Files
 zappa*
