@@ -1,7 +1,7 @@
 #!/bin/sh
 
 RUN_DIR="/opt/flameboi-slack-api/"
-BASE_DIR="/home/stu/flameboi-slack-api/"
+BASE_DIR="$HOME/flameboi-slack-api/"
 
 sudo systemctl stop flameboi-dev.service
 
