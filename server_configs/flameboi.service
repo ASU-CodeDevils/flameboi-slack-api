@@ -1,6 +1,6 @@
 [Unit]
 Description=flameboi-service
-ConditionPathExists=/opt/flameboi/src/app.py
+ConditionPathExists=/opt/flameboi-slack-api/src/app.py
 After=network.target
  
 # ensure that you have created a flameboi user that is in the adm group
@@ -10,17 +10,17 @@ User=flameboi
 Group=flameboi
 LimitNOFILE=1024
 
-WorkingDirectory=/opt/flameboi/
-ExecStart=/opt/flameboi/venv/bin/python3 /opt/flameboi/src/app.py
+WorkingDirectory=/opt/flameboi-slack-api/
+ExecStart=/opt/flameboi-slack-api/venv/bin/python3 /opt/flameboi-slack-api/src/app.py
 Restart=on-failure
 RestartSec=5
-EnvironmentFile=/opt/flameboi/server_configs/.env
+EnvironmentFile=/opt/flameboi-slack-api/src/.env
 
 # make sure log directory exists and owned by root:adm (debian)
 PermissionsStartOnly=true
 ExecStartPre=/bin/mkdir -p /var/log/flameboi
 ExecStartPre=/bin/chown root:adm /var/log/flameboi
-ExecStartPre=/bin/chmod 755 /var/log/flameboi
+ExecStartPre=/bin/chmod 775 /var/log/flameboi
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=flameboi
