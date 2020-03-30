@@ -1,7 +1,7 @@
 import os
 import logging
 from flask import Flask
-from .flameboi import Flameboi
+from flameboi import Flameboi
 
 
 # Initialize a Flask app to host the events adapter
