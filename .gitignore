@@ -13,15 +13,25 @@ sphinx
 .coverage
 coverage.xml
 nosetests.xml
+slack.log
+
+# IDE Files
+.vscode/
 .idea/
+
+# Build/Dist Files
 .python-version
 .cache/
 __pycache__
 .eggs
 config/*
 prop/*
-slack.log
 
 # Virtual Environments
 venv/
-.vscode/
+
+# Credentials file
+.env
+
+# Zappa Files
+zappa*
