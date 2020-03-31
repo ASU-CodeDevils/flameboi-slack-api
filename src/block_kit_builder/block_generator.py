@@ -10,7 +10,7 @@ class BlockGenerator:
     https://api.slack.com/block-kit.
     """
 
-    def __init__(self, config, channel=None):
+    def __init__(self, channel=None):
         """
         Initializes the payload parameters to be sent with each message.
 
