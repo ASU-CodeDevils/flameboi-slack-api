@@ -44,6 +44,11 @@ Good job Marlee!
 
 Nicely done boys!
 
+---
+
+# Quality of Code
+> TODO - TBD by Stu and/or Kev
+
 ----
 
 # Git Cheatsheet
