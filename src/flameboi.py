@@ -84,6 +84,19 @@ class Flameboi:
         message = self.messenger.get_welcome_block(channel=channel)
         return self._send_block_message(message=message)
 
+    
+    def send_qod(self, channel_id) -> dict:
+        """
+        Sends the quote of the day to specified channel.
+
+        :param channel_id: The channel ID.
+        :type channel_id: str
+        :return: The response from the message request as a dict.
+        :rtype: dict
+        """
+        message = self.messenger.get_quote(channel=channel_id)
+        return self._send_block_message(message=message)
+
 
     def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
         """
