@@ -2,6 +2,9 @@ APP_NAME='Flameboi'
 USERNAME='flameboi'
 ICON_EMOJI=':flameboi:'
 ICON_URL='https://slack-imgs.com/?c=1&o1=gu&url=https%3A%2F%2Femoji.slack-edge.com%2FTBY1XTCCR%2Fflameboy%2F94ea2c857ad2291c.png'
+
+BOT_ID='B010N6U08G1'
+USER_ID='U010N6U09T3'
 DEFAULT_CHANNEL='#dev'
 
 SLACK_SIGNING_SECRET='XXXXXXXXXXX.xxxxxxxxxx'
