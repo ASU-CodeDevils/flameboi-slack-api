@@ -78,3 +78,10 @@ git fetch && git pull
 git fetch ; git merge target-branch
 ```
 Use Case: Your development branch (current branch) is behind `dev` and you want to update your branch with the code from `dev` (or some other target branch). 
+
+---
+
+# Good Resources
+**Installing Git** - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+**Git Basics** - https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository
