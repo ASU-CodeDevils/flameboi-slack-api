@@ -107,6 +107,16 @@ def message(payload):
         assert theBot.send_onboarding_DM(user_id)["ok"]
 
 
+@slack_events_adapter.on("member_joined_channel")
+def member_joined(payload):
+    """Display the channel welcome message after someone joins a channel.
+    """
+    event = payload.get("event", {})
+
+    user_id = event.get("user")
+    channel_id = event.get("channel")
+    
+    assert theBot.send_channel_welcome(user_id, channel_id)["ok"]
 
 # ============== App Mention Events ============= #
 
