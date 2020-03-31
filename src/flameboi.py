@@ -34,7 +34,7 @@ class Flameboi:
         #logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
         # self.config = load_config()
-        # self.messenger = BlockGenerator(self.config)
+        self.messenger = BlockGenerator()
 
         self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
@@ -76,8 +76,7 @@ class Flameboi:
         :return: The response from the message request as a dict.
         :rtype: dict
         """
-        user = self.get_user_by_email(email=user_email)['user']['id']
-        response = self.bot_client.conversations_open(users=[user])
+        response = self.bot_client.conversations_open(users=[user_id])
         if not response['ok']:
             return response
 
