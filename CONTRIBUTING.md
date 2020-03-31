@@ -1,7 +1,16 @@
 # Contributing Guidelines and Git Flow
 This document plans to outline the following for *all* contributers of the Flameboi Slack API. Please follow these guidelines to the best of your knowledge and understanding, and feel free to ask @stucamp or @KevinThePepper if you have any questions or need help!
 
+### Table of Contents
+1. [Chain of Command](#chain-of-command)
+1. [Git Flow Overview](#git-flow-overview)
+1. [Workflow Contribution Requirements](#contribution-requirements)
+1. [Workflow Examples](#workflow-examples)
+1. [Quality of Code Requirements](#quality-of-code)
+1. [Git Cheatsheet](#git-cheatsheet)
+1. [Good Resources](#good-resources)
 
+---
 
 # Chain of Command
 The Flameboi Slack API project managers are Stu Campbell (@stucamp) and Kevin Shelley (@KevinThePepper). They control the day-to-day opperation of this project, with oversight and policy ditacted by the CodeDevil Officers.
