@@ -9,13 +9,12 @@ if [ -d $BASE_DIR ]  && echo "Repo exists!"
 then
     echo "Updating the repo"
     cd $BASE_DIR
-    /usr/bin/git checkout dev
     /usr/bin/git pull
     echo "Done!"
 else
     echo "Cloning the repo"
     cd 
-   /usr/bin/git clone --single-branch --branch dev git@github.com:ASU-CodeDevils/flameboi-slack-api.git
+    /usr/bin/git clone git@github.com:ASU-CodeDevils/flameboi-slack-api.git
     echo "Done!"
 fi
 
