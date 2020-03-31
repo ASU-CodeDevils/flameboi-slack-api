@@ -44,7 +44,32 @@ Good job Marlee!
 
 Nicely done boys!
 
-
+----
 
 # Git Cheatsheet
+#### Checkout Existing Branch
+```
+git checkout existing-branch
+```
 
+#### Checkout a New Branch
+```
+git checkout -B your-new-branch
+```
+
+#### Push to Repo
+```
+git push origin destination-branch
+```
+Pro tip: add `-u` to skip the naming of the branch in future pushes.
+
+#### Update Current Branch from Repo
+```
+git fetch && git pull
+```
+
+#### Update Current Branch from Target Branch
+```
+git fetch ; git merge target-branch
+```
+Use Case: Your development branch (current branch) is behind `dev` and you want to update your branch with the code from `dev` (or some other target branch). 
