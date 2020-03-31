@@ -14,14 +14,15 @@ The Flameboi Slack API project managers are Stu Campbell (@stucamp) and Kevin Sh
 Overall, the git flow is relaxed and laidback. You, as a contributer, have lots of wiggle room to make your own inputs in your commits to this repo. Forking is not neccesary - use the origin repo's branches for your own code bases. You have full control over your own development branches and git flow. That said, there are some general guidelines you need to follow.
 
 ## Overview
-##### Dev Branch
+#### Dev Branch
 The dev branch contains the *latest source code* for the Flameboi Slack API. It is a protected branch, and is the default branch you will submit pull requests to when submitting your contributions.
 
-##### Master Branch
+#### Master Branch
 The master branch is the *production code* that Flameboi is currently opperating on. Whatever is in master is what will be on Slack. Pull requests from dev to master will **only be intiated and managed by the project manager(s)**.
 
-## Your Contributions
+## Contribution Requirements
 Observe the following in your git flow:
+- Make an Issue prior to working on your code. We don't want you to work on something that is actually banned or already implemented!
 - Your personal development branches must start with your name and be consistent. E.g., `bobby-dev`, `bobby-new-feature-here`
 - Though there is no limit to the number of reviewers you request, your pull requests to dev **must** at least include **all the project managers**.
 - Comment in your code following the functionality and process within it.
