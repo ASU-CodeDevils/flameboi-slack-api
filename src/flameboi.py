@@ -13,7 +13,14 @@ from block_kit_builder.block_generator import BlockGenerator
 class Flameboi:
     """
     Methods used to control various features with the Flameboi Slack bot API.
-    """
+
+        Args:
+            app (Flask obj): the Flask object being used.  Initiated in app.py
+            SLACK_SIGNING_SECRET (str): Signing secret stored in dotenv file in the /src directory.  See 
+                server_configs/dotenvsample.txt for layout.
+            SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See 
+                server_configs/dotenvsample.txt for layout.
+        """
 
     def __init__(self, app):
         load_dotenv()
@@ -27,7 +34,8 @@ class Flameboi:
         #logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
         # self.config = load_config()
-        # self.messenger = BlockGenerator(self.config)
+        self.messenger = BlockGenerator()
+
         self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
 
@@ -51,6 +59,24 @@ class Flameboi:
         """
         user = self.get_user_by_email(email=user_email)['user']['id']
         response = self.bot_client.conversations_open(users=[user])
+        if not response['ok']:
+            return response
+
+        channel = response['channel']['id']
+        message = self.messenger.get_welcome_block(channel=channel)
+        return self._send_block_message(message=message)
+
+
+    def send_onboarding_DM(self, user_id: str) -> dict:
+        """
+        Sends the onboarding message to a user.
+
+        :param user_id: The slack ID of the user to be on-boarded.
+        :type user_id: str
+        :return: The response from the message request as a dict.
+        :rtype: dict
+        """
+        response = self.bot_client.conversations_open(users=[user_id])
         if not response['ok']:
             return response
 
