@@ -115,8 +115,11 @@ def member_joined(payload):
 
     user_id = event.get("user")
     channel_id = event.get("channel")
+
+    name = theBot.get_user_info(user_id)
+    text = ":tada: Welcome to channel, %s!!! :tada:" % name['user']['real_name']
     
-    assert theBot.send_channel_welcome(user_id, channel_id)["ok"]
+    assert theBot.send_message(channel_id, text)["ok"]
 
 # ============== App Mention Events ============= #
 
