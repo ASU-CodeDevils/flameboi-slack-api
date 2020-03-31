@@ -80,3 +80,9 @@ If you are using a virtual enviroment, *ensure that you have activated your envi
 - [postman](https://www.getpostman.com/docs/) - Utility used to design, build, and test APIs
 - [Markdown CheatSheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) - For Pierson :troll:
 - [CodeDevils](https://codedevils.org) - This is us!
+
+# Contributing
+Please see CONTRIBUTING.md for information.
+
+# Quality of Code
+Please see CONTRIBUTING.md for information.
