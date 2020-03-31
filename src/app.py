@@ -114,6 +114,11 @@ def message(payload):
             
             assert theBot.send_onboarding_DM(user_id)["ok"]
 
+        if text and text.lower() == "!qod":
+            logger.info("Responding to !qod command")
+            
+            assert theBot.send_qod(channel_id)["ok"]
+
 
 @slack_events_adapter.on("member_joined_channel")
 def member_joined(payload):
