@@ -85,6 +85,24 @@ class Flameboi:
         return self._send_block_message(message=message)
 
 
+    def send_channel_welcome(self, user_id: str, channel_id: str) -> dict:
+        """
+        Sends a custom welcome from the bot in the newly joined channel.
+
+        :param channel_id: The slack ID of the channel joined.
+        :type channel_id: str
+        :param user_id: The slack ID of the user who joined.
+        :type user_id: str
+        :return: The response from the message request as a dict.
+        :rtype: dict
+        """
+        name = self.get_user_info(user_id)
+        body = ":tada: Welcome to channel, %s!!! :tada:" % name['user']['real_name']
+        message = self.messenger.get_message_payload(channel=channel_id, text=body)
+
+        return self._send_block_message(message=message)
+
+
     def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
         """
         Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
@@ -170,6 +188,17 @@ class Flameboi:
                 return channel['id']
 
         return str(None)
+
+
+    def get_user_info(self, user_id: str) -> dict:
+        """
+        Returns the information about the user, identified by user_id.
+
+        :param user_id: The ID of the user as a string (w/o the leading @).
+        :return: The user's info as a dict.
+        :rtype: dict
+        """
+        return self.bot_client.users_info(user=user_id)
 
 
     def get_channel_list(self) -> dict:
