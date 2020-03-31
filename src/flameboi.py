@@ -183,17 +183,6 @@ class Flameboi:
         return self.bot_client.users_info(user=user_id)
 
 
-    def get_bot_info(self, user_id: str) -> dict:
-        """
-        Returns the information about the user, identified by user_id.
-
-        :param user_id: The ID of the user as a string (w/o the leading @).
-        :return: The user's info as a dict.
-        :rtype: dict
-        """
-        return self.bot_client.users_info(user=user_id)
-
-
     def get_channel_list(self) -> dict:
         """
         Returns the list of channels available to the bot.
