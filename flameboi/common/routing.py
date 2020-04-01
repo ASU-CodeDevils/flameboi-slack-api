@@ -1,5 +1,12 @@
 import os
-from flameboi.events import *
+from flameboi.events.app_mention_event import App_Mention
+from flameboi.events.channel_join_event import Channel_Join
+from flameboi.events.message_event import Message_Event
+from flameboi.events.pin_added_event import Pin_Added
+from flameboi.events.reaction_added_event import Reaction_Added
+from flameboi.events.slash_command import Slash_Command
+from flameboi.events.team_join_event import Team_Join
+
 
 class Router:
     """
@@ -24,6 +31,7 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
+        event = Team_Join(payload)
 
 
     def handle_reaction_added(self, payload):
@@ -63,6 +71,15 @@ class Router:
 
 
     def handle_app_mention(self, payload):
+        """
+        Returns the list of channels available to the bot.
+
+        :return: The list of channels as a dict.
+        :rtype: dict
+        """
+
+
+    def handle_slash_command(self, payload):
         """
         Returns the list of channels available to the bot.
 
