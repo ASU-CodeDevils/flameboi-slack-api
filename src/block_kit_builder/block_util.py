@@ -7,6 +7,7 @@ from .composition_object.text_object import TextObject
 from .layout_block.section_block import SectionBlock
 from .block_element.image_element import ImageElement
 from .layout_block.divider_block import DividerBlock
+from .command_files.qod import *
 
 
 def get_checkmark(task_completed: bool) -> str:
@@ -131,5 +132,24 @@ def get_onboarding_block() -> list:
                                   alt_text="CodeDevils Website"),
         DividerBlock().render()
     ]
+    print(f'{block}')
+    return block
+
+def get_qod_block() -> list:
+    """
+    Constructs a quote of the day block.
+
+    :return: The quote of the day block as a list.
+    :rtype: list
+    """
+
+    quote = getQOD()
+
+    block = [
+                get_text_block_with_image(text="*Quote of the Day*\n%s\n\t~~%s~~" % (quote[0], quote[1]),
+                                        image_url="https://media.giphy.com/media/3og0IMJcSI8p6hYQXS/giphy.gif",
+                                        alt_text="QOD")
+            ]
+
     print(f'{block}')
     return block

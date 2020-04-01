@@ -37,6 +37,18 @@ class BlockGenerator:
         self.channel = channel
         return self.get_message_payload(blocks=get_onboarding_block())
 
+    def get_quote(self, channel: str) -> dict:
+        """
+        Send a quote of the day to the specified channel.
+
+        :param channel: The channel ID as a string.
+        :type channel: str
+        :return: The response from the message payload.
+        :rtype: dict
+        """
+        self.channel = channel
+        return self.get_message_payload(blocks=get_qod_block())
+
     def get_message_payload(self, ts: datetime = None, text: str = None, channel: str = None, blocks: list = None,
                             view_type: str = None, link_names: int = 1) -> dict:
         """
