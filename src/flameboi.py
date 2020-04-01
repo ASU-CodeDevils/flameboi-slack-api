@@ -84,6 +84,19 @@ class Flameboi:
         message = self.messenger.get_welcome_block(channel=channel)
         return self._send_block_message(message=message)
 
+    
+    def send_qod(self, channel_id) -> dict:
+        """
+        Sends the quote of the day to specified channel.
+
+        :param channel_id: The channel ID.
+        :type channel_id: str
+        :return: The response from the message request as a dict.
+        :rtype: dict
+        """
+        message = self.messenger.get_quote(channel=channel_id)
+        return self._send_block_message(message=message)
+
 
     def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
         """
@@ -170,6 +183,17 @@ class Flameboi:
                 return channel['id']
 
         return str(None)
+
+
+    def get_user_info(self, user_id: str) -> dict:
+        """
+        Returns the information about the user, identified by user_id.
+
+        :param user_id: The ID of the user as a string (w/o the leading @).
+        :return: The user's info as a dict.
+        :rtype: dict
+        """
+        return self.bot_client.users_info(user=user_id)
 
 
     def get_channel_list(self) -> dict:
