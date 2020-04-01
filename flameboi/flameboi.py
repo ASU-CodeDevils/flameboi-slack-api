@@ -1,13 +1,10 @@
-# Primarly based on KevinThePepper's original code with some generic sample onboarding 
-# functions from PythOnBoarding 
-
 import logging
 import os
 from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
-from block_kit_builder.block_generator import BlockGenerator
+from flameboi.block_kit_builder.block_generator import get_message_payload
 
 
 class Flameboi:
@@ -31,92 +28,32 @@ class Flameboi:
         #logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
         
         # Logging to local dir for testing
-        #logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+        # logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
         # self.config = load_config()
-        self.messenger = BlockGenerator()
-
+        
         self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/events/listener", app)
 
 
     def getClient(self) -> WebClient:
+        """
+        Returns the slack web_client.
+
+        :return: The slack client.
+        :rtype: slack.WebClient
+        """
         return self.bot_client
 
 
     def getAdapter(self) -> SlackEventAdapter:
+        """
+        Returns the slack event adapter.
+
+        :return: The slack client.
+        :rtype: slack.WebClient
+        """
         return self.event_adapter
-
-    
-    def send_onboarding_message(self, user_email: str) -> dict:
-        """
-        Sends the onboarding message to a user.
-
-        :param user_email: The email of the user to be on-boarded.
-        :type user_email: str
-        :return: The response from the message request as a dict.
-        :rtype: dict
-        """
-        user = self.get_user_by_email(email=user_email)['user']['id']
-        response = self.bot_client.conversations_open(users=[user])
-        if not response['ok']:
-            return response
-
-        channel = response['channel']['id']
-        message = self.messenger.get_welcome_block(channel=channel)
-        return self._send_block_message(message=message)
-
-
-    def send_onboarding_DM(self, user_id: str) -> dict:
-        """
-        Sends the onboarding message to a user.
-
-        :param user_id: The slack ID of the user to be on-boarded.
-        :type user_id: str
-        :return: The response from the message request as a dict.
-        :rtype: dict
-        """
-        response = self.bot_client.conversations_open(users=[user_id])
-        if not response['ok']:
-            return response
-
-        channel = response['channel']['id']
-        message = self.messenger.get_welcome_block(channel=channel)
-        return self._send_block_message(message=message)
-
-    
-    def send_qod(self, channel_id) -> dict:
-        """
-        Sends the quote of the day to specified channel.
-
-        :param channel_id: The channel ID.
-        :type channel_id: str
-        :return: The response from the message request as a dict.
-        :rtype: dict
-        """
-        message = self.messenger.get_quote(channel=channel_id)
-        return self._send_block_message(message=message)
-
-
-    def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
-        """
-        Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
-        message.
-
-        :param channel: The name of the channel to send the message to.
-        :type channel: str
-        :param text: The message to send.
-        :type text: str
-        :param mention_email: The email of the user to mention, default is None.
-        :type mention_email: str
-        :return: The result of sending the message.
-        """
-
-        if mention_email:
-            username = self.get_user_by_email(mention_email)['user']['name']
-            text = '@{} {}'.format(username, text)
-        message = self.messenger.get_message_payload(text=text, channel=channel)
-        return self._send_block_message(message=message)
 
 
     def add_member(self, user_email: str) -> dict:
@@ -134,16 +71,6 @@ class Flameboi:
         user = self.get_user_by_email(email=user_email)['user']
         channel = self.get_channel_id(channel_name='hangout')
         return self.user_client.channels_invite(channel=channel, user=user['id'])
-
-
-    def get_slack_client(self):
-        """
-        Returns the slack web client. Used for if the commands in this module do not suffice for specific use cases.
-
-        :return: The slack client.
-        :rtype: slack.WebClient
-        """
-        return self.bot_client
 
 
     def get_user_by_email(self, email: str) -> dict:
@@ -204,6 +131,27 @@ class Flameboi:
         :rtype: dict
         """
         return self.bot_client.channels_list()
+
+
+    def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
+        """
+        Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
+        message.
+
+        :param channel: The name of the channel to send the message to.
+        :type channel: str
+        :param text: The message to send.
+        :type text: str
+        :param mention_email: The email of the user to mention, default is None.
+        :type mention_email: str
+        :return: The result of sending the message.
+        """
+
+        if mention_email:
+            username = self.get_user_by_email(mention_email)['user']['name']
+            text = '@{} {}'.format(username, text)
+        message = get_message_payload(text=text, channel=channel)
+        return self._send_block_message(message=message)
 
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
