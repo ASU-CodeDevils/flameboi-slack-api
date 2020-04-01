@@ -28,7 +28,7 @@ class Flameboi:
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
 
         # Logging to /var/log/ for linux system
-        logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+        #logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
         
         # Logging to local dir for testing
         #logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
@@ -37,7 +37,7 @@ class Flameboi:
         self.messenger = BlockGenerator()
 
         self.bot_client = WebClient(token=self.bot_token)
-        self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
+        self.event_adapter = SlackEventAdapter(self.signing_secret, "/events/listener", app)
 
 
     def getClient(self) -> WebClient:
