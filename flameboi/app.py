@@ -86,7 +86,7 @@ def mention(payload):
 
 
 @app.route('/slash/listener')
-def slashcom():
+def slashcommand():
     """
     Triggers handler for when the bot received slash command..
     """
