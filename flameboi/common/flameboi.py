@@ -17,7 +17,7 @@ class Flameboi:
                 server_configs/dotenvsample.txt for layout.
             SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See 
                 server_configs/dotenvsample.txt for layout.
-        """
+    """
 
     def __init__(self, app):
         load_dotenv()
