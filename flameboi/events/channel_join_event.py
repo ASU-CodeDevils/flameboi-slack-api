@@ -1,6 +1,6 @@
 from flameboi.common.IEvent import Event
 
-class ChannelJoin(Event):
+class ChannelJoinEvent(Event):
 
     def __init__(self, payload):
         super().__init__(payload)

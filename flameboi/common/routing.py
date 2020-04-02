@@ -17,7 +17,7 @@ class Router:
     :rtype: dict
     """  
 
-    def __init__(self, bot_client: WebClient):
+    def __init__(self, bot_client):
         self.bot = bot_client
         self.logger = logging.getLogger()
         # Import various ID's for filtering via dotenv

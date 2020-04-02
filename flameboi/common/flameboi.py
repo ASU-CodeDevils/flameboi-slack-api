@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
-from flameboi.blocks.block_generator import get_message_payload
+from flameboi.blocks.block_generator import BlockGenerator
 
 
 class Flameboi:
@@ -31,7 +31,7 @@ class Flameboi:
         # logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
         # self.config = load_config()
-        
+        self.blockGen = BlockGenerator()
         self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/events/listener", app)
 
@@ -150,7 +150,7 @@ class Flameboi:
         if mention_email:
             username = self.get_user_by_email(mention_email)['user']['name']
             text = '@{} {}'.format(username, text)
-        message = get_message_payload(text=text, channel=channel)
+        message = self.blockGen.get_message_payload(text=text, channel=channel)
         return self._send_block_message(message=message)
 
 
