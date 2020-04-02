@@ -1,13 +1,9 @@
- # TODO: impplement this
+from flameboi.common.IEvent import Event
 
-class App_Mention(EventInterface):
+class AppMentionEvent(Event):
 
-    def __init__(self):
-        print()
+    def __init__(self, payload):
+        super().__init__(payload)
 
-    # event = payload.get("event", {})
-    
-    # channel_id = event.get("channel")
-    # user_id = event.get("user")
-    # text = event.get("text")
-    # event_ts = event.get("ts")
+    def get_details(self):
+        pass

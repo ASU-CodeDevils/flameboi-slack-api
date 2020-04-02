@@ -3,8 +3,7 @@
 from urllib.parse import urlparse
 import json
 
-class Slash_Command:
+class SlashCommand:
 
     def __init__(self):
-        print()
-
+        pass

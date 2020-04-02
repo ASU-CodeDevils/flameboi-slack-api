@@ -1,10 +1,12 @@
- # TODO: impplement this
+from flameboi.common.IEvent import Event
 
-class Message_Event(EventInterface):
+class MessageEvent(Event):
 
+    def __init__(self, payload):
+        super().__init__(payload)
 
-    def __init__(self):
-        print()
+    def get_details(self):
+        pass
 
     # event = payload.get("event", {})
 
