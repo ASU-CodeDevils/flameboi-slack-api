@@ -44,3 +44,4 @@ class Event(object):
 
     def get_specs(self) -> dict:
         pass
+    # reserved for future implementation

@@ -21,8 +21,8 @@ def onboarding_message(payload):
     """Create and send an onboarding welcome message to new users. Save the
     time stamp of this message so we can update this message in the future.
     """
+    
     logger.info("Received team joined event!")
-
     router.handle_team_join(payload)
 
 
@@ -33,8 +33,8 @@ def update_emoji(payload):
     """Update the onboarding welcome message after receiving a "reaction_added"
     event from Slack. Update timestamp for welcome message as well.
     """
-    logger.info("Received reaction added event!")
 
+    logger.info("Received reaction added event!")
     router.handle_reaction_added(payload)
 
 
@@ -45,8 +45,8 @@ def update_pin(payload):
     """Update the onboarding welcome message after receiving a "pin_added"
     event from Slack. Update timestamp for welcome message as well.
     """
-    logger.info("Received pin added event!")
 
+    logger.info("Received pin added event!")
     router.handle_pin_added(payload)
 
 
@@ -57,8 +57,8 @@ def message(payload):
     """Display the onboarding welcome message after receiving a message
     that contains "start".
     """
-    logger.info("Received message event!")
 
+    logger.info("Received message event!")
     router.handle_message(payload)
 
 
@@ -68,8 +68,8 @@ def message(payload):
 def member_joined(payload):
     """Display the channel welcome message after someone joins a channel.
     """
+    
     logger.info("Received member joined channel event!")
-   
     router.handle_channel_join(payload)
 
 
@@ -80,8 +80,8 @@ def mention(payload):
     """
     Triggers handler for when the bot received an @ mention event..
     """
+
     logger.info("Received app mention event!")
-    
     router.handle_app_mention(payload)
 
 
