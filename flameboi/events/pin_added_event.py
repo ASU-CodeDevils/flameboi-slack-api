@@ -1,3 +1,7 @@
+class Pin_Added(EventInterface):
+
+    def __init__(self):
+        print()
 
     # event = payload.get("event", {})
 

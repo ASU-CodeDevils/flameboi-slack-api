@@ -1,3 +1,7 @@
+class Channel_Join(EventInterface):
+
+    def __init__(self):
+        print()
 
     # event = payload.get("event", {})
 

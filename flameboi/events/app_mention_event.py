@@ -1,4 +1,7 @@
+class App_Mention(EventInterface):
 
+    def __init__(self):
+        print()
 
     # event = payload.get("event", {})
     
