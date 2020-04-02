@@ -1,5 +1,9 @@
+'''
+TODO: implement this using the newly modular setup
+'''
+
 import requests
-from flameboi.block_kit_builder.block_generator import BlockGenerator
+from flameboi.blocks.block_generator import BlockGenerator
 
 def getQOD() -> list:
 

@@ -1,4 +1,8 @@
-from flameboi.block_kit_builder.block_generator import BlockGenerator
+'''
+TODO: implement this using the newly modular setup
+'''
+
+from flameboi.blocks.block_generator import BlockGenerator
 
 def get_welcome_block(self, channel: str) -> dict:
     """
