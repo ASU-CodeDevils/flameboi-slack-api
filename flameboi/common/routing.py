@@ -1,11 +1,11 @@
 import os
-from flameboi.events.app_mention_event import App_Mention
-from flameboi.events.channel_join_event import Channel_Join
-from flameboi.events.message_event import Message_Event
-from flameboi.events.pin_added_event import Pin_Added
-from flameboi.events.reaction_added_event import Reaction_Added
-from flameboi.events.slash_command import Slash_Command
-from flameboi.events.team_join_event import Team_Join
+from flameboi.events.app_mention_event import AppMentionEvent
+from flameboi.events.channel_join_event import ChannelJoinEvent
+from flameboi.events.message_event import MessageEvent
+from flameboi.events.pin_added_event import PinAddedEvent
+from flameboi.events.reaction_added_event import ReactionAddedEvent
+from flameboi.events.slash_command import SlashCommand
+from flameboi.events.team_join_event import TeamJoinEvent
 
 
 class Router:
@@ -78,6 +78,8 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
+
+        event = AppMentionEvent(payload)
 
  # TODO: impplement this
     def handle_slash_command(self, payload):
