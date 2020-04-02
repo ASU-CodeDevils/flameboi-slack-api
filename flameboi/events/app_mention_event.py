@@ -1,4 +1,4 @@
-from flameboi.common.IEvent import Event
+from ..common.IEvent import Event
 
 class AppMentionEvent(Event):
 

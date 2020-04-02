@@ -1,8 +1,8 @@
 import os
 import logging
 from flask import Flask
-from flameboi.common.routing import Router
-from flameboi.common.flameboi import Flameboi
+from .common.routing import Router
+from .common.flameboi import Flameboi
 
 
 # Initialize a Flask app to host the events adapter
