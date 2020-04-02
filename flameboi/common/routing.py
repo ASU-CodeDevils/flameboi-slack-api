@@ -24,6 +24,7 @@ class Router:
         self.bot_app_id = os.getenv("APP_ID")
 
 
+ # TODO: impplement this
     def handle_team_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -31,9 +32,9 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
-        event = Team_Join(payload)
 
 
+ # TODO: impplement this
     def handle_reaction_added(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -42,7 +43,7 @@ class Router:
         :rtype: dict
         """    
 
-
+ # TODO: impplement this
     def handle_pin_added(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -51,7 +52,7 @@ class Router:
         :rtype: dict
         """
 
-
+ # TODO: impplement this
     def handle_message(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -60,7 +61,7 @@ class Router:
         :rtype: dict
         """
 
-
+ # TODO: impplement this
     def handle_channel_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -69,7 +70,7 @@ class Router:
         :rtype: dict
         """
 
-
+ # TODO: impplement this
     def handle_app_mention(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -78,7 +79,7 @@ class Router:
         :rtype: dict
         """
 
-
+ # TODO: impplement this
     def handle_slash_command(self, payload):
         """
         Returns the list of channels available to the bot.

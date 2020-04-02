@@ -1,3 +1,5 @@
+# TODO: Implement this interface.
+
 class EventInterface:
     
     def __init__(self, payload):
@@ -14,11 +16,3 @@ class EventInterface:
         self.subtype = subtype if subtype else ""
         self.text = text if text else ""
         self.timestamp = timestamp if timestamp else ""
-
-
-
-    def get_payload(self, payload) -> dict:
-        event = payload.get("event", {})
-
-    def build_dict(self, channel: str, text: str = None, subtype: str = None, user: str = None, ) -> dict:
-        print()
