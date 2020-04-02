@@ -1,3 +1,4 @@
+import logging
 import os
 from flameboi.events.app_mention_event import AppMentionEvent
 from flameboi.events.channel_join_event import ChannelJoinEvent
@@ -18,6 +19,7 @@ class Router:
 
     def __init__(self, bot_client: WebClient):
         self.bot = bot_client
+        self.logger = logging.getLogger()
         # Import various ID's for filtering via dotenv
         self.bot_id = os.getenv("BOT_ID")
         self.bot_user_id= os.getenv("USER_ID")
@@ -33,6 +35,8 @@ class Router:
         :rtype: dict
         """
 
+        event = TeamJoinEvent(payload)
+
 
  # TODO: impplement this
     def handle_reaction_added(self, payload):
@@ -41,7 +45,21 @@ class Router:
 
         :return: The list of channels as a dict.
         :rtype: dict
-        """    
+        """
+
+        event = ReactionAddedEvent(payload)
+        details = event.get_details()
+
+        if details['user_id'] != self.bot_user_id:
+            self.logger.info("Responding to reaction added...")
+            reponse = self.bot.reactions_add(
+                name=details['reaction'],
+                channel=details['channel_id'],
+                timestamp=details['ts']
+            )
+        else:
+            self.logger.info("Reaction added was the bot's!")
+
 
  # TODO: impplement this
     def handle_pin_added(self, payload):
@@ -52,6 +70,8 @@ class Router:
         :rtype: dict
         """
 
+        event = PinAddedEvent(payload)
+
  # TODO: impplement this
     def handle_message(self, payload):
         """
@@ -61,6 +81,8 @@ class Router:
         :rtype: dict
         """
 
+        event = MessageEvent(payload)
+
  # TODO: impplement this
     def handle_channel_join(self, payload):
         """
@@ -69,6 +91,8 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
+
+        event = ChannelJoinEvent(payload)
 
  # TODO: impplement this
     def handle_app_mention(self, payload):

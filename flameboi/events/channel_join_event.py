@@ -5,13 +5,11 @@ class ChannelJoin(Event):
     def __init__(self, payload):
         super().__init__(payload)
 
-    def get_details(self):
-        pass
-    
-    # event = payload.get("event", {})
-
-    # user_id = event.get("user")
-    # channel_id = event.get("channel")
+    def get_details(self) -> dict:
+        return {
+            'user_id': self.get_user_ID,
+            'channel_id': self.get_channel_ID
+        }
     
     # logger.info("Responding to member joined event")
 

@@ -5,16 +5,15 @@ class MessageEvent(Event):
     def __init__(self, payload):
         super().__init__(payload)
 
-    def get_details(self):
-        pass
+    def get_details(self) -> dict:
+        return {
+            'user_id': self.get_user_ID,
+            'channel_id': self.get_channel_ID,
+            'text': self.get_text,
+            'ts': self.get_event_ts,
+            'sub_type': self.get_subtype
+        }
 
-    # event = payload.get("event", {})
-
-    # sub_type = event.get("subtype")
-    # channel_id = event.get("channel")
-    # user_id = event.get("user")
-    # text = event.get("text")
-    # ts = event.get("ts")
 
     # if sub_type != 'bot_message':
     #     if text and text.lower() == "!test" :
