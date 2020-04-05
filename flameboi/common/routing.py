@@ -5,8 +5,13 @@ from flameboi.events.channel_join_event import ChannelJoinEvent
 from flameboi.events.message_event import MessageEvent
 from flameboi.events.pin_added_event import PinAddedEvent
 from flameboi.events.reaction_added_event import ReactionAddedEvent
+<<<<<<< HEAD
 from flameboi.events.slash_command import SlashCommand
 from flameboi.events.team_join_event import TeamJoinEvent
+=======
+from flameboi.events.team_join_event import TeamJoinEvent
+from flameboi.events.slash_command import SlashCommand
+>>>>>>> 13c881e98dc1a2a97e0f4826d5aef162889fa3cf
 
 
 class Router:
@@ -56,6 +61,7 @@ class Router:
                 channel=details['channel_id'],
                 timestamp=details['ts']
             )
+
         else:
             self.logger.info("Reaction added was the bot's!")
 
