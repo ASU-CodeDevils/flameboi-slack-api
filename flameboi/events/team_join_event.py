@@ -9,6 +9,3 @@ class TeamJoinEvent(Event):
         return {
             'user_id': self.event.get('user', {}).get('id')
         }
-        
-
-    # assert theBot.send_onboarding_DM(user_id)["ok"]

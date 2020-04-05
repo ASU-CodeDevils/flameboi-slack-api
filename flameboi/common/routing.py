@@ -15,18 +15,17 @@ class Router:
 
     :return: The list of channels as a dict.
     :rtype: dict
-    """  
+    """
 
     def __init__(self, bot_client):
         self.bot = bot_client
         self.logger = logging.getLogger()
         # Import various ID's for filtering via dotenv
         self.bot_id = os.getenv("BOT_ID")
-        self.bot_user_id= os.getenv("USER_ID")
+        self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
 
-
- # TODO: impplement this
+    # TODO: implement this
     def handle_team_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -37,9 +36,9 @@ class Router:
 
         event = TeamJoinEvent(payload)
 
-
- # TODO: impplement this
+    # TODO: impplement this
     def handle_reaction_added(self, payload):
+
         """
         Returns the list of channels available to the bot.
 
@@ -60,8 +59,7 @@ class Router:
         else:
             self.logger.info("Reaction added was the bot's!")
 
-
- # TODO: impplement this
+    # TODO: impplement this
     def handle_pin_added(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -72,7 +70,7 @@ class Router:
 
         event = PinAddedEvent(payload)
 
- # TODO: impplement this
+    # TODO: impplement this
     def handle_message(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -83,7 +81,7 @@ class Router:
 
         event = MessageEvent(payload)
 
- # TODO: impplement this
+    # TODO: impplement this
     def handle_channel_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -94,7 +92,7 @@ class Router:
 
         event = ChannelJoinEvent(payload)
 
- # TODO: impplement this
+    # TODO: impplement this
     def handle_app_mention(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -105,7 +103,7 @@ class Router:
 
         event = AppMentionEvent(payload)
 
- # TODO: impplement this
+    # TODO: impplement this
     def handle_slash_command(self, payload):
         """
         Returns the list of channels available to the bot.

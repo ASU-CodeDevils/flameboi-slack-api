@@ -14,6 +14,7 @@ slack_web_client = theBot.getClient()
 slack_events_adapter = theBot.getAdapter()
 router = Router(slack_web_client)
 
+
 # ================ Team Join Event =============== #
 
 @slack_events_adapter.on("team_join")

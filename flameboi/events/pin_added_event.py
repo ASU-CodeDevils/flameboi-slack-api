@@ -10,4 +10,3 @@ class PinAddedEvent(Event):
             'user_id': self.get_user_ID,
             'channel_id': self.get_channel_ID,
         }
-
