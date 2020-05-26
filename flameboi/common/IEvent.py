@@ -2,6 +2,7 @@ class Event(object):
     
     def __init__(self, payload):
         self.event = payload.get('event', {})
+        self.item = payload.get('event', {}).get('item', {})
 
     def get_user_id(self):
         return self.event.get('user')
@@ -21,18 +22,16 @@ class Event(object):
     def get_reaction(self):
         return self.event.get('reaction')
 
-    def _get_item(self):
-        return self.event.get('item',{})
-
     def get_item_channel(self):
-        return self._get_item.get('channel')
+        return self.item.get('channel')
 
     def get_item_ts(self):
-        return self._get_item.get('ts')
+        return self.item.get('ts')
 
     def get_item_file(self):
-        return self._get_item.get('file')
+        return self.item.get('file')
 
     def get_specs(self) -> dict:
         pass
+
     # reserved for future implementation
