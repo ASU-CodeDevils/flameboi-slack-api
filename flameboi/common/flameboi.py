@@ -4,11 +4,7 @@ from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
-<<<<<<< HEAD:flameboi/flameboi.py
-from .block_kit_builder.block_generator import BlockGenerator
-=======
-from flameboi.blocks.block_generator import BlockGenerator
->>>>>>> bf023757f4cb9d348d3a8980df94e9b356186e78:flameboi/common/flameboi.py
+from ..blocks.block_generator import BlockGenerator
 
 
 class Flameboi:
@@ -29,7 +25,7 @@ class Flameboi:
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
 
         # Logging to /var/log/ for linux system
-        #logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+        # logging.basicConfig(filename='/var/log/flameboi/slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
         
         # Logging to local dir for testing
         # logging.basicConfig(filename='slack.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
@@ -38,7 +34,6 @@ class Flameboi:
         self.blockGen = BlockGenerator()
         self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/events/listener", app)
-
 
     def getClient(self) -> WebClient:
         """
@@ -49,7 +44,6 @@ class Flameboi:
         """
         return self.bot_client
 
-
     def getAdapter(self) -> SlackEventAdapter:
         """
         Returns the slack event adapter.
@@ -58,7 +52,6 @@ class Flameboi:
         :rtype: slack.WebClient
         """
         return self.event_adapter
-
 
     def add_member(self, user_email: str) -> dict:
         """
@@ -75,7 +68,6 @@ class Flameboi:
         user = self.get_user_by_email(email=user_email)['user']
         channel = self.get_channel_id(channel_name='hangout')
         return self.user_client.channels_invite(channel=channel, user=user['id'])
-
 
     def get_user_by_email(self, email: str) -> dict:
         """
@@ -115,7 +107,6 @@ class Flameboi:
 
         return str(None)
 
-
     def get_user_info(self, user_id: str) -> dict:
         """
         Returns the information about the user, identified by user_id.
@@ -126,7 +117,6 @@ class Flameboi:
         """
         return self.bot_client.users_info(user=user_id)
 
-
     def get_channel_list(self) -> dict:
         """
         Returns the list of channels available to the bot.
@@ -135,7 +125,6 @@ class Flameboi:
         :rtype: dict
         """
         return self.bot_client.channels_list()
-
 
     def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
         """
@@ -156,7 +145,6 @@ class Flameboi:
             text = '@{} {}'.format(username, text)
         message = self.blockGen.get_message_payload(text=text, channel=channel)
         return self._send_block_message(message=message)
-
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
         """

@@ -1,17 +1,12 @@
 import logging
 import os
-from flameboi.events.app_mention_event import AppMentionEvent
-from flameboi.events.channel_join_event import ChannelJoinEvent
-from flameboi.events.message_event import MessageEvent
-from flameboi.events.pin_added_event import PinAddedEvent
-from flameboi.events.reaction_added_event import ReactionAddedEvent
-<<<<<<< HEAD
-from flameboi.events.slash_command import SlashCommand
-from flameboi.events.team_join_event import TeamJoinEvent
-=======
-from flameboi.events.team_join_event import TeamJoinEvent
-from flameboi.events.slash_command import SlashCommand
->>>>>>> 13c881e98dc1a2a97e0f4826d5aef162889fa3cf
+from ..events.app_mention_event import AppMentionEvent
+from ..events.channel_join_event import ChannelJoinEvent
+from ..events.message_event import MessageEvent
+from ..events.pin_added_event import PinAddedEvent
+from ..events.reaction_added_event import ReactionAddedEvent
+from ..events.team_join_event import TeamJoinEvent
+from ..events.slash_command import SlashCommand
 
 
 class Router:
@@ -41,7 +36,7 @@ class Router:
 
         event = TeamJoinEvent(payload)
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_reaction_added(self, payload):
 
         """
@@ -56,7 +51,7 @@ class Router:
 
         if details['user_id'] != self.bot_user_id:
             self.logger.info("Responding to reaction added...")
-            reponse = self.bot.reactions_add(
+            response = self.bot.reactions_add(
                 name=details['reaction'],
                 channel=details['channel_id'],
                 timestamp=details['ts']
@@ -65,7 +60,7 @@ class Router:
         else:
             self.logger.info("Reaction added was the bot's!")
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_pin_added(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -76,7 +71,7 @@ class Router:
 
         event = PinAddedEvent(payload)
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_message(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -87,7 +82,7 @@ class Router:
 
         event = MessageEvent(payload)
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_channel_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -98,7 +93,7 @@ class Router:
 
         event = ChannelJoinEvent(payload)
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_app_mention(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -109,7 +104,7 @@ class Router:
 
         event = AppMentionEvent(payload)
 
-    # TODO: impplement this
+    # TODO: implement this
     def handle_slash_command(self, payload):
         """
         Returns the list of channels available to the bot.

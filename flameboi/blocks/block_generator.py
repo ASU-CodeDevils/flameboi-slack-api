@@ -1,11 +1,11 @@
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-from .block_element.block_element import BlockElement
-from .composition_object.text_object import TextObject
-from .layout_block.section_block import SectionBlock
-from .block_element.image_element import ImageElement
-from .layout_block.divider_block import DividerBlock
+from ..blocks.block_element.block_element import BlockElement
+from ..blocks.composition_object.text_object import TextObject
+from ..blocks.layout_block.section_block import SectionBlock
+from ..blocks.block_element.image_element import ImageElement
+from ..blocks.layout_block.divider_block import DividerBlock
 
 
 class BlockGenerator:
@@ -29,7 +29,6 @@ class BlockGenerator:
         self.icon_emoji = os.getenv("ICON_EMOJI")
         self.icon_url = os.getenv("ICON_URL")
 
-
     def get_message_payload(self, ts: datetime = None, text: str = None, channel: str = None, blocks: list = None,
                             view_type: str = None, link_names: int = 1) -> dict:
         """
@@ -37,6 +36,14 @@ class BlockGenerator:
 
         :param blocks: The blocks to be inserted into the message payload.
         :type blocks: list
+        :param channel: channel_id
+        :type channel: string
+        :param ts: datetime
+        :type ts: string
+        :param text: channel_id
+        :type text: string
+        :param link_names: number of linke names, defaults to 1
+        :type link_names: int
         :param view_type: Used to determine the type of block for a view publish,
             defaults to None
         :type view_type: str, optional
@@ -58,7 +65,6 @@ class BlockGenerator:
 
         return payload
 
-
     def get_checkmark(self, task_completed: bool) -> str:
         """
         Returns a check mark emoji indicating the completed task status. If the task is complete, then a white check
@@ -72,7 +78,6 @@ class BlockGenerator:
         if task_completed:
             return ":white_check_mark:"
         return ":white_large_square:"
-
 
     def get_information_block(self, info_link: str, info_text: str) -> dict:
         """
@@ -88,7 +93,6 @@ class BlockGenerator:
         information = f':information_source: *<{info_link}|{info_text}>*'
         return TextObject(btype=TextObject.BTYPE_MARKDOWN, text=information).render()
 
-
     def get_text_block_with_accessory(self, text_object: TextObject, accessory: BlockElement) -> dict:
         """
         Returns a text block with an accessory.
@@ -101,7 +105,6 @@ class BlockGenerator:
         :rtype: dict
         """
         return SectionBlock(text=text_object, accessory=accessory).render()
-
 
     def get_text_block_with_image(self, text: str, image_url: str, alt_text: str) -> dict:
         """
@@ -118,8 +121,7 @@ class BlockGenerator:
         """
         text_object = TextObject(btype=TextObject.BTYPE_MARKDOWN, text=text)
         image_element = ImageElement(image_url=image_url, alt_text=alt_text)
-        return get_text_block_with_accessory(text_object=text_object, accessory=image_element)
-
+        return self.get_text_block_with_accessory(text_object=text_object, accessory=image_element)
 
     def get_task_block(self, text: str, info_link: str, info_text: str) -> list:
         """
@@ -136,5 +138,5 @@ class BlockGenerator:
         """
         return [
             TextObject(btype=TextObject.BTYPE_MARKDOWN, text=text).render(),
-            get_information_block(info_link=info_link, info_text=info_text)
+            self.get_information_block(info_link=info_link, info_text=info_text)
         ]
