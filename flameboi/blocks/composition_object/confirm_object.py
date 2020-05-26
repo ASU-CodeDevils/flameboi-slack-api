@@ -1,5 +1,5 @@
-from ..block import Block
-from .text_object import TextObject
+from flameboi.blocks.block import Block
+from flameboi.blocks.composition_object.text_object import TextObject
 
 
 class ConfirmObject(Block):

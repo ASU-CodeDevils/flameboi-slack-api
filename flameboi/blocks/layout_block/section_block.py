@@ -1,6 +1,6 @@
-from .layout_block import LayoutBlock
-from ..composition_object.text_object import TextObject
-from ..block_element.block_element import BlockElement
+from flameboi.blocks.layout_block.layout_block import LayoutBlock
+from flameboi.blocks.composition_object.text_object import TextObject
+from flameboi.blocks.block_element.block_element import BlockElement
 
 
 class SectionBlock(LayoutBlock):

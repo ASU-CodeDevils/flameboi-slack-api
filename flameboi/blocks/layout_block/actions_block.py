@@ -1,4 +1,4 @@
-from .layout_block import LayoutBlock
+from flameboi.blocks.layout_block.layout_block import LayoutBlock
 
 
 class ActionsBlock(LayoutBlock):

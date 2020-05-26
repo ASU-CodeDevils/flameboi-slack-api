@@ -1,6 +1,6 @@
-from ..block import Block
-from .text_object import TextObject
-from .option_object import OptionObject
+from flameboi.blocks.block import Block
+from flameboi.blocks.composition_object.text_object import TextObject
+from flameboi.blocks.composition_object.option_object import OptionObject
 
 
 class OptionGroupObject(Block):

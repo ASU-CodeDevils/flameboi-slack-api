@@ -1,4 +1,4 @@
-from ..block import Block
+from flameboi.blocks.block import Block
 
 
 class LayoutBlock(Block):

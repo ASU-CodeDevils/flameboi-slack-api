@@ -1,5 +1,5 @@
-from .layout_block import LayoutBlock
-from ..composition_object.text_object import TextObject
+from flameboi.blocks.layout_block.layout_block import LayoutBlock
+from flameboi.blocks.composition_object.text_object import TextObject
 
 
 class ImageBlock(LayoutBlock):
