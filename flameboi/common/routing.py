@@ -1,11 +1,11 @@
 import os
-from ..events.app_mention_event import AppMentionEvent
-from ..events.channel_join_event import ChannelJoinEvent
-from ..events.message_event import MessageEvent
-from ..events.pin_added_event import PinAddedEvent
-from ..events.reaction_added_event import ReactionAddedEvent
-from ..events.team_join_event import TeamJoinEvent
-# from ..events.slash_command import SlashCommand
+from flameboi.events.app_mention_event import AppMentionEvent
+from flameboi.events.channel_join_event import ChannelJoinEvent
+from flameboi.events.message_event import MessageEvent
+from flameboi.events.pin_added_event import PinAddedEvent
+from flameboi.events.reaction_added_event import ReactionAddedEvent
+from flameboi.events.team_join_event import TeamJoinEvent
+# from flameboi.events.slash_command import SlashCommand
 
 
 class Router:
@@ -90,7 +90,7 @@ class Router:
 
                 assert self.bot.send_message(details['channel_id'], reply)["ok"]
 
-            if "party" in details['text']:
+            if "party" in details['text'] and ":partywizard:" not in details['text']:
                 reply = ":partywizard:"
 
                 assert self.bot.send_message(details['channel_id'], reply)["ok"]
