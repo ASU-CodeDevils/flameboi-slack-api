@@ -29,7 +29,8 @@ config/*
 prop/*
 
 # Virtual Environments
-venv/*
+venv/
+build/
 
 # Credentials file
 .env
