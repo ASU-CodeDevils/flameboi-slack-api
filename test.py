@@ -1,145 +1,32 @@
-import requests
-import json
+
+# Adapted from slackapi/python-slack-events-api github
+
+from slackeventsapi import SlackEventAdapter
+from slackclient import SlackClient
+import os
+
+# Our app's Slack Event Adapter for receiving actions via the Events API
+slack_signing_secret = os.environ["SLACK_SIGNING_SECRET"]
+slack_events_adapter = SlackEventAdapter(slack_signing_secret, "/")
+
+# Create a SlackClient for your bot to use for Web API requests
+slack_bot_token = os.environ["SLACK_BOT_TOKEN"]
+slack_client = SlackClient(slack_bot_token)
+
+# Example responder to greetings
+@slack_events_adapter.on("message")
+def handle_message(event_data):
+    message = event_data["event"]
+    # If the incoming message contains "hi", then respond with a "Hello" message
+    if message.get("subtype") is None and "hi" in message.get('text'):
+        channel = message["channel"]
+        message = "Hello <@%s>! :tada:" % message["user"]
+        slack_client.api_call("chat.postMessage", channel=channel, text=message)
 
 
-    
-    
-url = "https://covid-193.p.rapidapi.com/statistics"
+# Error events
+@slack_events_adapter.on("error")
+def error_handler(err):
+    print("ERROR: " + str(err))
 
-querystring = {"country":"all"}
-querystring2 = {"country":"USA"}
-
-headers = {
-    'x-rapidapi-host': "covid-193.p.rapidapi.com",
-    'x-rapidapi-key': "556658f588mshae9e612c19896b6p181723jsnb7e9ebd5dfbf"
-    }
-
-response = requests.request("GET", url, headers=headers, params=querystring)
-response2 = requests.request("GET", url, headers=headers, params=querystring2)
-
-res = response.json()
-res2 = response2.json()
-
-usCases = res2['response'][0]['cases']
-usDeaths = res2['response'][0]['deaths']
-allCases = res['response'][0]['cases']
-allDeaths = res['response'][0]['deaths']
-
-
-ans = "Current Covid-19 Stats\nWorldwide\n\tCases:\n\t\tActive: {}\n\t\tNew: {}\n\t\tCritical: {}\n\t\tRecovered: {}\n\t\tTotal: {}\n\tDeaths: \n\t\tNew: {}\n\t\tTotal: {}\n".format(allCases['active'], allCases['new'], allCases['critical'], allCases['recovered'], allCases['total'], allDeaths['new'], allDeaths['total'])
-ans += "\nUSA\n\tCase:\n\t\tActive: {}\n\t\tNew: {}\n\t\tCritical: {}\n\t\tRecovered: {}\n\t\tTotal: {}\n\tDeaths:\n\t\tNew: {}\n\t\tTotal: {}".format(usCases['active'], usCases['new'], usCases['critical'], usCases['recovered'], usCases['total'], usDeaths['new'], usDeaths['total'])
-
-ansblock = {
-	"blocks": [
-		{
-			"type": "section",
-			"fields": [
-				{
-					"type": "mrkdwn",
-					"text": "*Worldwide*"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "*USA*"
-				}
-			]
-		},
-		{
-			"type": "divider"
-		},
-        {
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Cases"
-			}
-		},
-		{
-			"type": "section",
-			"fields": [
-								{
-					"type": "mrkdwn",
-					"text": "Active: %s" % allCases['active']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Active: %s" % usCases['active']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "New: %s" % allCases['new']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "New: %s" % usCases['new']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Critical: %s" % allCases['critical']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Critical: %s" % usCases['critical']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Recovered: %s" % allCases['recivered']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Recovered: %s" % usCases['recivered']
-				},
-                {
-					"type": "mrkdwn",
-					"text": "Total: %s" % allCases['total']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Total: %s" % usCases['total']
-				}
-			]
-		},
-		{
-			"type": "divider"
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Deaths"
-			}
-		},
-		{
-			"type": "section",
-			"fields": [
-				{
-					"type": "mrkdwn",
-					"text": "New: %s" % allCases['new']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "New: %s" % usCases['new']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Total: %s" % allCases['total']
-				},
-				{
-					"type": "mrkdwn",
-					"text": "Total: %s" % usCases['total']
-				}
-			]
-		}
-	]
-}
-
-# return {
-#     'statusCode': 200,
-#     'headers': {
-#         'Content-Type': 'application/json'
-#     },
-#     'body': json.dumps({
-#         'text': ans,
-#         'response_type': 'in_channel'
-#     }),
-# }
+slack_events_adapter.start(port=5000)

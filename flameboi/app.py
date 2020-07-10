@@ -1,5 +1,3 @@
-import os
-import logging
 from flask import Flask
 from .common.routing import Router
 from .common.flameboi import Flameboi
@@ -23,7 +21,6 @@ def onboarding_message(payload):
     time stamp of this message so we can update this message in the future.
     """
     
-    logger.info("Received team joined event!")
     router.handle_team_join(payload)
 
 
@@ -35,7 +32,6 @@ def update_emoji(payload):
     event from Slack. Update timestamp for welcome message as well.
     """
 
-    logger.info("Received reaction added event!")
     router.handle_reaction_added(payload)
 
 
@@ -47,7 +43,6 @@ def update_pin(payload):
     event from Slack. Update timestamp for welcome message as well.
     """
 
-    logger.info("Received pin added event!")
     router.handle_pin_added(payload)
 
 
@@ -59,7 +54,6 @@ def message(payload):
     that contains "start".
     """
 
-    logger.info("Received message event!")
     router.handle_message(payload)
 
 
@@ -70,7 +64,6 @@ def member_joined(payload):
     """Display the channel welcome message after someone joins a channel.
     """
     
-    logger.info("Received member joined channel event!")
     router.handle_channel_join(payload)
 
 
@@ -82,22 +75,29 @@ def mention(payload):
     Triggers handler for when the bot received an @ mention event..
     """
 
-    logger.info("Received app mention event!")
     router.handle_app_mention(payload)
 
 
-@app.route('/slash/listener')
-def slashcommand():
-    """
-    Triggers handler for when the bot received slash command..
-    """
+# ============== Other Endpoints ============= #
 
-    logger.info("Received app mention event!")
-    router.handle_slash_command()
+
+# @app.route('/slash/listener')
+# def slashcommand():
+#     """
+#     Triggers handler for when the bot received slash command..
+#     """
+#     router.handle_slash_command()
+
+
+# @app.route('/newuser')
+# def addNewUser():
+#     """
+#     Triggers slackbot to add new user to CodeDevils Slack (secured by jwt) using
+#     grid approved email
+#     """
+#     #TODO: JWT Secured endpoint for web to add user
 
 
 if __name__ == "__main__":
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler())
+
     app.run(port=5000)

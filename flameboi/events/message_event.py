@@ -1,5 +1,6 @@
 from ..common.IEvent import Event
 
+
 class MessageEvent(Event):
 
     def __init__(self, payload):
@@ -7,8 +8,8 @@ class MessageEvent(Event):
 
     def get_details(self) -> dict:
         return {
-            'user_id': self.get_user_ID,
-            'channel_id': self.get_channel_ID,
+            'user_id': self.get_user_id,
+            'channel_id': self.get_channel_id,
             'text': self.get_text,
             'ts': self.get_event_ts,
             'sub_type': self.get_subtype

@@ -7,6 +7,6 @@ class ChannelJoinEvent(Event):
 
     def get_details(self) -> dict:
         return {
-            'user_id': self.get_user_ID,
-            'channel_id': self.get_channel_ID
+            'user_id': self.get_user_id,
+            'channel_id': self.get_channel_id
         }

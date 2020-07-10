@@ -3,6 +3,7 @@
 
 *.egg-info
 config.yaml
+serverless.yml
 *.swp
 *.egg
 sphinx
@@ -32,6 +33,7 @@ venv/
 
 # Credentials file
 .env
+*.env
 
 # Zappa Files
 zappa*

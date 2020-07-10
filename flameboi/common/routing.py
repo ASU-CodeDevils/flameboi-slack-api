@@ -1,4 +1,3 @@
-import logging
 import os
 from ..events.app_mention_event import AppMentionEvent
 from ..events.channel_join_event import ChannelJoinEvent
@@ -6,7 +5,7 @@ from ..events.message_event import MessageEvent
 from ..events.pin_added_event import PinAddedEvent
 from ..events.reaction_added_event import ReactionAddedEvent
 from ..events.team_join_event import TeamJoinEvent
-from ..events.slash_command import SlashCommand
+# from ..events.slash_command import SlashCommand
 
 
 class Router:
@@ -19,7 +18,7 @@ class Router:
 
     def __init__(self, bot_client):
         self.bot = bot_client
-        self.logger = logging.getLogger()
+
         # Import various ID's for filtering via dotenv
         self.bot_id = os.getenv("BOT_ID")
         self.bot_user_id = os.getenv("USER_ID")
@@ -50,15 +49,12 @@ class Router:
         details = event.get_details()
 
         if details['user_id'] != self.bot_user_id:
-            self.logger.info("Responding to reaction added...")
             response = self.bot.reactions_add(
                 name=details['reaction'],
                 channel=details['channel_id'],
                 timestamp=details['ts']
             )
-
-        else:
-            self.logger.info("Reaction added was the bot's!")
+            assert response["ok"]
 
     # TODO: implement this
     def handle_pin_added(self, payload):
@@ -70,6 +66,11 @@ class Router:
         """
 
         event = PinAddedEvent(payload)
+        details = event.get_details()
+
+        reply = f"<@{details['user_id']}> seems to think something of importance happened in <@{details['channel_id']}>"
+
+        assert self.bot.send_message('C30L07P18', reply)["ok"]
 
     # TODO: implement this
     def handle_message(self, payload):
@@ -81,6 +82,29 @@ class Router:
         """
 
         event = MessageEvent(payload)
+        details = event.get_details()
+
+        if details['sub_type'] != 'bot_message':
+            if details['text'] and details['text'].lower() == "!test":
+                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+
+                assert self.bot.send_message(details['channel_id'], reply)["ok"]
+
+            if "party" in details['text']:
+                reply = ":partywizard:"
+
+                assert self.bot.send_message(details['channel_id'], reply)["ok"]
+
+            """
+            TODO: Expand on block kit builder base (which is awesome Kevin!)
+            Below is example use of blocks using !onboard to send the onboarding block
+            """
+
+            # if details['text'] and details['text'].lower() == "!onboard":
+            #     assert self.bot.send_onboarding_DM(details['user_id'])["ok"]
+            #
+            # if details['text'] and details['text'].lower() == "!qod":
+            #     assert self.bot.send_qod(details['channel_id'])["ok"]
 
     # TODO: implement this
     def handle_channel_join(self, payload):
@@ -92,6 +116,11 @@ class Router:
         """
 
         event = ChannelJoinEvent(payload)
+        details = event.get_details()
+
+        reply = f"Welcome to <@{details['channel_id']}>, <@{details['user_id']}>!!"
+
+        assert self.bot.send_message(details['channel_id'], reply)["ok"]
 
     # TODO: implement this
     def handle_app_mention(self, payload):
@@ -103,12 +132,16 @@ class Router:
         """
 
         event = AppMentionEvent(payload)
+        details = event.get_details()
 
-    # TODO: implement this
-    def handle_slash_command(self, payload):
-        """
-        Returns the list of channels available to the bot.
+        reply = f"You talking to me, <@{details['user_id']}>?!@?"
+        assert self.bot.send_message(details['channel_id'], reply)["ok"]
 
-        :return: The list of channels as a dict.
-        :rtype: dict
-        """
+    # # TODO: implement this
+    # def handle_slash_command(self, payload):
+    #     """
+    #     Returns the list of channels available to the bot.
+    #
+    #     :return: The list of channels as a dict.
+    #     :rtype: dict
+    #     """

@@ -1,5 +1,6 @@
 from ..common.IEvent import Event
 
+
 class TeamJoinEvent(Event):
 
     def __init__(self, payload):
