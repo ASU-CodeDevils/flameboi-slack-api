@@ -30,7 +30,7 @@ prop/*
 
 # Virtual Environments
 venv/
-build/
+build/*
 
 # Credentials file
 .env
