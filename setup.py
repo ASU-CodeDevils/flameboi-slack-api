@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def readme(file='', split=False):
@@ -17,19 +17,7 @@ setup(
     url='https://github.com/ASU-CodeDevils/flameboi-slack-api',
     author='CodeDevil\'s Student Organization',
     author_email='stucampbell.git@gmail.com',
-    package_dir={'': 'flameboi',
-                 'common': 'flameboi/common',
-                 'blocks': 'flameboi/blocks',
-                 'events': 'flameboi/events',
-                 'modules': 'flameboi/modules',
-                 },
-    packages=[
-        'flameboi',
-        'flameboi.common',
-        'flameboi.blocks',
-        'flameboi.events',
-        'flameboi.modules',
-    ],
+    packages=find_packages(),
     python_requires='>=3.5',
     license='MIT License',
     install_requires=[
