@@ -11,14 +11,14 @@ def readme(file='', split=False):
 
 setup(
     name='Flameboi',
-    version='0.0.1dev',
+    version='0.0.2dev',
     description='Slack chat bot',
     long_description=readme('README.md'),
     url='https://github.com/ASU-CodeDevils/flameboi-slack-api',
     author='CodeDevil\'s Student Organization',
     author_email='stucampbell.git@gmail.com',
     packages=find_packages(),
-    python_requires='>=3.5',
+    python_requires='>=3.8',
     license='MIT License',
     install_requires=[
         'Flask',
@@ -37,8 +37,6 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Flask',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
 
     ],
