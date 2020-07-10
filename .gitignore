@@ -3,7 +3,6 @@
 
 *.egg-info
 config.yaml
-serverless.yml
 *.swp
 *.egg
 sphinx
@@ -40,4 +39,4 @@ build/*
 zappa*
 
 node_modules
-
+.serverless
