@@ -29,7 +29,7 @@ config/*
 prop/*
 
 # Virtual Environments
-venv/
+venv/*
 build/*
 
 # Credentials file
@@ -40,4 +40,4 @@ build/*
 zappa*
 
 node_modules
-.serverless
+.serverless*
