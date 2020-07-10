@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
-from ..blocks.block_generator import BlockGenerator
+from flameboi.blocks.block_generator import BlockGenerator
 
 
 class Flameboi:

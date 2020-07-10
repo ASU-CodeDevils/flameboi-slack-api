@@ -1,4 +1,4 @@
-from ..common.IEvent import Event
+from flameboi.common.IEvent import Event
 
 class ChannelJoinEvent(Event):
 

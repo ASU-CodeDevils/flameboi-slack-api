@@ -1,11 +1,10 @@
 import os
-from dotenv import load_dotenv
 from datetime import datetime
-from ..blocks.block_element.block_element import BlockElement
-from ..blocks.composition_object.text_object import TextObject
-from ..blocks.layout_block.section_block import SectionBlock
-from ..blocks.block_element.image_element import ImageElement
-from ..blocks.layout_block.divider_block import DividerBlock
+from flameboi.blocks.block_element.block_element import BlockElement
+from flameboi.blocks.composition_object.text_object import TextObject
+from flameboi.blocks.layout_block.section_block import SectionBlock
+from flameboi.blocks.block_element.image_element import ImageElement
+# from flameboi.blocks.layout_block.divider_block import DividerBlock
 
 
 class BlockGenerator:

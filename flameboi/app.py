@@ -1,6 +1,6 @@
 from flask import Flask
-from .common.routing import Router
-from .common.flameboi import Flameboi
+from flameboi.common.routing import Router
+from flameboi.common.flameboi import Flameboi
 
 
 # Initialize a Flask app to host the events adapter
