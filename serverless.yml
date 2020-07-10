@@ -1,5 +1,5 @@
-org: asu_codedevils
-app: flameboi
+org: stucamp
+app: flameboi-dev
 service: flask-api
 
 provider:

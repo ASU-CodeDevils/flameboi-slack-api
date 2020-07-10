@@ -38,3 +38,6 @@ build/*
 
 # Zappa Files
 zappa*
+
+node_modules
+
