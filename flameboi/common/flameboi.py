@@ -116,7 +116,12 @@ class Flameboi:
         """
         return self.bot_client.channels_list()
 
-    def send_message(self, channel: str, text: str, mention_email: str = None) -> dict:
+
+    """
+    TODO: address issues with get_message_payload()
+    """
+
+    def send_message(self, channel: str, text: str, mention_email: str = None, mention_name: str = None) -> dict:
         """
         Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
         message.
@@ -132,9 +137,17 @@ class Flameboi:
 
         if mention_email:
             username = self.get_user_by_email(mention_email)['user']['name']
-            text = '@{} {}'.format(username, text)
+            text = f"@{username} {text}"
+        elif mention_name:
+            username = "<@{mention_name}>"
+            text = f"{username} {text}"
         message = self.blockGen.get_message_payload(text=text, channel=channel)
         return self._send_block_message(message=message)
+
+    """
+    TODO: This shoudl work, however, need to double check the unpack is good 
+    once get_message_payload() working
+    """
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
         """

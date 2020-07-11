@@ -5,6 +5,7 @@ from flameboi.events.message_event import MessageEvent
 from flameboi.events.pin_added_event import PinAddedEvent
 from flameboi.events.reaction_added_event import ReactionAddedEvent
 from flameboi.events.team_join_event import TeamJoinEvent
+import flameboi.modules.onboard
 # from flameboi.events.slash_command import SlashCommand
 
 
@@ -14,6 +15,10 @@ class Router:
 
     :return: The list of channels as a dict.
     :rtype: dict
+    """
+
+    """
+    TODO: instantiate a modrunner class that will run modules triggered
     """
 
     def __init__(self, bot_client):
@@ -35,10 +40,8 @@ class Router:
 
         event = TeamJoinEvent(payload)
 
-    # TODO: implement this
     def handle_reaction_added(self, payload):
-
-        """
+implement this
         Returns the list of channels available to the bot.
 
         :return: The list of channels as a dict.
@@ -68,11 +71,10 @@ class Router:
         event = PinAddedEvent(payload)
         details = event.get_details()
 
-        reply = f"<@{details['user_id']}> seems to think something of importance happened in <@{details['channel_id']}>"
+        # reply = f"<@{details['user_id']}> seems to think something of importance happened in <@{details['channel_id']}>"
 
-        assert self.bot.send_message('C30L07P18', reply)["ok"]
+        # assert self.bot.chat_postMessage('C30L07P18', reply)["ok"]
 
-    # TODO: implement this
     def handle_message(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -85,15 +87,38 @@ class Router:
         details = event.get_details()
 
         if details['sub_type'] != 'bot_message':
-            if details['text'] and details['text'].lower() == "!test":
+            
+            """TODO: Address block builder issues.  Currently something is preventing Flameboi calls 
+            involving the block kit builder. 
+            """
+
+            if details['text'] and details['text'].lower() == "!testblock":
                 reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
 
-                assert self.bot.send_message(details['channel_id'], reply)["ok"]
+                response = self.bot.send_message(
+                    channel=details['channel_id'], 
+                    text=reply,
+                )
+                assert response["ok"]
 
-            if "party" in details['text'] and ":partywizard:" not in details['text']:
+            elif details['text'] and details['text'].lower() == "!test":
+                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+
+                response = self.bot.chat_postMessage(
+                    channel=details['channel_id'], 
+                    text=reply,
+                )
+                assert response["ok"]
+
+            elif details['text'] and '"party" in details['text'] and ":partywizard:" not in details['text']:
                 reply = ":partywizard:"
 
-                assert self.bot.send_message(details['channel_id'], reply)["ok"]
+                assert self.bot.chat_postMessage(channel=details['channel_id'], text=reply)["ok"]
+
+            elif details['text'] and details['text'].lower() == "!onboard":
+
+
+
 
             """
             TODO: Expand on block kit builder base (which is awesome Kevin!)
@@ -106,7 +131,6 @@ class Router:
             # if details['text'] and details['text'].lower() == "!qod":
             #     assert self.bot.send_qod(details['channel_id'])["ok"]
 
-    # TODO: implement this
     def handle_channel_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -118,11 +142,10 @@ class Router:
         event = ChannelJoinEvent(payload)
         details = event.get_details()
 
-        reply = f"Welcome to <@{details['channel_id']}>, <@{details['user_id']}>!!"
+        # reply = f"Welcome to <@{details['channel_id']}>, <@{details['user_id']}>!!"
 
-        assert self.bot.send_message(details['channel_id'], reply)["ok"]
+        # assert self.bot.chat_postMessage(details['channel_id'], reply)["ok"]
 
-    # TODO: implement this
     def handle_app_mention(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -134,10 +157,20 @@ class Router:
         event = AppMentionEvent(payload)
         details = event.get_details()
 
-        reply = f"You talking to me, <@{details['user_id']}>?!@?"
-        assert self.bot.send_message(details['channel_id'], reply)["ok"]
+        reply = f"You talking to me, <@{details['user_id']}>?!?"
 
-    # # TODO: implement this
+        response = self.bot.chat_postMessage(
+            channel=details['channel_id'],
+            text=reply,
+        )
+
+        assert response["ok"]
+
+        
+
+    """
+    TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
+    """
     # def handle_slash_command(self, payload):
     #     """
     #     Returns the list of channels available to the bot.

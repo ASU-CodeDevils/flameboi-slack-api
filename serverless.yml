@@ -1,6 +1,6 @@
-org: kevinshelley
-app: kevins-flameboi-test-deployment-app
-service: kevins-flameboi-test-deployment
+org: stucamp
+app: flameboi-dev
+service: flask-api
 
 provider:
   name: aws
