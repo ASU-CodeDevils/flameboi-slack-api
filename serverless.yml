@@ -1,6 +1,6 @@
-org: stucamp
-app: flameboi-dev
-service: flask-api
+org: kevinshelley
+app: kevins-flameboi-test-deployment-app
+service: kevins-flameboi-test-deployment
 
 provider:
   name: aws
@@ -15,7 +15,7 @@ functions:
 
 custom:
   wsgi:
-    app: app.app
+    app: flameboi.app.app
     pythonBin: python3 # Some systems with Python3 may require this
     packRequirements: false
   pythonRequirements:
