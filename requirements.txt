@@ -1,6 +1,3 @@
-Flask
-python-dotenv
-requests
-slack
-slackclient
-slackeventsapi
+# production installation file
+
+-r requirements/production.txt
