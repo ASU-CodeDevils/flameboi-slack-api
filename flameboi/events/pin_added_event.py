@@ -8,8 +8,8 @@ class PinAddedEvent(Event):
 
     def get_details(self) -> dict:
         return {
-            'user_id': self.get_user_id,
-            'channel_id': self.get_channel_id,
+            'user_id': self.get_user_id(),
+            'channel_id': self.get_channel_id(),
             'ts': self.get_event_ts(),
             'item': self.get_item_channel(),
         }

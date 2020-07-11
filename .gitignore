@@ -41,6 +41,7 @@ zappa*
 
 node_modules
 .serverless*
+.serverless/*
 *wsgi*
 dist/*
 

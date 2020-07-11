@@ -14,6 +14,7 @@ functions:
       - http: 'ANY {proxy+}'
 
 custom:
+  functionBasePath: flameboi/
   wsgi:
     app: flameboi.app.app
     pythonBin: python3 # Some systems with Python3 may require this
