@@ -57,7 +57,7 @@ Do this by calling the `activate` file/script within your newly created vitualen
 If you are using a virtual enviroment, *ensure that you have activated your enviroment*. You will know if the name of the virtualenv directory is written prior to other text within your shell.
 
 1. `cd /path/to/flameboi`
-1. `pip3 install -r requirements.txt`
+1. `pip3 install -r requirements/local.txt`
 
 ## Further Reading and Documentation
 

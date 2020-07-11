@@ -14,6 +14,7 @@ sphinx
 coverage.xml
 nosetests.xml
 slack.log
+package-lock.json
 
 # IDE Files
 .vscode/
@@ -28,10 +29,19 @@ config/*
 prop/*
 
 # Virtual Environments
-venv/
+venv/*
+build/*
 
 # Credentials file
 .env
+*.env
 
 # Zappa Files
 zappa*
+
+node_modules
+.serverless*
+.serverless/*
+*wsgi*
+dist/*
+

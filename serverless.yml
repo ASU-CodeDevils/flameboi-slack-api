@@ -1,0 +1,28 @@
+org: stucamp
+app: flameboi-dev
+service: flask-api
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+
+custom:
+  functionBasePath: flameboi/
+  wsgi:
+    app: flameboi.app.app
+    pythonBin: python3 # Some systems with Python3 may require this
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: non-linux
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
+  - serverless-dotenv-plugin
