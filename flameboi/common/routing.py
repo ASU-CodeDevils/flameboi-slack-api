@@ -114,10 +114,6 @@ class Router:
 
                 assert self.bot.chat_postMessage(channel=details['channel_id'], text=reply)["ok"]
 
-            elif details['text'] and details['text'].lower() == "!onboard":
-
-
-
 
             """
             TODO: Expand on block kit builder base (which is awesome Kevin!)
@@ -165,8 +161,7 @@ class Router:
 
         assert response["ok"]
 
-        
-
+    
     """
     TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
     """
