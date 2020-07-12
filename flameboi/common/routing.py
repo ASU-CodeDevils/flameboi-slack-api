@@ -51,12 +51,21 @@ class Router:
         details = event.get_details()
 
         if details['user_id'] != self.bot_user_id:
-            response = self.bot.reactions_add(
-                name=details['reaction'],
-                channel=details['channel_id'],
-                timestamp=details['ts']
-            )
-            assert response["ok"]
+            if details['reaction'] and details['reaction'] == "parrot":
+                for i in range(1,10):
+                    response = self.bot.reactions_add(
+                        name=f"parrotwave{i}",
+                        channel=details['channel_id'],
+                        timestamp=details['ts'],
+                    )
+                    assert response["ok"]
+            else:
+                response = self.bot.reactions_add(
+                    name=details['reaction'],
+                    channel=details['channel_id'],
+                    timestamp=details['ts'],
+                )
+                assert response["ok"]
 
     # TODO: implement this
     def handle_pin_added(self, payload):
@@ -90,6 +99,8 @@ class Router:
             """TODO: Address block builder issues.  Currently something is preventing Flameboi calls 
             involving the block kit builder. 
             """
+
+            
 
             if details['text'] and details['text'].lower() == "!testthread":
 
