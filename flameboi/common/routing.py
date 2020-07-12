@@ -92,24 +92,29 @@ class Router:
             """
 
             if details['text'] and details['text'].lower() == "!testblock":
-                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+
+                reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
 
                 response = self.bot.send_message(
                     channel=details['channel_id'], 
                     text=reply,
                 )
+
                 assert response["ok"]
 
             elif details['text'] and details['text'].lower() == "!test":
-                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+
+                reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
 
                 response = self.bot.chat_postMessage(
                     channel=details['channel_id'], 
                     text=reply,
                 )
+
                 assert response["ok"]
 
             elif details['text'] and '"party" in details['text'] and ":partywizard:" not in details['text']:
+                
                 reply = ":partywizard:"
 
                 assert self.bot.chat_postMessage(channel=details['channel_id'], text=reply)["ok"]
@@ -161,7 +166,8 @@ class Router:
 
         assert response["ok"]
 
-    
+        
+
     """
     TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
     """
