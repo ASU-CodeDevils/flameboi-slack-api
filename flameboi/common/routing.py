@@ -113,7 +113,7 @@ class Router:
 
                 assert response["ok"]
 
-            elif details['text'] and '"party" in details['text'] and ":partywizard:" not in details['text']:
+            elif details['text'] and "party" in details['text'] and ":partywizard:" not in details['text']:
                 
                 reply = ":partywizard:"
 
