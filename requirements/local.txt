@@ -21,3 +21,7 @@ coverage==5.1  # https://github.com/nedbat/coveragepy
 black==19.10b0  # https://github.com/ambv/black
 pre-commit==2.4.0  # https://github.com/pre-commit/pre-commit
 codecov==2.1.7  # https://github.com/codecov/codecov-python
+
+# Flask
+# ------------------------------------------------------------------------------
+pylint-flask==0.6  # https://pypi.org/project/pylint-flask/
