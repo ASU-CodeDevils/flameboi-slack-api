@@ -1,5 +1,9 @@
 # Flamboi Slack API
 
+[![Build Status](https://travis-ci.com/ASU-CodeDevils/flameboi-slack-api.svg?branch=master)](https://travis-ci.com/ASU-CodeDevils/flameboi-slack-api)
+[![codecov](https://codecov.io/gh/ASU-CodeDevils/flameboi-slack-api/branch/master/graph/badge.svg)](https://codecov.io/gh/ASU-CodeDevils/flameboi-slack-api)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/ASU-CodeDevils/flameboi-slack-api/blob/dev/LICENSE)
+
 Flameboi is CodeDevils's Slack API bot that posts interactive messages and offers commands to users on CodeDevils' Slack.
 
 ## How to Install
