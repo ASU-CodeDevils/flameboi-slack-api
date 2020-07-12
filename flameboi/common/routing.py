@@ -5,7 +5,6 @@ from flameboi.events.message_event import MessageEvent
 from flameboi.events.pin_added_event import PinAddedEvent
 from flameboi.events.reaction_added_event import ReactionAddedEvent
 from flameboi.events.team_join_event import TeamJoinEvent
-import flameboi.modules.onboard
 # from flameboi.events.slash_command import SlashCommand
 
 
@@ -41,7 +40,7 @@ class Router:
         event = TeamJoinEvent(payload)
 
     def handle_reaction_added(self, payload):
-implement this
+        """
         Returns the list of channels available to the bot.
 
         :return: The list of channels as a dict.
