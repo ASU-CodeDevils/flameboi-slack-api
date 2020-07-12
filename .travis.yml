@@ -15,7 +15,7 @@ jobs:
       script:
         - "flake8"
 
-    - name: "Django Test"
+    - name: "Flask Test"
       before_install:
         - sudo apt-get update -qq
         - sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev xvfb
@@ -33,13 +33,3 @@ jobs:
         - "coverage run -m pytest"
       after_success:
         - codecov
-
-#deploy:
-#  - provider: script
-#    script: sshpass -p$SSH_PASSWORD ssh $SSH_USERNAME@SSH_HOST "bash -s" -- < bin/deploy.sh
-#    on:
-#      branch: master
-#  - provider: script
-#    script: sshpass -p$SSH_PASSWORD ssh $SSH_USERNAME@SSH_HOST "bash -s" -- < bin/deploy.sh "-dev"
-#    on:
-#      branch: dev
