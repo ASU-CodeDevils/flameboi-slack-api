@@ -29,7 +29,9 @@ class BlockGenerator:
         self.icon_url = os.getenv("ICON_URL")
 
 
-    """TODO: Something here is returning a malformed/not understood payload that slack isn't processing.
+    """
+    TODO: Modify this function to instead of creating a message payload build and return a list of block types to
+    be used in creating nice, pretty messages
     """
     def get_message_payload(self, ts: datetime = None, text: str = None, channel: str = None, blocks: list = None,
                             view_type: str = None, link_names: int = None) -> dict:
@@ -53,17 +55,17 @@ class BlockGenerator:
         :rtype: dict
         """
         payload = {
-            #"ts": str(ts if ts else datetime.now()),
+            "ts": str(ts if ts else datetime.now()),
             "channel": channel if channel else self.channel,
-            #"username": self.username,
-            #"icon_emoji": self.icon_emoji,
-            #"icon_url": self.icon_url,
+            "username": self.username,
+            "icon_emoji": self.icon_emoji,
+            "icon_url": self.icon_url,
         }
         payload.update({'text': text}) if text else payload.update({'blocks': blocks})
-        #payload.update({'link_names': link_names}) if link_names == 1 else payload.update({'link_names': 0})
+        payload.update({'link_names': link_names}) if link_names == 1 else payload.update({'link_names': 0})
 
-        #if view_type:
-        #    payload.update({'type': view_type})
+        if view_type:
+           payload.update({'type': view_type})
 
         return payload
 
