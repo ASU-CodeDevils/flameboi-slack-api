@@ -18,5 +18,3 @@ class MessageEvent(Event):
             'ts': self.get_event_ts(),
             'sub_type': self.get_subtype(),
         }
-
-    def send_qod(self) -> dict:
