@@ -91,13 +91,14 @@ class Router:
             involving the block kit builder. 
             """
 
-            if details['text'] and details['text'].lower() == "!testblock":
+            if details['text'] and details['text'].lower() == "!testthread":
 
                 reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
 
-                response = self.bot.send_message(
+                response = self.bot.chat_postMessage(
                     channel=details['channel_id'], 
                     text=reply,
+                    thread_ts=details['ts'],
                 )
 
                 assert response["ok"]
@@ -113,7 +114,7 @@ class Router:
 
                 assert response["ok"]
 
-            elif details['text'] and "party" in details['text'] and ":partywizard:" not in details['text']:
+            elif details['text'] and "party" in details['text'].lower() and ":partywizard:" not in details['text']:
                 
                 reply = ":partywizard:"
 
