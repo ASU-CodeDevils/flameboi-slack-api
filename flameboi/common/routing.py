@@ -1,4 +1,5 @@
 import os
+import json
 from flameboi.events.app_mention_event import AppMentionEvent
 from flameboi.events.channel_join_event import ChannelJoinEvent
 from flameboi.events.message_event import MessageEvent
@@ -100,8 +101,6 @@ class Router:
             involving the block kit builder. 
             """
 
-            
-
             if details['text'] and details['text'].lower() == "!testthread":
 
                 reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
@@ -124,6 +123,16 @@ class Router:
                 )
 
                 assert response["ok"]
+
+            elif details['text'] and details['text'].lower() == "!testblock":
+
+                response = self.bot.chat_postMessage(
+                    channel=details['channel_id'],
+                    text="testing...",
+                    blocks=json.dumps(self.get_sample_block())
+                )
+                assert response["ok"]
+
 
             elif details['text'] and "party" in details['text'].lower() and ":partywizard:" not in details['text']:
                 
@@ -187,13 +196,43 @@ class Router:
         reply = f"You talking to me, <@{details['user_id']}>?!?"
 
         response = self.bot.chat_postMessage(
-            channel=details['channel_id'],
-            text=reply,
-        )
-
+            channel=details['channel_id'],Something here is returning a malformed/not understood payload that slack isn't processing.
         assert response["ok"]
 
-        
+    def get_sample_block(self) -> list:
+        sample = [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "Danny Torrence left the following review for your property:"
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in room " +
+                            "237 was far too rowdy, whole place felt stuck in the 1920s."
+                        },
+                        "accessory": {
+                            "type": "image",
+                            "image_url": "https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg",
+                            "alt_text": "Haunted hotel image"
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                            "type": "mrkdwn",
+                            "text": "*Average Rating*\n1.0"
+                            }
+                        ]
+                    }
+                ]
+
+        return sample  
 
     """
     TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
