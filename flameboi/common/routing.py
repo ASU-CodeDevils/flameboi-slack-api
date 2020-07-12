@@ -5,7 +5,6 @@ from flameboi.events.message_event import MessageEvent
 from flameboi.events.pin_added_event import PinAddedEvent
 from flameboi.events.reaction_added_event import ReactionAddedEvent
 from flameboi.events.team_join_event import TeamJoinEvent
-import flameboi.modules.onboard
 # from flameboi.events.slash_command import SlashCommand
 
 
@@ -41,7 +40,7 @@ class Router:
         event = TeamJoinEvent(payload)
 
     def handle_reaction_added(self, payload):
-implement this
+        """
         Returns the list of channels available to the bot.
 
         :return: The list of channels as a dict.
@@ -92,32 +91,34 @@ implement this
             involving the block kit builder. 
             """
 
-            if details['text'] and details['text'].lower() == "!testblock":
-                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+            if details['text'] and details['text'].lower() == "!testthread":
 
-                response = self.bot.send_message(
+                reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
+
+                response = self.bot.chat_postMessage(
                     channel=details['channel_id'], 
                     text=reply,
+                    thread_ts=details['ts'],
                 )
+
                 assert response["ok"]
 
             elif details['text'] and details['text'].lower() == "!test":
-                reply = ":tada: :partywizard: I'm here <@%s>! :partywizard: :tada:" % details['user_id']
+
+                reply = f":tada: :partywizard: I'm here <@{details['user_id']}>! :partywizard: :tada:" 
 
                 response = self.bot.chat_postMessage(
                     channel=details['channel_id'], 
                     text=reply,
                 )
+
                 assert response["ok"]
 
-            elif details['text'] and '"party" in details['text'] and ":partywizard:" not in details['text']:
+            elif details['text'] and "party" in details['text'].lower() and ":partywizard:" not in details['text']:
+                
                 reply = ":partywizard:"
 
                 assert self.bot.chat_postMessage(channel=details['channel_id'], text=reply)["ok"]
-
-            elif details['text'] and details['text'].lower() == "!onboard":
-
-
 
 
             """
