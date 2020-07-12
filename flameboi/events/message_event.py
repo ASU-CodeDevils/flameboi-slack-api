@@ -1,5 +1,9 @@
 from flameboi.common.IEvent import Event
 
+"""
+TODO: import specific modules here that will respond to the designated type of event that occurs
+from flameboi.modules.qod import QOD
+"""
 
 class MessageEvent(Event):
 
@@ -14,3 +18,5 @@ class MessageEvent(Event):
             'ts': self.get_event_ts(),
             'sub_type': self.get_subtype(),
         }
+
+    def send_qod(self) -> dict:

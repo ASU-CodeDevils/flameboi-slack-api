@@ -1,20 +1,18 @@
 # Mac Finder personal preferences
 .DS_Store
 
-*.egg-info
-config.yaml
-*.swp
-*.egg
+# Doc files
 sphinx
-*.pyc
-*.un~
 
 # Testing / code coverage output
 .coverage
 coverage.xml
 nosetests.xml
 slack.log
-package-lock.json
+# .editorconfig
+# .pre-commit-config.yaml
+# .pylintrc
+# .travis.yaml
 
 # IDE Files
 .vscode/
@@ -24,9 +22,15 @@ package-lock.json
 .python-version
 .cache/
 __pycache__
+*.egg-info
+*.swp
+*.egg
 .eggs
+*.pyc
+*.un~
 config/*
 prop/*
+dist/*
 
 # Virtual Environments
 venv/*
@@ -35,13 +39,11 @@ build/*
 # Credentials file
 .env
 *.env
+config.yaml
 
-# Zappa Files
-zappa*
-
+# Serverless Files
 node_modules
 .serverless*
 .serverless/*
 *wsgi*
-dist/*
-
+package-lock.json
