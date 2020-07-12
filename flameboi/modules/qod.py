@@ -1,5 +1,5 @@
 '''
-TODO: implement this using the newly modular setup
+TODO: implement this using the newly modular setup... create QOD class and import it in the message_event.py files
 '''
 
 import requests
