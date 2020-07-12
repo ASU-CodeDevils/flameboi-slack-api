@@ -196,7 +196,9 @@ class Router:
         reply = f"You talking to me, <@{details['user_id']}>?!?"
 
         response = self.bot.chat_postMessage(
-            channel=details['channel_id'],Something here is returning a malformed/not understood payload that slack isn't processing.
+            channel=details['channel_id'],
+            text=reply,
+        )
         assert response["ok"]
 
     def get_sample_block(self) -> list:
