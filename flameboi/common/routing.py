@@ -120,6 +120,21 @@ class Router:
 
                 assert self.bot.chat_postMessage(channel=details['channel_id'], text=reply)["ok"]
 
+            elif details['text'] and details['text'].lower() == "!channel":
+
+                name = self.bot.conversations_info(channel=details['channel_id'])
+                
+                usable = name.get('channel', {}).get('name')
+
+                reply = f"Channel ID: {details['channel_id']}\nChannel Name: {usable}\nChannel Link: <#{details['channel_id']}>"
+
+                response = self.bot.chat_postMessage(
+                    channel=details['channel_id'], 
+                    text=reply,
+                )
+
+                assert response["ok"]
+
 
             """
             TODO: Expand on block kit builder base (which is awesome Kevin!)
