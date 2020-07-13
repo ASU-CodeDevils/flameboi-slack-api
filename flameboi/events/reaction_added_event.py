@@ -13,4 +13,6 @@ class ReactionAddedEvent(Event):
             'text': self.get_text(),
             'ts': self.get_item_ts(),
             'reaction': self.get_reaction(),
+            'item_channel': self.get_item_channel(),
+            'item_ts': self.get_item_ts(),
         }
