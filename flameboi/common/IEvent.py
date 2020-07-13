@@ -34,4 +34,10 @@ class Event(object):
     def get_specs(self) -> dict:
         pass
 
+    def get_tab(self):
+        return self.event.get('tab')
+
+    def get_view(self):
+        return self.event.get('view', {})
+
     # reserved for future implementation

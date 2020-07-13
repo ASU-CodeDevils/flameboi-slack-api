@@ -78,6 +78,16 @@ def mention(payload):
     router.handle_app_mention(payload)
 
 
+# ============== App Home Events ============= #
+
+@slack_events_adapter.on("app_home_open")
+def mention(payload):
+    """
+    Triggers handler for when the bot received an @ mention event..
+    """
+
+    router.handle_app_home(payload)
+
 # ============== Other Endpoints ============= #
 
 
