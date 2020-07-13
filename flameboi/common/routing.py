@@ -6,6 +6,7 @@ from flameboi.events.message_event import MessageEvent
 from flameboi.events.pin_added_event import PinAddedEvent
 from flameboi.events.reaction_added_event import ReactionAddedEvent
 from flameboi.events.team_join_event import TeamJoinEvent
+from flameboi.events.app_home_event import AppHomeEvent
 # from flameboi.events.slash_command import SlashCommand
 
 
@@ -60,6 +61,13 @@ class Router:
                         timestamp=details['ts'],
                     )
                     assert response["ok"]
+            elif details['reaction'] and details['reaction'] == "fuckyouadmin":
+                response = self.bot.reactions_add(
+                    name="heart",
+                    channel=details['item_channel'],
+                    timestamp=details['item_ts'],
+                )
+                assert response["ok"]
             else:
                 response = self.bot.reactions_add(
                     name=details['reaction'],
@@ -235,6 +243,19 @@ class Router:
                 ]
 
         return sample  
+
+    def handle_app_home(self, payload):
+        """
+        Returns the list of channels available to the bot.
+
+        :return: The list of channels as a dict.
+        :rtype: dict
+        """
+
+        event = AppHomeEvent(payload)
+        details = event.get_details()
+
+       
 
     """
     TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
