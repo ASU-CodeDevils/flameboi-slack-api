@@ -28,7 +28,6 @@ class BlockGenerator:
         self.icon_emoji = os.getenv("ICON_EMOJI")
         self.icon_url = os.getenv("ICON_URL")
 
-
     """
     TODO: Modify this function to instead of creating a message payload build and return a list of block types to
     be used in creating nice, pretty messages
@@ -65,7 +64,7 @@ class BlockGenerator:
         payload.update({'link_names': link_names}) if link_names == 1 else payload.update({'link_names': 0})
 
         if view_type:
-           payload.update({'type': view_type})
+            payload.update({'type': view_type})
 
         return payload
 
