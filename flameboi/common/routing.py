@@ -45,15 +45,15 @@ class Router:
 
         event = ReactionAddedEvent(payload)
 
-        if event.channel_id == "G0171GL10P4" and event.user_id != self.bot_user_id:
+        if event.item_channel == "G0171GL10P4" and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
                 f"Reaction: {event.reaction}'\n"
                 f"Item User ID: {event.item_user}\n"
-                f"Item Channel: {event.channel_id}\n"
+                f"Item Channel: {event.item_channel}\n"
                 f"Item TS: {event.item_ts}\n"
-                f"Reaction TS: {event.reaction_ts}"
+                f"Reaction TS: {event.event_ts}"
                 )
 
             response = self.bot.chat_postMessage(
@@ -69,21 +69,21 @@ class Router:
                 for i in range(1, 10):
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
-                        channel=event.channel_id,
+                        channel=event.item_channel,
                         timestamp=event.item_ts,
                     )
                     assert response["ok"]
             elif event.reaction and event.reaction == "fuckyouadmin":
                 response = self.bot.reactions_add(
                     name="heart",
-                    channel=event.channel_id,
+                    channel=event.item_channel,
                     timestamp=event.item_ts,
                 )
                 assert response["ok"]
             else:
                 response = self.bot.reactions_add(
                     name=event.reaction,
-                    channel=event.channel_id,
+                    channel=event.item_channel,
                     timestamp=event.item_ts,
                 )
                 assert response["ok"]
