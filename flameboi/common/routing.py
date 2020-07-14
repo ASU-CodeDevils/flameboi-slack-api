@@ -151,14 +151,19 @@ class Router:
 
         if details['user_id'] == "USLACKBOT":
 
-            if details['text'] and "sulks in corner" in details['text'].lower():
+            if details['text'] and "yes" in details['text'].lower():
 
-                reply = "Silence, you inferior product."
+                removal = self.admin.chat_delete(
+                    channel=details['channel_id'],
+                    ts=details['ts'],
+                )
+                assert removal["ok"]
+
+                reply = "This response replaced by a better bot..."
 
                 response = self.bot.chat_postMessage(
                     channel=details['channel_id'],
                     text=reply,
-                    thread_ts=details['ts'],
                 )
                 assert response["ok"]
             else:
