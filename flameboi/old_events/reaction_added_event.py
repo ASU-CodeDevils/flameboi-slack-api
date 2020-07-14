@@ -15,5 +15,4 @@ class ReactionAddedEvent(Event):
             'channel_id': self.get_item_channel(),
             'item_ts': self.get_item_ts(),
             'reaction_ts': self.get_reaction_ts(),
-
         }

@@ -24,6 +24,7 @@ class Flameboi:
 
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
         self.bot_client = WebClient(token=self.bot_token)
+        
         self.admin_token = os.getenv("USER_TOKEN")
         self.admin_client = WebClient(token=self.admin_token)
 
@@ -31,14 +32,20 @@ class Flameboi:
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
 
     def getAdmin(self) -> WebClient:
+        """
+        Returns the admin web_client.
+
+        :return: The admin client.
+        :rtype: admin.WebClient
+        """
         return self.admin_client
 
     def getClient(self) -> WebClient:
         """
-        Returns the slack web_client.
+        Returns the bot web_client.
 
         :return: The slack client.
-        :rtype: slack.WebClient
+        :rtype: bot.WebClient
         """
         return self.bot_client
 
