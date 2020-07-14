@@ -49,7 +49,7 @@ class Router:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
-                f"Reaction: {event.reaction}'\n"
+                f"Reaction: {event.reaction}\n"
                 f"Item User ID: {event.item_user}\n"
                 f"Item Channel: {event.item_channel}\n"
                 f"Item TS: {event.item_ts}\n"
