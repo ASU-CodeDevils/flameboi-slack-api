@@ -8,6 +8,7 @@ class ReactionAddedEvent(Event):
 
     def get_details(self) -> dict:
         return {
+            'type': self.get_msg_type(),
             'user_id': self.get_user_id(),
             'reaction': self.get_reaction(),
             'item_user': self.get_item_user(),
