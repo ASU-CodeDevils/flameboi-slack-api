@@ -84,7 +84,7 @@ class Router:
             elif details['reaction'] and details['reaction'] == "fuckyouadmin":
                 response = self.bot.reactions_add(
                     name="heart",
-                    channel=details['item_channel'],
+                    channel=details['channel_id'],
                     timestamp=details['item_ts'],
                 )
                 assert response["ok"]
