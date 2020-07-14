@@ -10,6 +10,7 @@ class AppHomeEvent(Event):
         return {
             'user_id': self.get_user_id(),
             'channel_id': self.get_channel_id(),
+            'event_ts': self.get_event_ts(),
             'tab': self.get_tab(),
             'view': self.get_view(),
         }

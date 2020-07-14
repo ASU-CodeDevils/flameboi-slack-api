@@ -20,3 +20,14 @@ class MessageEvent(Event):
             'text': self.get_text(),
             'ts': self.get_event_ts(),
         }
+
+        # self.sub_types = [
+        #     "bot_message",
+        #     "ekm_access_denied",
+        #     "me_message",
+        #     "message_changed",
+        #     "message_deleted",
+        #     "message_replied",
+        #     "reply_broadcast",
+        #     "thread_broadcast",
+        # ]
