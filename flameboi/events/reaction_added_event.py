@@ -11,7 +11,7 @@ class ReactionAddedEvent(Event):
             'user_id': self.get_user_id(),
             'channel_id': self.get_item_channel(),
             'text': self.get_text(),
-            'ts': self.get_item_ts(),
+            'ts': self.get_reaction_ts(),
             'reaction': self.get_reaction(),
             'item_channel': self.get_item_channel(),
             'item_ts': self.get_item_ts(),

@@ -1,3 +1,7 @@
+"""
+TODO: Need to go through this as each event has distinct flags... some of this is redundant
+"""
+
 class Event(object):
     
     def __init__(self, payload):
@@ -24,6 +28,9 @@ class Event(object):
 
     def get_item_channel(self):
         return self.item.get('channel')
+
+    def get_reaction_ts(self):
+        return self.event.get('event_ts')
 
     def get_item_ts(self):
         return self.item.get('ts')
