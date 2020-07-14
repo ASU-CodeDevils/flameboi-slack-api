@@ -21,11 +21,13 @@ class Flameboi:
     def __init__(self, app):
         load_dotenv()
         self.signing_secret = os.getenv("SLACK_SIGNING_SECRET")
+
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
+        self.bot_client = WebClient(token=self.bot_token)
         self.admin_token = os.getenv("USER_TOKEN")
         self.admin_client = WebClient(token=self.admin_token)
+
         self.blockGen = BlockGenerator()
-        self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
 
     def getAdmin(self) -> WebClient:
