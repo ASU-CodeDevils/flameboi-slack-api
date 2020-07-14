@@ -8,9 +8,10 @@ app = Flask(__name__)
 
 # Initialize a Web API client, Router and Slack Events adapter
 theBot = Flameboi(app)
+admin_client = theBot.getAdmin()
 slack_web_client = theBot.getClient()
 slack_events_adapter = theBot.getAdapter()
-router = Router(slack_web_client)
+router = Router(slack_web_client, admin_client)
 
 
 # ================ Team Join Event =============== #
