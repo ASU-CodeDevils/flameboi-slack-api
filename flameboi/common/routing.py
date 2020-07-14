@@ -53,26 +53,24 @@ class Router:
         event = ReactionAddedEvent(payload)
         details = event.get_details()
 
-        # Test function for looping reaction response
-
         if details['channel_id'] == "G0171GL10P4" and details['user_id'] != self.bot_user_id:
             reply = (
-                f"Event Type: Reaction Added \n"
+                f"Event Type: {details['type']}\n"
                 f"User ID: {details['user_id']}\n"
-                f"Channel ID: {details['channel_id']}\n"
-                f"Message: {details['text']}\n"
-                f"Reaction TS: {details['ts']}\n"
                 f"Reaction: {details['reaction']}\n"
-                f"Item Channel: {details['item_channel']}\n"
-                f"Item TS: {details['item_ts']}"
+                f"Item User ID: {details['item_user']}\n"
+                f"Item Channel: {details['channel_id']}\n"
+                f"Item TS: {details['item_ts']}\n"
+                f"Reaction TS: {details['reaction_ts']}"
                 )
 
             response = self.bot.chat_postMessage(
                 channel="G0171GL10P4",
                 text=reply,
             )
-
             assert response["ok"]
+
+        # Test function for looping reaction response
 
         elif details['user_id'] != self.bot_user_id:
             if details['reaction'] and details['reaction'] == "parrot":
@@ -80,7 +78,7 @@ class Router:
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
                         channel=details['channel_id'],
-                        timestamp=details['ts'],
+                        timestamp=details['item_ts'],
                     )
                     assert response["ok"]
             elif details['reaction'] and details['reaction'] == "fuckyouadmin":
@@ -94,7 +92,7 @@ class Router:
                 response = self.bot.reactions_add(
                     name=details['reaction'],
                     channel=details['channel_id'],
-                    timestamp=details['ts'],
+                    timestamp=details['item_ts'],
                 )
                 assert response["ok"]
 
@@ -128,37 +126,18 @@ class Router:
         event = MessageEvent(payload)
         details = event.get_details()
 
-        # Test function for specific user and chain reaction response
-
-        # if details['channel_id'] == "G0171GL10P4":
-        #     reply = (
-        #         f"Event Type: Chat Message\n"
-        #         f"User ID: {details['user_id']}\n"
-        #         f"Channel ID: {details['channel_id']}\n"
-        #         f"Message: {details['text']}\n"
-        #         f"Timestamp: {details['ts']}\n"
-        #         f"Sub Type: {details['sub_type']}"
-        #     )
-
-        #     response = self.bot.chat_postMessage(
-        #         channel="G0171GL10P4",
-        #         text=reply,
-        #     )
-
-        #     assert response["ok"]
-
         if (
             details['channel_id'] == "G0171GL10P4"
             and details['user_id'] != self.bot_user_id
             and details['sub_type'] != 'message_deleted'
         ):
             reply = (
-                f"Event Type: Chat Message\n"
-                f"User ID: {details['user_id']}\n"
+                f"Event Type: {details['type']}\n"
+                f"Sub Type: {details['sub_type']}\n"
                 f"Channel ID: {details['channel_id']}\n"
+                f"User ID: {details['user_id']}\n"
                 f"Message: {details['text']}\n"
-                f"Timestamp: {details['ts']}\n"
-                f"Sub Type: {details['sub_type']}"
+                f"Timestamp: {details['ts']}"
             )
 
             response = self.bot.chat_postMessage(
@@ -167,6 +146,8 @@ class Router:
             )
 
             assert response["ok"]
+
+        # Test function for specific user and chain reaction response
 
         if details['user_id'] == "USLACKBOT":
 
@@ -313,13 +294,34 @@ class Router:
 
         # Test function for app mention
 
-        reply = f"You talking to me, <@{details['user_id']}>?!?"
+        if (
+            details['channel_id'] == "G0171GL10P4"
+            and details['user_id'] != self.bot_user_id
+        ):
+            reply = (
+                f"Event Type: {details['type']}\n"
+                f"User ID: {details['user_id']}\n"
+                f"Message: {details['text']}\n"
+                f"Timestamp: {details['ts']}\n"
+                f"Channel ID: {details['channel_id']}\n"
+                f"Event TS: {details['event_ts']}"
+            )
 
-        response = self.bot.chat_postMessage(
-            channel=details['channel_id'],
-            text=reply,
-        )
-        assert response["ok"]
+            response = self.bot.chat_postMessage(
+                channel="G0171GL10P4",
+                text=reply,
+            )
+
+            assert response["ok"]
+
+        else:
+            reply = f"You talking to me, <@{details['user_id']}>?!?"
+
+            response = self.bot.chat_postMessage(
+                channel=details['channel_id'],
+                text=reply,
+            )
+            assert response["ok"]
 
     def get_sample_block(self) -> list:
         sample = [
