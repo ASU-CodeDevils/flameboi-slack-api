@@ -1,4 +1,4 @@
-from flameboi.common.IEvent import Event
+from flameboi.events.IEvent import Event
 
 
 class TeamJoinEvent(Event):

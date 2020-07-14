@@ -1,7 +1,7 @@
 # TODO: implement this
 
-from urllib.parse import urlparse
-import json
+# from urllib.parse import urlparse
+# import json
 
 
 class SlashCommand:

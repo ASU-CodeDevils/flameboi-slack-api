@@ -12,20 +12,26 @@ class Flameboi:
 
         Args:
             app (Flask obj): the Flask object being used.  Initiated in app.py
-            SLACK_SIGNING_SECRET (str): Signing secret stored in dotenv file in the /src directory.  See 
+            SLACK_SIGNING_SECRET (str): Signing secret stored in dotenv file in the /src directory.  See
                 server_configs/dotenvsample.txt for layout.
-            SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See 
+            SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See
                 server_configs/dotenvsample.txt for layout.
     """
 
     def __init__(self, app):
         load_dotenv()
         self.signing_secret = os.getenv("SLACK_SIGNING_SECRET")
+
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
+        self.bot_client = WebClient(token=self.bot_token)
+        self.admin_token = os.getenv("USER_TOKEN")
+        self.admin_client = WebClient(token=self.admin_token)
 
         self.blockGen = BlockGenerator()
-        self.bot_client = WebClient(token=self.bot_token)
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
+
+    def getAdmin(self) -> WebClient:
+        return self.admin_client
 
     def getClient(self) -> WebClient:
         """
@@ -116,7 +122,6 @@ class Flameboi:
         """
         return self.bot_client.channels_list()
 
-
     """
     TODO: address issues with get_message_payload()
     """
@@ -145,7 +150,7 @@ class Flameboi:
         return self._send_block_message(message=message)
 
     """
-    TODO: This shoudl work, however, need to double check the unpack is good 
+    TODO: This shoudl work, however, need to double check the unpack is good
     once get_message_payload() working
     """
 
