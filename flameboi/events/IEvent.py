@@ -9,6 +9,11 @@ class Event(object):
         self.event = payload.get('event', {})
         self.item = payload.get('event', {}).get('item', {})
 
+    # Message stuff
+
+    def get_msg_type(self):
+        return self.event.get('type')
+
     def get_user_id(self):
         return self.event.get('user')
 
@@ -24,6 +29,14 @@ class Event(object):
     def get_subtype(self):
         return self.event.get('subtype')
 
+    # Reaction stuff
+
+    def get_item_user(self):
+        return self.event.get('item_user')
+
+    def get_item_type(self):
+        return self.item.get('type)')
+
     def get_reaction(self):
         return self.event.get('reaction')
 
@@ -37,10 +50,23 @@ class Event(object):
         return self.item.get('ts')
 
     def get_item_file(self):
-        return self.item.get('file')
+        return self.item.get('file_id')
 
-    def get_specs(self) -> dict:
-        pass
+    def get_item_file_comment(self):
+        return self.item.get('file_comment')
+
+    # Channel Join Stuff
+
+    def get_channel_type(self):
+        return self.event.get('channel_type')
+
+    def get_team(self):
+        return self.event.get('team')
+
+    def get_inviter(self):
+        return self.event.get('inviter')
+
+    # App home stuff
 
     def get_tab(self):
         return self.event.get('tab')

@@ -1,4 +1,4 @@
-from flameboi.common.IEvent import Event
+from flameboi.events.IEvent import Event
 
 """
 TODO: import specific modules here that will respond to the designated type of event that occurs
@@ -13,9 +13,10 @@ class MessageEvent(Event):
 
     def get_details(self) -> dict:
         return {
-            'user_id': self.get_user_id(),
+            'type': self.get_msg_type(),
+            'sub_type': self.get_subtype(),
             'channel_id': self.get_channel_id(),
+            'user_id': self.get_user_id(),
             'text': self.get_text(),
             'ts': self.get_event_ts(),
-            'sub_type': self.get_subtype(),
         }

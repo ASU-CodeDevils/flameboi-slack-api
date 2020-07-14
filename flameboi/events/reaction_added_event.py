@@ -1,4 +1,4 @@
-from flameboi.common.IEvent import Event
+from flameboi.events.IEvent import Event
 
 
 class ReactionAddedEvent(Event):
@@ -9,10 +9,10 @@ class ReactionAddedEvent(Event):
     def get_details(self) -> dict:
         return {
             'user_id': self.get_user_id(),
-            'channel_id': self.get_item_channel(),
-            'text': self.get_text(),
-            'ts': self.get_reaction_ts(),
             'reaction': self.get_reaction(),
-            'item_channel': self.get_item_channel(),
+            'item_user': self.get_item_user(),
+            'channel_id': self.get_item_channel(),
             'item_ts': self.get_item_ts(),
+            'reaction_ts': self.get_reaction_ts(),
+
         }
