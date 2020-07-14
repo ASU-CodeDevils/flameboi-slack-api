@@ -2,8 +2,9 @@
 TODO: Need to go through this as each event has distinct flags... some of this is redundant
 """
 
+
 class Event(object):
-    
+
     def __init__(self, payload):
         self.event = payload.get('event', {})
         self.item = payload.get('event', {}).get('item', {})

@@ -12,9 +12,9 @@ class Flameboi:
 
         Args:
             app (Flask obj): the Flask object being used.  Initiated in app.py
-            SLACK_SIGNING_SECRET (str): Signing secret stored in dotenv file in the /src directory.  See 
+            SLACK_SIGNING_SECRET (str): Signing secret stored in dotenv file in the /src directory.  See
                 server_configs/dotenvsample.txt for layout.
-            SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See 
+            SLACK_BOT_TOKEN (str): Bot User Token secret stored in dotenv file in the /src directory.  See
                 server_configs/dotenvsample.txt for layout.
     """
 
@@ -120,7 +120,6 @@ class Flameboi:
         """
         return self.bot_client.channels_list()
 
-
     """
     TODO: address issues with get_message_payload()
     """
@@ -149,7 +148,7 @@ class Flameboi:
         return self._send_block_message(message=message)
 
     """
-    TODO: This shoudl work, however, need to double check the unpack is good 
+    TODO: This shoudl work, however, need to double check the unpack is good
     once get_message_payload() working
     """
 

@@ -21,7 +21,7 @@ def onboarding_message(payload):
     """Create and send an onboarding welcome message to new users. Save the
     time stamp of this message so we can update this message in the future.
     """
-    
+
     router.handle_team_join(payload)
 
 
@@ -64,7 +64,7 @@ def message(payload):
 def member_joined(payload):
     """Display the channel welcome message after someone joins a channel.
     """
-    
+
     router.handle_channel_join(payload)
 
 
@@ -82,7 +82,7 @@ def mention(payload):
 # ============== App Home Events ============= #
 
 @slack_events_adapter.on("app_home_open")
-def mention(payload):
+def home_open(payload):
     """
     Triggers handler for when the bot received an @ mention event..
     """
