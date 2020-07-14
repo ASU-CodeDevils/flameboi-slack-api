@@ -64,7 +64,7 @@ class AppMentionEvent:
         self.text = self.event.get('text')
         self.ts = self.event.get('ts')
         self.channel_id = self.event.get('channel')
-        self.event.ts = self.event.get('event_ts')
+        self.event_ts = self.event.get('event_ts')
 
 
 class MemberJoinedChannelEvent:
