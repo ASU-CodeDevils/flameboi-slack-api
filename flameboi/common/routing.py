@@ -1,7 +1,13 @@
 import os
 import json
 
-from flameboi.common.events import ReactionAddedEvent, MessageEvent, AppMentionEvent, TeamJoinEvent
+from flameboi.common.events import (
+    ReactionAddedEvent,
+    MessageEvent,
+    AppMentionEvent,
+    MemberJoinedChannelEvent,
+    TeamJoinEvent
+)
 
 
 class Router:
@@ -40,15 +46,36 @@ class Router:
 
         event = TeamJoinEvent(payload)
 
-        new_user = self.theBot.get_user_as_obj(event)
+        theUser = self.theBot.get_user_as_obj(event)
+        deets = ""
+        if theUser.is_ok:
+            deets = (
+                f"User ID: {theUser.id}\n"
+                f"Name: {theUser.name}\n"
+                f"Display Name: {theUser.displyname}\n"
+                f"Real Name: {theUser.real_name}\n"
+                f"Email: {theUser.email}\n"
+                f"Team: {theUser.team}\n"
+                f"Team ID: {theUser.team_id}\n"
+                f"Time Zone: {theUser.time_zone}\n"
+                f"Is Admin: {theUser.is_admin}\n"
+                f"Is Owner: {theUser.is_owner}\n"
+            )
+        else:
+            deets = "Invalid user information received!"
+
+        reply = (
+            f"Testing Event Triggered...\n"
+            f"Team Join Event\n"
+            f"\nAnticipated Response: \n"
+            f":tada: :partywizard: Welcome to CodeDevils, {theUser.real_name}! :partywizard: :tada:\n"
+            f"\nInformation on the User who joined: \n" +
+            deets
+        )
 
         response = self.bot.chat_postMessage(
             channel=self.debug_chan,
-            text=(
-                f"Testing Event Triggered...\n"
-                f"<@{self.stu_user} Team Join Event has occurred... \n"
-                f":tada: :partywizard: Welcome to CodeDevils, {new_user.real_name}!!! :partywizard: :tada:"
-            ),
+            text=reply,
         )
 
         assert response["ok"]
@@ -293,12 +320,33 @@ class Router:
         :rtype: dict
         """
 
-        # event = ChannelJoinEvent(payload)
-        # details = event.get_details()
+        event = MemberJoinedChannelEvent(payload)
 
-        # reply = f"Welcome to <@{details['channel_id']}>, <@{details['user_id']}>!!"
+        theUser = self.theBot.get_user_as_obj(event.user_id)
 
-        # assert self.bot.chat_postMessage(details['channel_id'], reply)["ok"]
+        reply = (
+            f"Testing Event Triggered...\n"
+            f"Channel Join Event\n"
+            f"Anticipated Response: \n"
+            f":tada: :partywizard: Welcome to <#{event.channel_id}>, {theUser.real_name}! :partywizard: :tada:\n"
+            f"\nInformation on the User who joined: \n"
+            f"User ID: {theUser.id}\n"
+            f"Name: {theUser.name}\n"
+            f"Display Name: {theUser.displyname}\n"
+            f"Real Name: {theUser.real_name}\n"
+            f"Email: {theUser.email}\n"
+            f"Team: {theUser.team}\n"
+            f"Team ID: {theUser.team_id}\n"
+            f"Time Zone: {theUser.time_zone}\n"
+            f"Is Admin: {theUser.is_admin}\n"
+            f"Is Owner: {theUser.is_owner}\n"
+        )
+
+        response = self.bot.chat_postMessage(
+            channel=self.debug_chan,
+            text=reply,
+        )
+        assert response["ok"]
 
     def handle_app_mention(self, payload):
         """
