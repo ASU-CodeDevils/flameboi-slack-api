@@ -73,7 +73,7 @@ class Flameboi:
         """
         user = self.get_user_by_email(email=user_email)["user"]
         channel = self.get_channel_id(channel_name="hangout")
-        return self.user_client.channels_invite(channel=channel, user=user["id"])
+        return self.admin_client.channels_invite(channel=channel, user=user["id"])
 
     def get_user_by_email(self, email: str) -> dict:
         """
@@ -141,9 +141,7 @@ class Flameboi:
         """
         return self.bot_client.channels_list()
 
-    """
-    TODO: address issues with get_message_payload()
-    """
+    # TODO: address issues with get_message_payload()
 
     def send_message(
         self,
@@ -174,10 +172,7 @@ class Flameboi:
         message = self.blockGen.get_message_payload(text=text, channel=channel)
         return self._send_block_message(message=message)
 
-    """
-    TODO: This should work, however, need to double check the unpack is good
-    once get_message_payload() working
-    """
+    # TODO: This should work, however, need to double check the unpack is good once get_message_payload() working
 
     def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
         """

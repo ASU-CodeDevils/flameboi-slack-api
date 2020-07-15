@@ -12,21 +12,19 @@ class MessageEvent:
         self.message = self.event.get("message", {})
 
 
-"""
-Message sub-types for Slack Events API
-    bot_message
-    ekm_access_denied
-    group_join
-    group_leave
-    me_message
-    message_changed*
-    message_deleted*
-    message_replied*
-    reply_broadcast
-    thread_broadcast
+# Message sub-types for Slack Events API
+#     bot_message
+#     ekm_access_denied
+#     group_join
+#     group_leave
+#     me_message
+#     message_changed*
+#     message_deleted*
+#     message_replied*
+#     reply_broadcast
+#     thread_broadcast
 
-    * indicates the hidden property
-"""
+#     * indicates the hidden property
 
 
 class ReactionAddedEvent:

@@ -18,9 +18,7 @@ class Router:
     :rtype: dict
     """
 
-    """
-    TODO: instantiate a modrunner class that will run modules triggered
-    """
+    # TODO: instantiate a modrunner class that will run modules triggered
 
     def __init__(self, theBot):
         self.bot = theBot.getClient()
@@ -125,6 +123,7 @@ class Router:
                 assert response["ok"]
 
     # TODO: implement this
+
     def handle_pin_added(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -193,9 +192,8 @@ class Router:
 
         if event.subtype != "bot_message" and event.subtype != "message_deleted":
 
-            """
-            Test to see if flameboi responds quicker that slackbot (it does for now!)
-            """
+            # Test to see if flameboi responds quicker that slackbot (it does for now!)
+
             # if details['text'] and details['text'].lower() == "jesus":
 
             #     reply = f"Speedtest"
@@ -252,7 +250,9 @@ class Router:
 
                 reply = ":partywizard:"
 
-                response = self.bot.chat_postMessage(channel=event.channel, text=reply,)
+                response = self.bot.chat_postMessage(
+                    channel=event.channel_id, text=reply,
+                )
 
                 assert response["ok"]
 
@@ -276,10 +276,8 @@ class Router:
 
                 assert response["ok"]
 
-            """
-            TODO: Expand on block kit builder base (which is awesome Kevin!)
-            Below is example use of blocks using !onboard to send the onboarding block
-            """
+            # TODO: Expand on block kit builder base (which is awesome Kevin!)
+            # Below is example use of blocks using !onboard to send the onboarding block
 
             # if details['text'] and details['text'].lower() == "!onboard":
             #     assert self.bot.send_onboarding_DM(details['user_id'])["ok"]
@@ -383,7 +381,7 @@ class Router:
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Danny Torrence left the following review for your property:",
+                    "text": "Danny Torrance left the following review for your property:",
                 },
             },
             {
@@ -418,9 +416,8 @@ class Router:
         # event = AppHomeEvent(payload)
         # details = event.get_details()
 
-    """
-    TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
-    """
+    # TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
+
     # def handle_slash_command(self, payload):
     #     """
     #     Returns the list of channels available to the bot.

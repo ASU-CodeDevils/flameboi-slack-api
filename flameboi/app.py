@@ -115,7 +115,7 @@ def home_open(payload):
 #     Triggers slackbot to add new user to CodeDevils Slack (secured by jwt) using
 #     grid approved email
 #     """
-#     #TODO: JWT Secured endpoint for web to add user
+#     # TODO: JWT Secured endpoint for web to add user
 
 
 if __name__ == "__main__":
