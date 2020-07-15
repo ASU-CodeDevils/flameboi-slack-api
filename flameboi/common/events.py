@@ -4,11 +4,28 @@ class MessageEvent:
         self.event = payload.get('event', {})
 
         self.type = self.event.get('type')
+        self.subtype = self.event.get('subtype')
+        self.hidden = self.event.get('hidden')
         self.channel_id = self.event.get('channel')
         self.user_id = self.event.get('user')
         self.text = self.event.get('text')
         self.ts = self.event.get('ts')
-        self.subtype = self.event.get('subtype')
+        self.message = self.event.get('message', {})
+
+
+"""
+Message sub-types for Slack Events API
+    bot_message
+    ekm_access_denied
+    me_message
+    message_changed*
+    message_deleted*
+    message_replied*
+    reply_broadcast
+    thread_broadcast
+
+    * indicates the hidden property
+"""
 
 
 class ReactionAddedEvent:
