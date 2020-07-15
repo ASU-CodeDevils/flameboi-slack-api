@@ -13,7 +13,7 @@ admin_client = theBot.getAdmin()
 bot_client = theBot.getClient()
 
 slack_events_adapter = theBot.getAdapter()
-router = Router(bot_client, admin_client)
+router = Router(theBot)
 
 
 # ================ Team Join Event =============== #

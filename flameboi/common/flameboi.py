@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 
+from flameboi.common.objects import User
 from flameboi.blocks.block_generator import BlockGenerator
 
 
@@ -24,7 +25,7 @@ class Flameboi:
 
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
         self.bot_client = WebClient(token=self.bot_token)
-        
+
         self.admin_token = os.getenv("USER_TOKEN")
         self.admin_client = WebClient(token=self.admin_token)
 
@@ -84,6 +85,17 @@ class Flameboi:
         :rtype: dict
         """
         return self.bot_client.users_lookupByEmail(email=email)
+
+    def get_user_as_obj(self, user_id: str) -> User:
+        """
+        Retrieves a user by their ID.
+
+        :param ID: The slack ID of the user.
+        :type user_id: str
+        :return: The user as a User object.
+        :rtype: User
+        """
+        return User(self.bot_client.users_info(user=user_id))
 
     def get_users_list(self) -> dict:
         """
@@ -157,7 +169,7 @@ class Flameboi:
         return self._send_block_message(message=message)
 
     """
-    TODO: This shoudl work, however, need to double check the unpack is good
+    TODO: This should work, however, need to double check the unpack is good
     once get_message_payload() working
     """
 
