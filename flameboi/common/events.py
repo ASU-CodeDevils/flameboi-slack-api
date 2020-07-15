@@ -17,6 +17,8 @@ class MessageEvent:
 Message sub-types for Slack Events API
     bot_message
     ekm_access_denied
+    group_join
+    group_leave
     me_message
     message_changed*
     message_deleted*

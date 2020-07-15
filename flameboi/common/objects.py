@@ -1,13 +1,27 @@
 class Message:
     def __init__(self, messageAsDict: dict):
-        self.poster = messageAsDict.get('user')
+        self.type = messageAsDict.get('type')
+        self.subtype = messageAsDict.get('subtype')
+        self.hidden = messageAsDict.get('hidden')
+        self.user = messageAsDict.get('user')
         self.channel = messageAsDict.get('channel')
         self.timestamp = messageAsDict.get('ts')
         self.text = messageAsDict.get('text')
+        self.is_starred = messageAsDict.get('is_starred')
+        self.pinned_to = messageAsDict.get('pinned_to')
+        self.reactions = messageAsDict.get('reactions')
+
+
+class Reactions:
+    def __init__(self, reaction_as_dict: dict):
+        self.name = reaction_as_dict.get('name')
+        self.count = reaction_as_dict.get('count')
+        self.users = reaction_as_dict.get('users')
 
 
 class User:
     def __init__(self, response: dict):
+        self.is_ok = response.get('ok')
         self.user = response.get('user', {})
         self.profile = self.user.get('profile', {})
 
