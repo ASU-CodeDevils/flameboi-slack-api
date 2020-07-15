@@ -28,13 +28,13 @@ __pycache__
 .eggs
 *.pyc
 *.un~
-config/*
-prop/*
-dist/*
+config/
+prop/
+dist/
 
 # Virtual Environments
-venv/*
-build/*
+venv/
+build/
 
 # Credentials file
 .env
@@ -44,6 +44,6 @@ config.yaml
 # Serverless Files
 node_modules
 .serverless*
-.serverless/*
+.serverless/
 *wsgi*
 package-lock.json
