@@ -24,7 +24,7 @@ class Flameboi:
 
         self.bot_token = os.getenv("SLACK_BOT_TOKEN")
         self.bot_client = WebClient(token=self.bot_token)
-        
+
         self.admin_token = os.getenv("USER_TOKEN")
         self.admin_client = WebClient(token=self.admin_token)
 

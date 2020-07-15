@@ -11,3 +11,7 @@ python-dotenv==0.14.0  # https://github.com/theskumar/python-dotenv
 slack==0.0.2  # https://github.com/zweifisch/slack
 slackclient==2.7.2  # https://github.com/slackapi/python-slackclient
 slackeventsapi==2.2.0 # https://pypi.org/project/slackeventsapi/
+
+# Kevin's Block Kit Builder
+# ------------------------------------------------------------------------------
+slack-blockkit # https://github.com/ASU-CodeDevils/slack-blockkit
