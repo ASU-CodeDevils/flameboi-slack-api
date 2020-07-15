@@ -1,6 +1,7 @@
 import os
 import json
-from flameboi.common.events import ReactionAddedEvent, MessageEvent, AppMentionEvent
+
+from flameboi.common.events import ReactionAddedEvent, MessageEvent, AppMentionEvent, TeamJoinEvent
 
 
 class Router:
@@ -15,16 +16,20 @@ class Router:
     TODO: instantiate a modrunner class that will run modules triggered
     """
 
-    def __init__(self, bot_client, admin_client):
-        self.bot = bot_client
-        self.admin = admin_client
+    def __init__(self, theBot):
+        self.bot = theBot.getClient()
+        self.admin = theBot.getAdmin()
+        self.theBot = theBot
 
         # Import various ID's for filtering via dotenv
         self.bot_id = os.getenv("BOT_ID")
         self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
 
-    # TODO: implement this
+        self.home_channel = os.getenv("HOME_CHAN_ID")
+        self.debug_chan = os.getenv("DEBUG_CHAN_ID")
+        self.stu_user = os.getenv("STU_ID")
+
     def handle_team_join(self, payload):
         """
         Returns the list of channels available to the bot.
@@ -33,7 +38,20 @@ class Router:
         :rtype: dict
         """
 
-        # event = TeamJoinEvent(payload)
+        event = TeamJoinEvent(payload)
+
+        new_user = self.theBot.get_user_as_obj(event)
+
+        response = self.bot.chat_postMessage(
+            channel=self.debug_chan,
+            text=(
+                f"Testing Event Triggered...\n"
+                f"<@{self.stu_user} Team Join Event has occurred... \n"
+                f":tada: :partywizard: Welcome to CodeDevils, {new_user.real_name}!!! :partywizard: :tada:"
+            ),
+        )
+
+        assert response["ok"]
 
     def handle_reaction_added(self, payload):
         """
@@ -45,7 +63,10 @@ class Router:
 
         event = ReactionAddedEvent(payload)
 
-        if event.item_channel == "G0171GL10P4" and event.user_id != self.bot_user_id:
+        if (
+            event.item_channel == self.debug_chan
+            and event.user_id != self.bot_user_id
+        ):
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
@@ -57,7 +78,7 @@ class Router:
                 )
 
             response = self.bot.chat_postMessage(
-                channel="G0171GL10P4",
+                channel=self.debug_chan,
                 text=reply,
             )
             assert response["ok"]
@@ -118,9 +139,8 @@ class Router:
         event = MessageEvent(payload)
 
         if (
-            event.channel_id == "G0171GL10P4"
+            event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
-            and event.subtype != 'message_deleted'
         ):
             reply = (
                 f"Event Type: {event.type}\n"
@@ -132,7 +152,7 @@ class Router:
             )
 
             response = self.bot.chat_postMessage(
-                channel="G0171GL10P4",
+                channel=self.debug_chan,
                 text=reply,
             )
 
@@ -168,7 +188,10 @@ class Router:
                         )
                     assert response["ok"]
 
-        if event.subtype != 'bot_message' and event.subtype != 'message_deleted':
+        if (
+            event.subtype != 'bot_message'
+            and event.subtype != 'message_deleted'
+        ):
 
             """
             Test to see if flameboi responds quicker that slackbot (it does for now!)
@@ -290,7 +313,34 @@ class Router:
         # Test function for app mention
 
         if (
-            event.channel_id == "G0171GL10P4"
+            event.channel_id == self.debug_chan
+            and event.user_id != self.bot_user_id
+            and "whoami" in event.text.lower()
+        ):
+
+            theUser = self.theBot.get_user_as_obj(event.user_id)
+
+            reply = (
+                f"User ID: {theUser.id}\n"
+                f"Name: {theUser.name}\n"
+                f"Display Name: {theUser.displyname}\n"
+                f"Real Name: {theUser.real_name}\n"
+                f"Email: {theUser.email}\n"
+                f"Team: {theUser.team}\n"
+                f"Team ID: {theUser.team_id}\n"
+                f"Time Zone: {theUser.time_zone}\n"
+                f"Is Admin: {theUser.is_admin}\n"
+                f"Is Owner: {theUser.is_owner}\n"
+            )
+
+            response = self.bot.chat_postMessage(
+                channel=self.debug_chan,
+                text=reply,
+            )
+
+            assert response["ok"]
+        elif (
+            event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
         ):
             reply = (
@@ -303,7 +353,7 @@ class Router:
             )
 
             response = self.bot.chat_postMessage(
-                channel="G0171GL10P4",
+                channel=self.debug_chan,
                 text=reply,
             )
 
