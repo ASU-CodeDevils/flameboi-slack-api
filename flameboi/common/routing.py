@@ -1,12 +1,12 @@
-import os
 import json
+import os
 
 from flameboi.common.events import (
-    ReactionAddedEvent,
-    MessageEvent,
     AppMentionEvent,
     MemberJoinedChannelEvent,
-    TeamJoinEvent
+    MessageEvent,
+    ReactionAddedEvent,
+    TeamJoinEvent,
 )
 
 
@@ -69,14 +69,10 @@ class Router:
             f"Team Join Event\n"
             f"\nAnticipated Response: \n"
             f":tada: :partywizard: Welcome to CodeDevils, {theUser.real_name}! :partywizard: :tada:\n"
-            f"\nInformation on the User who joined: \n" +
-            deets
+            f"\nInformation on the User who joined: \n" + deets
         )
 
-        response = self.bot.chat_postMessage(
-            channel=self.debug_chan,
-            text=reply,
-        )
+        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
 
         assert response["ok"]
 
@@ -90,10 +86,7 @@ class Router:
 
         event = ReactionAddedEvent(payload)
 
-        if (
-            event.item_channel == self.debug_chan
-            and event.user_id != self.bot_user_id
-        ):
+        if event.item_channel == self.debug_chan and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
@@ -102,12 +95,9 @@ class Router:
                 f"Item Channel: {event.item_channel}\n"
                 f"Item TS: {event.item_ts}\n"
                 f"Reaction TS: {event.event_ts}"
-                )
-
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan,
-                text=reply,
             )
+
+            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
             assert response["ok"]
 
         # Test function for looping reaction response
@@ -123,9 +113,7 @@ class Router:
                     assert response["ok"]
             elif event.reaction and event.reaction == "fuckyouadmin":
                 response = self.bot.reactions_add(
-                    name="heart",
-                    channel=event.item_channel,
-                    timestamp=event.item_ts,
+                    name="heart", channel=event.item_channel, timestamp=event.item_ts,
                 )
                 assert response["ok"]
             else:
@@ -165,10 +153,7 @@ class Router:
 
         event = MessageEvent(payload)
 
-        if (
-            event.channel_id == self.debug_chan
-            and event.user_id != self.bot_user_id
-        ):
+        if event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"Sub Type: {event.subtype}\n"
@@ -178,10 +163,7 @@ class Router:
                 f"Timestamp: {event.ts}"
             )
 
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan,
-                text=reply,
-            )
+            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
 
             assert response["ok"]
 
@@ -191,17 +173,13 @@ class Router:
 
             if event.text and "yes" in event.text.lower():
 
-                removal = self.admin.chat_delete(
-                    channel=event.channel_id,
-                    ts=event.ts,
-                )
+                removal = self.admin.chat_delete(channel=event.channel_id, ts=event.ts,)
                 assert removal["ok"]
 
                 reply = "This response replaced by a better bot..."
 
                 response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text=reply,
+                    channel=event.channel_id, text=reply,
                 )
                 assert response["ok"]
             else:
@@ -209,16 +187,11 @@ class Router:
 
                 for emote in badbot:
                     response = self.bot.reactions_add(
-                        channel=event.channel_id,
-                        timestamp=event.ts,
-                        name=emote,
-                        )
+                        channel=event.channel_id, timestamp=event.ts, name=emote,
+                    )
                     assert response["ok"]
 
-        if (
-            event.subtype != 'bot_message'
-            and event.subtype != 'message_deleted'
-        ):
+        if event.subtype != "bot_message" and event.subtype != "message_deleted":
 
             """
             Test to see if flameboi responds quicker that slackbot (it does for now!)
@@ -241,8 +214,7 @@ class Router:
                 reply = f":tada: :partywizard: I'm here <@{event.user_id}>! :partywizard: :tada:"
 
                 response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text=reply,
+                    channel=event.channel_id, text=reply,
                 )
 
                 assert response["ok"]
@@ -254,9 +226,7 @@ class Router:
                 reply = f":tada: :partywizard: I'm here <@{event.user_id}>! :partywizard: :tada:"
 
                 response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text=reply,
-                    thread_ts=event.ts,
+                    channel=event.channel_id, text=reply, thread_ts=event.ts,
                 )
 
                 assert response["ok"]
@@ -268,17 +238,23 @@ class Router:
                 response = self.bot.chat_postMessage(
                     channel=event.channel_id,
                     text="testing...",
-                    blocks=json.dumps(self.get_sample_block())
+                    blocks=json.dumps(self.get_sample_block()),
                 )
                 assert response["ok"]
 
             # Test function for reaction response
 
-            elif event.text and "party" in event.text.lower() and ":partywizard:" not in event.text:
+            elif (
+                event.text
+                and "party" in event.text.lower()
+                and ":partywizard:" not in event.text
+            ):
 
                 reply = ":partywizard:"
 
-                assert self.bot.chat_postMessage(channel=event.channel_id, text=reply)["ok"]
+                response = self.bot.chat_postMessage(channel=event.channel, text=reply,)
+
+                assert response["ok"]
 
             # Test function for to get channel info and links
 
@@ -286,7 +262,7 @@ class Router:
 
                 name = self.bot.conversations_info(channel=event.channel_id)
 
-                usable = name.get('channel', {}).get('name')
+                usable = name.get("channel", {}).get("name")
 
                 reply = (
                     f"Channel ID: {event.channel_id}\n"
@@ -295,8 +271,7 @@ class Router:
                 )
 
                 response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text=reply,
+                    channel=event.channel_id, text=reply,
                 )
 
                 assert response["ok"]
@@ -342,10 +317,7 @@ class Router:
             f"Is Owner: {theUser.is_owner}\n"
         )
 
-        response = self.bot.chat_postMessage(
-            channel=self.debug_chan,
-            text=reply,
-        )
+        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
         assert response["ok"]
 
     def handle_app_mention(self, payload):
@@ -381,16 +353,11 @@ class Router:
                 f"Is Owner: {theUser.is_owner}\n"
             )
 
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan,
-                text=reply,
-            )
+            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
 
             assert response["ok"]
-        elif (
-            event.channel_id == self.debug_chan
-            and event.user_id != self.bot_user_id
-        ):
+
+        elif event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
@@ -400,54 +367,43 @@ class Router:
                 f"Event TS: {event.event_ts}"
             )
 
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan,
-                text=reply,
-            )
+            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
 
             assert response["ok"]
 
         else:
             reply = f"You talking to me, <@{event.user_id}>?!?"
 
-            response = self.bot.chat_postMessage(
-                channel=event.channel_id,
-                text=reply,
-            )
+            response = self.bot.chat_postMessage(channel=event.channel_id, text=reply,)
             assert response["ok"]
 
     def get_sample_block(self) -> list:
         sample = [
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "Danny Torrence left the following review for your property:"
-                        }
-                    },
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes," +
-                            "guest in room 237 was far too rowdy, whole place felt stuck in the 1920s."
-                        },
-                        "accessory": {
-                            "type": "image",
-                            "image_url": "https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg",
-                            "alt_text": "Haunted hotel image"
-                        }
-                    },
-                    {
-                        "type": "section",
-                        "fields": [
-                            {
-                                "type": "mrkdwn",
-                                "text": "*Average Rating*\n1.0"
-                            }
-                        ]
-                    }
-                ]
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Danny Torrence left the following review for your property:",
+                },
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes,"
+                    + "guest in room 237 was far too rowdy, whole place felt stuck in the 1920s.",
+                },
+                "accessory": {
+                    "type": "image",
+                    "image_url": "https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg",
+                    "alt_text": "Haunted hotel image",
+                },
+            },
+            {
+                "type": "section",
+                "fields": [{"type": "mrkdwn", "text": "*Average Rating*\n1.0"}],
+            },
+        ]
 
         return sample
 

@@ -1,10 +1,10 @@
 import os
+
 from dotenv import load_dotenv
+from flameboi.blocks.block_generator import BlockGenerator
+from flameboi.common.objects import User
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-
-from flameboi.common.objects import User
-from flameboi.blocks.block_generator import BlockGenerator
 
 
 class Flameboi:
@@ -71,9 +71,9 @@ class Flameboi:
         :return: The response of the member addition request.
         :rtype: dict
         """
-        user = self.get_user_by_email(email=user_email)['user']
-        channel = self.get_channel_id(channel_name='hangout')
-        return self.user_client.channels_invite(channel=channel, user=user['id'])
+        user = self.get_user_by_email(email=user_email)["user"]
+        channel = self.get_channel_id(channel_name="hangout")
+        return self.user_client.channels_invite(channel=channel, user=user["id"])
 
     def get_user_by_email(self, email: str) -> dict:
         """
@@ -117,8 +117,8 @@ class Flameboi:
         """
         channel_list = self.get_channel_list()
         for channel in channel_list:
-            if channel['name'] == channel_name:
-                return channel['id']
+            if channel["name"] == channel_name:
+                return channel["id"]
 
         return str(None)
 
@@ -145,7 +145,13 @@ class Flameboi:
     TODO: address issues with get_message_payload()
     """
 
-    def send_message(self, channel: str, text: str, mention_email: str = None, mention_name: str = None) -> dict:
+    def send_message(
+        self,
+        channel: str,
+        text: str,
+        mention_email: str = None,
+        mention_name: str = None,
+    ) -> dict:
         """
         Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
         message.
@@ -160,7 +166,7 @@ class Flameboi:
         """
 
         if mention_email:
-            username = self.get_user_by_email(mention_email)['user']['name']
+            username = self.get_user_by_email(mention_email)["user"]["name"]
             text = f"@{username} {text}"
         elif mention_name:
             username = "<@{mention_name}>"
