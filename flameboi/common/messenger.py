@@ -41,17 +41,17 @@ def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
     return self.bot_client.chat_postMessage(**message)
 
 
-def get_welcome_block(self, channel: str) -> dict:
-    """
-    Sends the welcome message to the user.
+# def get_welcome_block(self, channel: str) -> dict:
+#     """
+#     Sends the welcome message to the user.
 
-    :param channel: The channel ID of the user as a string.
-    :type channel: str
-    :return: The response from the message payload.
-    :rtype: dict
-    """
-    self.channel = channel
-    return self.get_message_payload(blocks=get_onboarding_block())
+#     :param channel: The channel ID of the user as a string.
+#     :type channel: str
+#     :return: The response from the message payload.
+#     :rtype: dict
+#     """
+#     self.channel = channel
+#     return self.get_message_payload(blocks=get_onboarding_block())
 
 
 def send_onboarding_message(self, user_email: str) -> dict:

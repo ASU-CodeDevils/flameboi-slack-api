@@ -142,7 +142,7 @@ class Router:
             f"Pin Added Event\n"
             f"Event Type: {event.type}\n"
             f"User ID: {event.user_id}\n"
-            f"Channel ID: <#{event.channel_id}>\n"
+            f"Channel ID: {event.channel_id}\n"
             f"Event_TS: {event.event_ts}\n"
         )
 
