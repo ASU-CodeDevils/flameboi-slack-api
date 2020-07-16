@@ -375,7 +375,7 @@ class Router:
 
         elif event.user_id != self.bot_user_id and "qod" in event.text.lower():
             response = self.bot.chat_postMessage(
-                channel=self.debug_chan, blocks=json.dumps(get_qod_block())
+                channel=event.channel_id, blocks=json.dumps(get_qod_block())
             )
             assert response["ok"]
 
@@ -389,7 +389,7 @@ class Router:
                 f"Event TS: {event.event_ts}"
             )
 
-            response = self.bot.chat_postMessage(channel=event.channel_id, text=reply,)
+            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
 
             assert response["ok"]
 
