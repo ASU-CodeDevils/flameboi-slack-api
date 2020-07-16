@@ -12,51 +12,92 @@ def get_onboarding_block() -> list:
     :rtype: list
     """
 
+    hacker_rank_current_url = "http://www.hackerrank.com/codedevils-summer-2020"
+
     block = get_blocks(
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
-                    "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. C"
-                    "heck out some of the channels available here:\n\n*Channels:*"
+                    "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. "
+                    "\n\n*Some of the channels to explore:*"
                 ),
             )
         ),
         DividerBlock(),
         get_text_block_with_image(
             text=(
-                "*Careers - <#C3UQCFHS5>*\nLearn about exciting new job opportunities and internships"
+                "*<#C2N5P84BD>*\nPost literally anything that you want! College is too boring to "
+                "be serious all the time, so brighten someone's day up with a random thought"
+                " or funny meme."
+            ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_85ui-128.png"
+            ),
+            alt_text="Hangout",
+        ),
+        get_text_block_with_image(
+            text=(
+                "*<#CMGU8033K>*\n Take a minute to introduce yourself here.  Tells us about yourself,"
+                " what you're looking to get out of your time at ASU, the program you're in, or something"
+                " that interests you outside of your academic life!"
+            ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_67ui-256.png"
+            ),
+            alt_text="Intro",
+        ),
+        get_text_block_with_image(
+            text=(
+                "*<#C3UQCFHS5>*\nLearn about exciting new job opportunities and internships"
                 " from other members, and gain insight on how to succeed during interviews."
             ),
             image_url=(
-                "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
-                "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_cup-256.png"
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_49ui-128.png"
             ),
             alt_text="Careers",
         ),
         get_text_block_with_image(
             text=(
-                "*Projects - <#C311NUV6C>*\nEver think about programming something real and "
-                "usable with a team? Use this channel to join a project, discuss one, or "
-                "even get one started."
+                "*<#C46E4B24Q>*\nTake part in our "
+                f"<{hacker_rank_current_url}|HackerRank> challenges to improve your skills and compete to win "
+                "CodeDevil's swag!  We hold a new contest each term, jump in and get yourself a CodeDevils Tee!"
             ),
             image_url=(
-                "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
-                "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_group-256.png"
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_69ui-256.png"
             ),
-            alt_text="Projects",
+            alt_text="Coding Challenges",
         ),
         get_text_block_with_image(
             text=(
-                "*Hangout - <#C2N5P84BD>*\nPost literally anything that you want! College is too boring to "
-                "be serious all the time, so brighten someone's day up with a random thought"
-                " or funny meme."
+                "*<#C311NUV6C>* and *<#C0111TQ05ML>*\nEver think about programming something"
+                " real and usable with a team? Need help with something you're working on?  These channels to join"
+                " a project, discuss a problem, or even get something started."
             ),
             image_url=(
-                "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
-                "Ficons%2Feducation-340%2F99%2FTilda_Icons_1ed_speaker-256.png"
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_8ui-256.png"
             ),
-            alt_text="Hangout",
+            alt_text="Projects and Debugging",
+        ),
+        get_text_block_with_image(
+            text=(
+                "*<#C010TCLHME2>*\nTake some time away from studying and play some games with your fellow "
+                " CodeDevils!  Here you can find some people to team up with or team up against!"
+            ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_53ui-256.png"
+            ),
+            alt_text="Games",
+        ),
+        get_text_block_with_image(
+            text=(
+                "*<#CT06NE2AV>*\nTake part in CodeDevils club meetings.  We hold/post"
+                " Virtual Study Halls, Organization meetings, etc here.  These are usually zoom based."
+            ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_77ui-256.png"
+            ),
+            alt_text="Meetings",
         ),
         DividerBlock(),
         get_text_block_with_image(
