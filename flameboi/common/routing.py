@@ -6,11 +6,11 @@ from flameboi.common.events import (
     AppMentionEvent,
     MemberJoinedChannelEvent,
     MessageEvent,
+    PinAddedEvent,
     ReactionAddedEvent,
     TeamJoinEvent,
 )
-
-from flameboi.modules.onboard import get_onboarding_block
+from flameboi.modules.onboard import get_onboarding_block, get_sample_block
 
 
 class Router:
@@ -135,15 +135,19 @@ class Router:
         :rtype: dict
         """
 
-        # event = PinAddedEvent(payload)
-        # details = event.get_details()
+        event = PinAddedEvent(payload)
 
-        # reply = (
-        #     f"<@{details['user_id']}> seems to think something of importance"
-        #     f" happened in <@{details['channel_id']}>"
-        # )
+        reply = (
+            f"Testing Event Triggered...\n"
+            f"Pin Added Event\n"
+            f"Event Type: {event.type}\n"
+            f"User ID: {event.user_id}\n"
+            f"Channel ID: <#{event.channel_id}>\n"
+            f"Event_TS: {event.event_ts}\n"
+        )
 
-        # assert self.bot.chat_postMessage('C30L07P18', reply)["ok"]
+        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply)
+        assert response["ok"]
 
     def handle_message(self, payload):
         """
@@ -239,7 +243,7 @@ class Router:
                 response = self.bot.chat_postMessage(
                     channel=event.channel_id,
                     text="testing...",
-                    blocks=json.dumps(self.get_sample_block()),
+                    blocks=json.dumps(get_sample_block()),
                 )
                 assert response["ok"]
 
@@ -387,36 +391,6 @@ class Router:
 
             response = self.bot.chat_postMessage(channel=event.channel_id, text=reply,)
             assert response["ok"]
-
-    def get_sample_block(self) -> list:
-        sample = [
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "Danny Torrance left the following review for your property:",
-                },
-            },
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in"
-                    " room 237 was far too rowdy, whole place felt stuck in the 1920s.",
-                },
-                "accessory": {
-                    "type": "image",
-                    "image_url": "https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg",
-                    "alt_text": "Haunted hotel image",
-                },
-            },
-            {
-                "type": "section",
-                "fields": [{"type": "mrkdwn", "text": "*Average Rating*\n1.0"}],
-            },
-        ]
-
-        return sample
 
     def handle_app_home(self, payload):
         """
