@@ -379,7 +379,7 @@ class Router:
             )
             assert response["ok"]
 
-        elif event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
+        elif event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
                 f"User ID: {event.user_id}\n"
