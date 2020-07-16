@@ -1,7 +1,6 @@
-from flask import Flask
-from flameboi.common.routing import Router
 from flameboi.common.flameboi import Flameboi
-
+from flameboi.common.routing import Router
+from flask import Flask
 
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
@@ -18,6 +17,7 @@ router = Router(theBot)
 
 # ================ Team Join Event =============== #
 
+
 @slack_events_adapter.on("team_join")
 def onboarding_message(payload):
     """Create and send an onboarding welcome message to new users. Save the
@@ -28,6 +28,7 @@ def onboarding_message(payload):
 
 
 # ============= Reaction Added Events ============= #
+
 
 @slack_events_adapter.on("reaction_added")
 def update_emoji(payload):
@@ -40,6 +41,7 @@ def update_emoji(payload):
 
 # =============== Pin Added Events ================ #
 
+
 @slack_events_adapter.on("pin_added")
 def update_pin(payload):
     """Update the onboarding welcome message after receiving a "pin_added"
@@ -50,6 +52,7 @@ def update_pin(payload):
 
 
 # ============== Message Events ============= #
+
 
 @slack_events_adapter.on("message")
 def message(payload):
@@ -62,6 +65,7 @@ def message(payload):
 
 # ============== Member Join Events ============= #
 
+
 @slack_events_adapter.on("member_joined_channel")
 def member_joined(payload):
     """Display the channel welcome message after someone joins a channel.
@@ -71,6 +75,7 @@ def member_joined(payload):
 
 
 # ============== App Mention Events ============= #
+
 
 @slack_events_adapter.on("app_mention")
 def mention(payload):
@@ -83,13 +88,15 @@ def mention(payload):
 
 # ============== App Home Events ============= #
 
-@slack_events_adapter.on("app_home_open")
+
+@slack_events_adapter.on("app_home_opened")
 def home_open(payload):
     """
     Triggers handler for when the bot received an @ mention event..
     """
 
     router.handle_app_home(payload)
+
 
 # ============== Other Endpoints ============= #
 
@@ -108,7 +115,7 @@ def home_open(payload):
 #     Triggers slackbot to add new user to CodeDevils Slack (secured by jwt) using
 #     grid approved email
 #     """
-#     #TODO: JWT Secured endpoint for web to add user
+#     # TODO: JWT Secured endpoint for web to add user
 
 
 if __name__ == "__main__":

@@ -1,10 +1,8 @@
 import os
 from dotenv import load_dotenv
+from flameboi.common.objects import User
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-
-from flameboi.common.objects import User
-from flameboi.blocks.block_generator import BlockGenerator
 
 
 class Flameboi:
@@ -29,7 +27,6 @@ class Flameboi:
         self.admin_token = os.getenv("USER_TOKEN")
         self.admin_client = WebClient(token=self.admin_token)
 
-        self.blockGen = BlockGenerator()
         self.event_adapter = SlackEventAdapter(self.signing_secret, "/", app)
 
     def getAdmin(self) -> WebClient:
@@ -71,9 +68,9 @@ class Flameboi:
         :return: The response of the member addition request.
         :rtype: dict
         """
-        user = self.get_user_by_email(email=user_email)['user']
-        channel = self.get_channel_id(channel_name='hangout')
-        return self.user_client.channels_invite(channel=channel, user=user['id'])
+        user = self.get_user_by_email(email=user_email)["user"]
+        channel = self.get_channel_id(channel_name="hangout")
+        return self.admin_client.channels_invite(channel=channel, user=user["id"])
 
     def get_user_by_email(self, email: str) -> dict:
         """
@@ -117,8 +114,8 @@ class Flameboi:
         """
         channel_list = self.get_channel_list()
         for channel in channel_list:
-            if channel['name'] == channel_name:
-                return channel['id']
+            if channel["name"] == channel_name:
+                return channel["id"]
 
         return str(None)
 
@@ -140,48 +137,3 @@ class Flameboi:
         :rtype: dict
         """
         return self.bot_client.channels_list()
-
-    """
-    TODO: address issues with get_message_payload()
-    """
-
-    def send_message(self, channel: str, text: str, mention_email: str = None, mention_name: str = None) -> dict:
-        """
-        Sends a message (either text or block) to a channel. An optional mention can be added to the beginning of the
-        message.
-
-        :param channel: The name of the channel to send the message to.
-        :type channel: str
-        :param text: The message to send.
-        :type text: str
-        :param mention_email: The email of the user to mention, default is None.
-        :type mention_email: str
-        :return: The result of sending the message.
-        """
-
-        if mention_email:
-            username = self.get_user_by_email(mention_email)['user']['name']
-            text = f"@{username} {text}"
-        elif mention_name:
-            username = "<@{mention_name}>"
-            text = f"{username} {text}"
-        message = self.blockGen.get_message_payload(text=text, channel=channel)
-        return self._send_block_message(message=message)
-
-    """
-    TODO: This should work, however, need to double check the unpack is good
-    once get_message_payload() working
-    """
-
-    def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
-        """
-        Block message util to send a message using the bot client.
-
-        :param message: Markdown-supported message to be sent.
-        :type message: dict
-        :param user_id: The user ID (if any) of the user the message was sent to.
-        :type user_id: int, optional
-        :return: The response from sending the message as a dict.
-        :rtype: dict
-        """
-        return self.bot_client.chat_postMessage(**message)

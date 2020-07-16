@@ -16,7 +16,7 @@ This is an optional step, but is recommended to keep your local Python dependenc
 
 ##### Install package
 
-`sudo apt-get install python-virtualenv`
+`sudo apt-get install python3-virtualenv`
 
 ##### Activate easy installation script
 
@@ -24,7 +24,7 @@ This is an optional step, but is recommended to keep your local Python dependenc
 
 ##### Install pip Virtualenv
 
-`sudo pip install virtualenv`
+`sudo pip3 install virtualenv`
 
 ##### Ensure Virtualenv is Installed
 
@@ -60,7 +60,7 @@ Do this by calling the `activate` file/script within your newly created virtuale
 
 If you are using a virtual environment, *ensure that you have activated your environment*. You will know if the name of the virtualenv directory is written prior to other text within your shell.
 
-1. `cd /path/to/flameboi`
+1. `cd /path/to/flameboi-slack-api`
 1. `pip3 install -r requirements/local.txt`
 
 ## Further Reading and Documentation
@@ -68,8 +68,8 @@ If you are using a virtual environment, *ensure that you have activated your env
 ### Slack Documentation
 
 - [Getting started with Slack apps](https://api.slack.com/slack-apps)
-- [Slack Events API documentation](https://api.slack.com/events)
-- [Slack Web API documentation](https://api.slack.com/web)
+- [Slack Events API documentation](https://api.slack.com/events) - Used for the bot to receive designated events from Slack
+- [Slack Web API documentation](https://api.slack.com/web) - Used for the bot to send/request items to Slack
 
 ### Documentation for Primary Tools
 
