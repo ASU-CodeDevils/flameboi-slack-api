@@ -10,6 +10,7 @@ class Message:
         self.is_starred = messageAsDict.get("is_starred")
         self.pinned_to = messageAsDict.get("pinned_to")
         self.reactions = messageAsDict.get("reactions")
+        self.permalink = messageAsDict.get("permalink")
 
 
 class Reactions:
@@ -37,3 +38,11 @@ class User:
         self.tz_offset = self.user.get("tz_offset")
         self.is_admin = self.user.get("is_admin")
         self.is_owner = self.user.get("is_owner")
+
+
+class Item:
+    def __init__(self, item_dict: dict):
+        self.channel_id = item_dict.get("channel")
+        self.created_by = item_dict.get("created_by")
+        self.message = item_dict.get("mesage")
+        self.type = item_dict.get("type")

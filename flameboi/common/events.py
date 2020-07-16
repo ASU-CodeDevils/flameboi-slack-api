@@ -52,7 +52,6 @@ class PinAddedEvent:
         self.type = self.event.get("type")
         self.user_id = self.event.get("user")
         self.channel_id = self.event.get("channel")
-        self.item = self.item.get("channel")
         self.event_ts = self.event.get("event_ts")
 
 
