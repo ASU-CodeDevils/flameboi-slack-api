@@ -89,7 +89,7 @@ def mention(payload):
 # ============== App Home Events ============= #
 
 
-@slack_events_adapter.on("app_home_open")
+@slack_events_adapter.on("app_home_opened")
 def home_open(payload):
     """
     Triggers handler for when the bot received an @ mention event..

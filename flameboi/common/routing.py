@@ -2,12 +2,15 @@ import json
 import os
 
 from flameboi.common.events import (
+    AppHomeEvent,
     AppMentionEvent,
     MemberJoinedChannelEvent,
     MessageEvent,
     ReactionAddedEvent,
     TeamJoinEvent,
 )
+
+from flameboi.modules.onboard import get_onboarding_block
 
 
 class Router:
@@ -355,6 +358,16 @@ class Router:
 
             assert response["ok"]
 
+        elif (
+            event.channel_id == self.debug_chan
+            and event.user_id != self.bot_user_id
+            and "onboard" in event.text.lower()
+        ):
+            response = self.bot.chat_postMessage(
+                channel=self.debug_chan, blocks=json.dumps(get_onboarding_block())
+            )
+            assert response["ok"]
+
         elif event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
@@ -388,8 +401,8 @@ class Router:
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes,"
-                    + "guest in room 237 was far too rowdy, whole place felt stuck in the 1920s.",
+                    "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in"
+                    " room 237 was far too rowdy, whole place felt stuck in the 1920s.",
                 },
                 "accessory": {
                     "type": "image",
@@ -413,8 +426,22 @@ class Router:
         :rtype: dict
         """
 
-        # event = AppHomeEvent(payload)
-        # details = event.get_details()
+        event = AppHomeEvent(payload)
+
+        response = (
+            self.bot.views_publish(
+                user_id=event.user_id,
+                view=json.dumps(
+                    {
+                        "type": "home",
+                        "title": {"type": "plain_text", "text": "Welcome!"},
+                        "blocks": get_onboarding_block(),
+                    },
+                ),
+            ),
+        )
+
+        assert response["ok"]
 
     # TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
 

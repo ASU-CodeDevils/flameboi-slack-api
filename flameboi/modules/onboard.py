@@ -1,58 +1,6 @@
-'''
-TODO: implement this using the newly modular setup
-'''
-
-from flameboi.blocks.block_generator import BlockGenerator
-
-
-def get_welcome_block(self, channel: str) -> dict:
-    """
-    Sends the welcome message to the user.
-
-    :param channel: The channel ID of the user as a string.
-    :type channel: str
-    :return: The response from the message payload.
-    :rtype: dict
-    """
-    self.channel = channel
-    return self.get_message_payload(blocks=get_onboarding_block())
-
-
-def send_onboarding_message(self, user_email: str) -> dict:
-    """
-    Sends the onboarding message to a user.
-
-    :param user_email: The email of the user to be on-boarded.
-    :type user_email: str
-    :return: The response from the message request as a dict.
-    :rtype: dict
-    """
-    user = self.get_user_by_email(email=user_email)['user']['id']
-    response = self.bot_client.conversations_open(users=[user])
-    if not response['ok']:
-        return response
-
-    channel = response['channel']['id']
-    message = self.messenger.get_welcome_block(channel=channel)
-    return self._send_block_message(message=message)
-
-
-def send_onboarding_DM(self, user_id: str) -> dict:
-    """
-    Sends the onboarding message to a user.
-
-    :param user_id: The slack ID of the user to be on-boarded.
-    :type user_id: str
-    :return: The response from the message request as a dict.
-    :rtype: dict
-    """
-    response = self.bot_client.conversations_open(users=[user_id])
-    if not response['ok']:
-        return response
-
-    channel = response['channel']['id']
-    message = self.messenger.get_welcome_block(channel=channel)
-    return self._send_block_message(message=message)
+from slack_blockkit.composition_object import TextObject
+from slack_blockkit.layout_block import DividerBlock, SectionBlock
+from slack_blockkit.utils import get_blocks, get_text_block_with_image
 
 
 def get_onboarding_block() -> list:
@@ -64,31 +12,31 @@ def get_onboarding_block() -> list:
     :rtype: list
     """
 
-    block = [
+    block = get_blocks(
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
                     "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. C"
                     "heck out some of the channels available here:\n\n*Channels:*"
-                )
-            ).render()
+                ),
+            )
         ),
-        DividerBlock().render(),
+        DividerBlock(),
         get_text_block_with_image(
             text=(
-                "*Opportunities*\nLearn about exciting new job opportunities and internships"
+                "*Careers - <#C3UQCFHS5>*\nLearn about exciting new job opportunities and internships"
                 " from other members, and gain insight on how to succeed during interviews."
-                ),
+            ),
             image_url=(
                 "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
                 "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_cup-256.png"
-                ),
-            alt_text="Opportunities"
+            ),
+            alt_text="Careers",
         ),
         get_text_block_with_image(
             text=(
-                "*Project Discussion*\nEver think about programming something real and "
+                "*Projects - <#C311NUV6C>*\nEver think about programming something real and "
                 "usable with a team? Use this channel to join a project, discuss one, or "
                 "even get one started."
             ),
@@ -96,11 +44,11 @@ def get_onboarding_block() -> list:
                 "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
                 "Ficons%2Feducation-340%2F100%2FTilda_Icons_1ed_group-256.png"
             ),
-            alt_text="Project Discussion"
+            alt_text="Projects",
         ),
         get_text_block_with_image(
             text=(
-                "*Random*\nPost literally anything that you want! College is too boring to "
+                "*Hangout - <#C2N5P84BD>*\nPost literally anything that you want! College is too boring to "
                 "be serious all the time, so brighten someone's day up with a random thought"
                 " or funny meme."
             ),
@@ -108,9 +56,9 @@ def get_onboarding_block() -> list:
                 "https://slack-imgs.com/?c=1&url=https%3A%2F%2Fcdn0.iconfinder.com%2Fdata%2"
                 "Ficons%2Feducation-340%2F99%2FTilda_Icons_1ed_speaker-256.png"
             ),
-            alt_text="Random"
+            alt_text="Hangout",
         ),
-        DividerBlock().render(),
+        DividerBlock(),
         get_text_block_with_image(
             text=(
                 "*CodeDevils Website*\nDid you know that I'm powered by the CodeDevils "
@@ -120,8 +68,39 @@ def get_onboarding_block() -> list:
                 "<https://www.codedevils.org|CodeDevils website> to learn more."
             ),
             image_url="https://www.codedevils.org/static/home/img/favicon.png",
-            alt_text="CodeDevils Website"
+            alt_text="CodeDevils Website",
         ),
-        DividerBlock().render()
-    ]
+        DividerBlock(),
+    )
     return block
+
+
+def get_sample_block(self) -> list:
+    sample = [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Danny Torrance left the following review for your property:",
+            },
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in"
+                " room 237 was far too rowdy, whole place felt stuck in the 1920s.",
+            },
+            "accessory": {
+                "type": "image",
+                "image_url": "https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg",
+                "alt_text": "Haunted hotel image",
+            },
+        },
+        {
+            "type": "section",
+            "fields": [{"type": "mrkdwn", "text": "*Average Rating*\n1.0"}],
+        },
+    ]
+
+    return sample

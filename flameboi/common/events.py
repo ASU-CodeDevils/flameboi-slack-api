@@ -63,7 +63,7 @@ class AppHomeEvent:
         self.type = self.event.get("type")
         self.user_id = self.event.get("user")
         self.channel_id = self.event.get("channel")
-        self.event.ts = self.event.get("event_ts")
+        self.event_ts = self.event.get("event_ts")
         self.tab = self.event.get("tab")
         self.view = self.event.get("view", {})
 
