@@ -75,7 +75,7 @@ def get_onboarding_block() -> list:
     return block
 
 
-def get_sample_block(self) -> list:
+def get_sample_block() -> list:
     sample = [
         {
             "type": "section",

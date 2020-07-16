@@ -11,6 +11,7 @@ from flameboi.common.events import (
     TeamJoinEvent,
 )
 from flameboi.modules.onboard import get_onboarding_block, get_sample_block
+from flameboi.modules.qod import get_qod_block
 
 
 class Router:
@@ -372,6 +373,16 @@ class Router:
             )
             assert response["ok"]
 
+        elif (
+            event.channel_id == self.debug_chan
+            and event.user_id != self.bot_user_id
+            and "qod" in event.text.lower()
+        ):
+            response = self.bot.chat_postMessage(
+                channel=self.debug_chan, blocks=json.dumps(get_qod_block())
+            )
+            assert response["ok"]
+
         elif event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
             reply = (
                 f"Event Type: {event.type}\n"
@@ -402,16 +413,14 @@ class Router:
 
         event = AppHomeEvent(payload)
 
-        response = (
-            self.bot.views_publish(
-                user_id=event.user_id,
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": get_onboarding_block(),
-                    },
-                ),
+        response = self.bot.views_publish(
+            user_id=event.user_id,
+            view=json.dumps(
+                {
+                    "type": "home",
+                    "title": {"type": "plain_text", "text": "Welcome!"},
+                    "blocks": get_onboarding_block(),
+                },
             ),
         )
 
