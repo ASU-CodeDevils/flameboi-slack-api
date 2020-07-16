@@ -99,8 +99,7 @@ class Router:
                 f"Reaction TS: {event.event_ts}"
             )
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-            assert response["ok"]
+            self.text_sender_test(self.debug_chan, reply)
 
         # Test function for looping reaction response
 
@@ -147,8 +146,7 @@ class Router:
             f"Event_TS: {event.event_ts}\n"
         )
 
-        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply)
-        assert response["ok"]
+        self.text_sender_test(self.debug_chan, reply)
 
     def handle_message(self, payload):
         """
@@ -170,9 +168,7 @@ class Router:
                 f"Timestamp: {event.ts}"
             )
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-
-            assert response["ok"]
+            self.text_sender_test(self.debug_chan, reply)
 
         # Test function for specific user and chain reaction response
 
@@ -241,12 +237,13 @@ class Router:
 
             elif event.text and event.text.lower() == "!testblock":
 
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text="testing...",
-                    blocks=json.dumps(get_sample_block()),
-                )
-                assert response["ok"]
+                self.block_sender_test(event.channel_id, get_sample_block)
+                # response = self.bot.chat_postMessage(
+                #     channel=event.channel_id,
+                #     text="testing...",
+                #     blocks=json.dumps(get_sample_block()),
+                # )
+                # assert response["ok"]
 
             # Test function for reaction response
 
@@ -278,11 +275,7 @@ class Router:
                     f"Channel Link: <#{event.channel_id}>"
                 )
 
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply,
-                )
-
-                assert response["ok"]
+                self.text_sender_test(self.debug_chan, reply)
 
             # TODO: Expand on block kit builder base (which is awesome Kevin!)
             # Below is example use of blocks using !onboard to send the onboarding block
@@ -323,8 +316,7 @@ class Router:
             f"Is Owner: {theUser.is_owner}\n"
         )
 
-        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-        assert response["ok"]
+        self.text_sender_test(self.debug_chan, reply)
 
     def handle_app_mention(self, payload):
         """
@@ -359,25 +351,18 @@ class Router:
                 f"Is Owner: {theUser.is_owner}\n"
             )
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-
-            assert response["ok"]
+            self.text_sender_test(self.debug_chan, reply)
 
         elif (
             event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
             and "onboard" in event.text.lower()
         ):
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan, blocks=json.dumps(get_onboarding_block())
-            )
-            assert response["ok"]
+            self.block_sender_test(self.debug_chan, get_onboarding_block)
 
         elif event.user_id != self.bot_user_id and "qod" in event.text.lower():
-            response = self.bot.chat_postMessage(
-                channel=event.channel_id, blocks=json.dumps(get_qod_block())
-            )
-            assert response["ok"]
+
+            self.block_sender_test(event.channel_id, get_qod_block)
 
         elif event.user_id != self.bot_user_id:
             reply = (
@@ -389,15 +374,12 @@ class Router:
                 f"Event TS: {event.event_ts}"
             )
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-
-            assert response["ok"]
+            self.text_sender_test(self.debug_chan, reply)
 
         else:
             reply = f"You talking to me, <@{event.user_id}>?!?"
 
-            response = self.bot.chat_postMessage(channel=event.channel_id, text=reply,)
-            assert response["ok"]
+            self.text_sender_test(event.channel_id, reply)
 
     def handle_app_home(self, payload):
         """
@@ -420,6 +402,27 @@ class Router:
             ),
         )
 
+        assert response["ok"]
+
+    #
+    #
+    #
+
+    def block_sender_test(self, chan, get_blk):
+
+        response = self.bot.chat_postMessage(channel=chan, blocks=json.dumps(get_blk()))
+        assert response["ok"]
+
+    def text_sender_test(self, chan, txt):
+
+        response = self.bot.chat_postMessage(channel=chan, text=txt)
+        assert response["ok"]
+
+    def reaction_sender_test(self, reaction: str, channel: str, timestamp: str):
+
+        response = self.bot.reactions_add(
+            name=reaction, channel=channel, timestamp=timestamp,
+        )
         assert response["ok"]
 
     # TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
