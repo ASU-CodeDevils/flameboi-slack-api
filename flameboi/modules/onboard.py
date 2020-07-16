@@ -22,7 +22,7 @@ def get_onboarding_block() -> list:
                     "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. "
                     "\n\n*Some of the channels to explore:*"
                 ),
-            )
+            ),
         ),
         DividerBlock(),
         get_text_block_with_image(
@@ -112,6 +112,16 @@ def get_onboarding_block() -> list:
             alt_text="CodeDevils Website",
         ),
         DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "Icons provided by <https://www.iconfinder.com/|IconFinder> under the "
+                    "<https://creativecommons.org/licenses/by-nc/3.0/legalcode|Creative Commons "
+                    "NonCommercial License v3.0>"
+                ),
+            ),
+        ),
     )
     return block
 
