@@ -10,8 +10,9 @@ from flameboi.common.events import (
     ReactionAddedEvent,
     TeamJoinEvent,
 )
-from flameboi.modules.onboard import get_onboarding_block, get_sample_block
-from flameboi.modules.qod import get_qod_block
+from flameboi.modules_admin.onboard import get_onboarding_block, get_sample_block
+from flameboi.modules_user.playlists import get_playlist_block
+from flameboi.modules_user.qod import get_qod_block
 
 
 class Router:
@@ -22,7 +23,7 @@ class Router:
     :rtype: dict
     """
 
-    # TODO: instantiate a modrunner class that will run modules triggered
+    # TODO: parser/module runner class
 
     def __init__(self, theBot):
         self.bot = theBot.getClient()
@@ -124,8 +125,6 @@ class Router:
                     timestamp=event.item_ts,
                 )
                 assert response["ok"]
-
-    # TODO: implement this
 
     def handle_pin_added(self, payload):
         """
@@ -247,11 +246,7 @@ class Router:
 
             # Test function for reaction response
 
-            elif (
-                event.text
-                and "party" in event.text.lower()
-                and ":partywizard:" not in event.text
-            ):
+            elif "party" in event.text.lower() and ":partywizard:" not in event.text:
 
                 reply = ":partywizard:"
 
@@ -263,7 +258,7 @@ class Router:
 
             # Test function for to get channel info and links
 
-            elif event.text and event.text.lower() == "!channel":
+            elif event.text.lower() == "!channel":
 
                 name = self.bot.conversations_info(channel=event.channel_id)
 
@@ -276,15 +271,6 @@ class Router:
                 )
 
                 self.text_sender_test(self.debug_chan, reply)
-
-            # TODO: Expand on block kit builder base (which is awesome Kevin!)
-            # Below is example use of blocks using !onboard to send the onboarding block
-
-            # if details['text'] and details['text'].lower() == "!onboard":
-            #     assert self.bot.send_onboarding_DM(details['user_id'])["ok"]
-            #
-            # if details['text'] and details['text'].lower() == "!qod":
-            #     assert self.bot.send_qod(details['channel_id'])["ok"]
 
     def handle_channel_join(self, payload):
         """
@@ -353,16 +339,25 @@ class Router:
 
             self.text_sender_test(self.debug_chan, reply)
 
-        elif (
-            event.channel_id == self.debug_chan
-            and event.user_id != self.bot_user_id
-            and "onboard" in event.text.lower()
-        ):
-            self.block_sender_test(self.debug_chan, get_onboarding_block)
+        # elif (
+        #     event.channel_id == self.debug_chan
+        #     and event.user_id != self.bot_user_id
+        #     and "onboard" in event.text.lower()
+        # ):
+        #     self.block_sender_test(self.debug_chan, get_onboarding_block)
 
         elif event.user_id != self.bot_user_id and "qod" in event.text.lower():
 
-            self.block_sender_test(event.channel_id, get_qod_block)
+            self.ephemeral_sender(
+                user=event.user_id,
+                channel=event.channel_id,
+                text="",
+                func=get_qod_block,
+            )
+
+        elif event.user_id != self.bot_user_id and "playlists" in event.text.lower():
+
+            self.block_sender_test(event.channel_id, get_playlist_block)
 
         elif event.user_id != self.bot_user_id:
             reply = (
@@ -408,6 +403,18 @@ class Router:
     #
     #
 
+    def ephemeral_sender(
+        self, user: str, channel: str, text: str, func=None, attach: list = None,
+    ):
+
+        blkout = json.dumps(func()) if func else None
+        attout = json.dumps(attach) if attach else None
+
+        response = self.bot.chat_postEphemeral(
+            user=user, channel=channel, text=text, blocks=blkout, attachments=attout
+        )
+        assert response["ok"]
+
     def block_sender_test(self, chan, get_blk):
 
         response = self.bot.chat_postMessage(channel=chan, blocks=json.dumps(get_blk()))
@@ -424,13 +431,3 @@ class Router:
             name=reaction, channel=channel, timestamp=timestamp,
         )
         assert response["ok"]
-
-    # TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
-
-    # def handle_slash_command(self, payload):
-    #     """
-    #     Returns the list of channels available to the bot.
-    #
-    #     :return: The list of channels as a dict.
-    #     :rtype: dict
-    #     """
