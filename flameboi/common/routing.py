@@ -102,8 +102,6 @@ class Router:
 
             self.text_sender_test(self.debug_chan, reply)
 
-        # Test function for looping reaction response
-
         elif event.user_id != self.bot_user_id:
             if event.reaction and event.reaction == "parrot":
                 for i in range(1, 10):
@@ -169,8 +167,6 @@ class Router:
 
             self.text_sender_test(self.debug_chan, reply)
 
-        # Test function for specific user and chain reaction response
-
         if event.user_id == "USLACKBOT":
 
             if event.text and "yes" in event.text.lower():
@@ -178,7 +174,7 @@ class Router:
                 removal = self.admin.chat_delete(channel=event.channel_id, ts=event.ts,)
                 assert removal["ok"]
 
-                reply = "This response replaced by a better bot..."
+                reply = "shut up slackbot"
 
                 response = self.bot.chat_postMessage(
                     channel=event.channel_id, text=reply,
@@ -195,21 +191,6 @@ class Router:
 
         if event.subtype != "bot_message" and event.subtype != "message_deleted":
 
-            # Test to see if flameboi responds quicker that slackbot (it does for now!)
-
-            # if details['text'] and details['text'].lower() == "jesus":
-
-            #     reply = f"Speedtest"
-
-            #     response = self.bot.chat_postMessage(
-            #         channel=details['channel_id'],
-            #         text=reply,
-            #     )
-
-            #       assert response["ok"]
-
-            # Test function for unthreaded response
-
             if event.text and event.text.lower() == "!test":
 
                 reply = f":tada: :partywizard: I'm here <@{event.user_id}>! :partywizard: :tada:"
@@ -219,8 +200,6 @@ class Router:
                 )
 
                 assert response["ok"]
-
-            # Test function for threaded response
 
             elif event.text and event.text.lower() == "!testthread":
 
@@ -232,19 +211,9 @@ class Router:
 
                 assert response["ok"]
 
-            # Test function for block response
-
             elif event.text and event.text.lower() == "!testblock":
 
                 self.block_sender_test(event.channel_id, get_sample_block)
-                # response = self.bot.chat_postMessage(
-                #     channel=event.channel_id,
-                #     text="testing...",
-                #     blocks=json.dumps(get_sample_block()),
-                # )
-                # assert response["ok"]
-
-            # Test function for reaction response
 
             elif "party" in event.text.lower() and ":partywizard:" not in event.text:
 
@@ -255,8 +224,6 @@ class Router:
                 )
 
                 assert response["ok"]
-
-            # Test function for to get channel info and links
 
             elif event.text.lower() == "!channel":
 
@@ -313,8 +280,6 @@ class Router:
         """
 
         event = AppMentionEvent(payload)
-
-        # Test function for app mention
 
         if (
             event.channel_id == self.debug_chan
