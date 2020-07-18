@@ -92,7 +92,7 @@ class Flameboi:
         :return: The user as a User object.
         :rtype: User
         """
-        return User(self.bot_client.users_info(user=user_id))
+        return User(self.bot_client.users_info(user=user_id).get("user", {}))
 
     def get_users_list(self) -> dict:
         """
