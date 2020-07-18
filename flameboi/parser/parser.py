@@ -1,19 +1,18 @@
 import re
-from flameboi.modules_admin.onboard import get_onboarding_block
-from flameboi.modules_user.qod import get_qod_block
-from flameboi.modules_user.playlists import get_playlist_block
+import flameboi.parser.bang_commands as bang
+import flameboi.parser.query_commands as query
 
 
 class Parser:
     def __init__(self):
         self.compiled_regexes = [
-            re.compile(r"[ ]*![a-zA-Z]{1,10}[ ]*"),
+            re.compile(bang.regex),
+            re.compile(query.regex),
         ]
-        self.commands = {
-            "!qod": get_qod_block,
-            "!playlists": get_playlist_block,
-            "!onboard": get_onboarding_block,
-        }
+        self.commands = [
+            bang.commands,
+            query.commands,
+        ]
 
     def _has_commands(self, message: str) -> list:
         list_matches = []

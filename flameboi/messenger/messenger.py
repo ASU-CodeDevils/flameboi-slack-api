@@ -1,4 +1,39 @@
 # TODO: Split off messaging/posting/chatting functions to a Messenger class... keep the admin stuff in Flameboi
+import json
+
+
+class Messenger:
+    def __init__(self, bot_client):
+        self.bot = bot_client
+
+    def ephemeral_sender(
+        self, user: str, channel: str, text: str, func=None, attach: list = None,
+    ):
+
+        blkout = json.dumps(func()) if func else None
+        attout = json.dumps(attach) if attach else None
+
+        response = self.bot.chat_postEphemeral(
+            user=user, channel=channel, text=text, blocks=blkout, attachments=attout
+        )
+        assert response["ok"]
+
+    def block_sender_test(self, chan, get_blk):
+
+        response = self.bot.chat_postMessage(channel=chan, blocks=json.dumps(get_blk()))
+        assert response["ok"]
+
+    def text_sender_test(self, chan, txt):
+
+        response = self.bot.chat_postMessage(channel=chan, text=txt)
+        assert response["ok"]
+
+    def reaction_sender_test(self, reaction: str, channel: str, timestamp: str):
+
+        response = self.bot.reactions_add(
+            name=reaction, channel=channel, timestamp=timestamp,
+        )
+        assert response["ok"]
 
 
 def send_message(
