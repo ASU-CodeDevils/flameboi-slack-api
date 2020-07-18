@@ -1,6 +1,8 @@
 import json
 import os
+import re
 
+from flameboi.common.objects import User
 from flameboi.common.events import (
     AppHomeEvent,
     AppMentionEvent,
@@ -23,8 +25,6 @@ class Router:
     :rtype: dict
     """
 
-    # TODO: parser/module runner class
-
     def __init__(self, theBot):
         self.bot = theBot.getClient()
         self.admin = theBot.getAdmin()
@@ -34,6 +34,7 @@ class Router:
         self.bot_id = os.getenv("BOT_ID")
         self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
+        self.cd_team_id = os.getenv("CODE_DEVILS_TEAM_ID")
 
         self.home_channel = os.getenv("HOME_CHAN_ID")
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
@@ -49,17 +50,15 @@ class Router:
 
         event = TeamJoinEvent(payload)
 
-        theUser = self.theBot.get_user_as_obj(event)
+        theUser = event.user
         deets = ""
-        if theUser.is_ok:
+        if theUser:
             deets = (
                 f"User ID: {theUser.id}\n"
                 f"Name: {theUser.name}\n"
-                f"Display Name: {theUser.displyname}\n"
+                f"Display Name: {theUser.profile.display_name}\n"
                 f"Real Name: {theUser.real_name}\n"
-                f"Email: {theUser.email}\n"
-                f"Team: {theUser.team}\n"
-                f"Team ID: {theUser.team_id}\n"
+                f"Email: {theUser.profile.email}\n"
                 f"Time Zone: {theUser.time_zone}\n"
                 f"Is Admin: {theUser.is_admin}\n"
                 f"Is Owner: {theUser.is_owner}\n"
@@ -86,6 +85,8 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
+
+        # TODO: check if reaction already posted...
 
         event = ReactionAddedEvent(payload)
 
@@ -215,7 +216,11 @@ class Router:
 
                 self.block_sender_test(event.channel_id, get_sample_block)
 
-            elif "party" in event.text.lower() and ":partywizard:" not in event.text:
+            elif (
+                event.text
+                and "party" in event.text.lower()
+                and ":partywizard:" not in event.text
+            ):
 
                 reply = ":partywizard:"
 
@@ -250,23 +255,27 @@ class Router:
         event = MemberJoinedChannelEvent(payload)
 
         theUser = self.theBot.get_user_as_obj(event.user_id)
+        deets = ""
+        if theUser:
+            deets = (
+                f"User ID: {theUser.id}\n"
+                f"Name: {theUser.name}\n"
+                f"Display Name: {theUser.profile.display_name}\n"
+                f"Real Name: {theUser.real_name}\n"
+                f"Email: {theUser.profile.email}\n"
+                f"Time Zone: {theUser.time_zone}\n"
+                f"Is Admin: {theUser.is_admin}\n"
+                f"Is Owner: {theUser.is_owner}\n"
+            )
+        else:
+            deets = "Invalid user information received!"
 
         reply = (
             f"Testing Event Triggered...\n"
             f"Channel Join Event\n"
             f"Anticipated Response: \n"
             f":tada: :partywizard: Welcome to <#{event.channel_id}>, {theUser.real_name}! :partywizard: :tada:\n"
-            f"\nInformation on the User who joined: \n"
-            f"User ID: {theUser.id}\n"
-            f"Name: {theUser.name}\n"
-            f"Display Name: {theUser.displyname}\n"
-            f"Real Name: {theUser.real_name}\n"
-            f"Email: {theUser.email}\n"
-            f"Team: {theUser.team}\n"
-            f"Team ID: {theUser.team_id}\n"
-            f"Time Zone: {theUser.time_zone}\n"
-            f"Is Admin: {theUser.is_admin}\n"
-            f"Is Owner: {theUser.is_owner}\n"
+            f"\nInformation on the User who joined: \n" + deets
         )
 
         self.text_sender_test(self.debug_chan, reply)
@@ -288,21 +297,52 @@ class Router:
         ):
 
             theUser = self.theBot.get_user_as_obj(event.user_id)
+            deets = ""
+            if theUser:
+                deets = (
+                    f"User ID: {theUser.id}\n"
+                    f"Name: {theUser.name}\n"
+                    f"Display Name: {theUser.profile.display_name}\n"
+                    f"Real Name: {theUser.real_name}\n"
+                    f"Email: {theUser.profile.email}\n"
+                    f"Time Zone: {theUser.time_zone}\n"
+                    f"Is Admin: {theUser.is_admin}\n"
+                    f"Is Owner: {theUser.is_owner}\n"
+                )
+            else:
+                deets = "Invalid user information received!"
 
-            reply = (
-                f"User ID: {theUser.id}\n"
-                f"Name: {theUser.name}\n"
-                f"Display Name: {theUser.displyname}\n"
-                f"Real Name: {theUser.real_name}\n"
-                f"Email: {theUser.email}\n"
-                f"Team: {theUser.team}\n"
-                f"Team ID: {theUser.team_id}\n"
-                f"Time Zone: {theUser.time_zone}\n"
-                f"Is Admin: {theUser.is_admin}\n"
-                f"Is Owner: {theUser.is_owner}\n"
-            )
+            self.text_sender_test(self.debug_chan, deets)
 
-            self.text_sender_test(self.debug_chan, reply)
+        if (
+            event.channel_id == self.debug_chan
+            and event.user_id != self.bot_user_id
+            and "lookup" in event.text.lower()
+        ):
+
+            regex = r"[ ]*[a-z0-9]+[\._]?[a-z0-9]+[@]asu.edu"
+            comp = re.compile(regex)
+            eml = comp.search(event.text)
+            plain = eml.group().strip()
+
+            theUser = User(self.bot.users_lookupByEmail(email=plain).get("user", {}))
+
+            deets = ""
+            if theUser:
+                deets = (
+                    f"User ID: {theUser.id}\n"
+                    f"Name: {theUser.name}\n"
+                    f"Display Name: {theUser.profile.display_name}\n"
+                    f"Real Name: {theUser.real_name}\n"
+                    f"Email: {theUser.profile.email}\n"
+                    f"Time Zone: {theUser.time_zone}\n"
+                    f"Is Admin: {theUser.is_admin}\n"
+                    f"Is Owner: {theUser.is_owner}\n"
+                )
+            else:
+                deets = "Invalid user information received!"
+
+            self.text_sender_test(self.debug_chan, deets)
 
         # elif (
         #     event.channel_id == self.debug_chan
