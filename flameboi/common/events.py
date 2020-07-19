@@ -68,6 +68,8 @@ class AppHomeEvent:
         self.event_ts = self.event.get("event_ts")
         self.tab = self.event.get("tab")
         self.view = self.event.get("view", {})
+        self.view_id = self.view.get("id")
+        self.ext_id = self.view.get("external_id")
 
 
 class AppMentionEvent:

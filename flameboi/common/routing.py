@@ -5,7 +5,7 @@ import flameboi.modules_admin.debug as debug
 import flameboi.common.events as events
 
 from flameboi.common.objects import User
-from flameboi.modules_admin.onboard import get_onboarding_block, get_sample_block
+import flameboi.modules_admin.onboard as views
 from flameboi.modules_user.playlists import get_playlist_block
 
 
@@ -166,7 +166,7 @@ class Router:
 
             elif event.text and event.text.lower() == "!testblock":
 
-                self.block_sender_test(event.channel_id, get_sample_block)
+                self.block_sender_test(event.channel_id, views.get_sample_block)
 
     def handle_channel_join(self, payload):
         """
@@ -277,21 +277,30 @@ class Router:
         :return: The list of channels as a dict.
         :rtype: dict
         """
-
         event = events.AppHomeEvent(payload)
 
-        response = self.bot.views_publish(
-            user_id=event.user_id,
-            view=json.dumps(
-                {
-                    "type": "home",
-                    "title": {"type": "plain_text", "text": "Welcome!"},
-                    "blocks": get_onboarding_block(),
-                },
-            ),
+        self.text_sender_test(
+            self.debug_chan,
+            f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
         )
 
-        assert response["ok"]
+        if event.ext_id is None or f"{event.user_id}_home" not in event.ext_id:
+            self.text_sender_test(self.debug_chan, "Home updated")
+            response = self.bot.views_publish(
+                user_id=event.user_id,
+                view=json.dumps(
+                    {
+                        "type": "home",
+                        "title": {"type": "plain_text", "text": "Welcome!"},
+                        "blocks": views.get_about_block(),
+                        "external_id": f"{event.user_id}_home",
+                    },
+                ),
+            )
+
+            assert response["ok"]
+        else:
+            self.text_sender_test(self.debug_chan, "Home not updated.")
 
     #
     #

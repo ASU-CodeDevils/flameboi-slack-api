@@ -1,9 +1,219 @@
+from slack_blockkit.block_element import ButtonElement
 from slack_blockkit.composition_object import TextObject
-from slack_blockkit.layout_block import DividerBlock, SectionBlock
+from slack_blockkit.layout_block import DividerBlock, SectionBlock, ActionsBlock
 from slack_blockkit.utils import get_blocks, get_text_block_with_image
 
 
-def get_onboarding_block() -> list:
+def get_about_block() -> list:
+    """
+    Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
+    website.
+
+    :return: The onboarding message block as a list.
+    :rtype: list
+    """
+
+    block = get_blocks(
+        ActionsBlock(
+            elements=[
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "About", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "About",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Leadership",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Contact",
+                },
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "Channels",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "CodeDevils Website",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Link",
+                    "url": "https://www.codedevils.org",
+                },
+            ],
+        ),
+        DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. "
+                    "\n\n*A little about us:*"
+                ),
+            ),
+        ),
+        DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\n\n:cop: *Rules:*\n\n\t- All of <https://eoss.asu.edu/dos/srr/codeofconduct|ASU's Code of Conduct> applies!\n"
+                    "\t- Be nice!\n\t- Be professional!\n\t- Be postin' in the correct channels!\n"
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\n\n:scroll: *Good Info:*\n\n"
+                    "\t- General Body Meetings (GBMs) are open to all members, and occur every other Monday"
+                    " at 6pm AZ time via Slack video conference in #meetings. Occasional reminders are sent in #announcements.\n"
+                    "\t- Add the <https://calendar.google.com/calendar/b/2?cid=Y29kZWRldmlscy5pbmZvQGdtYWlsLmNvbQ|calendar> to your own. \n"
+                    "\t- We’ve recently reorganized the Slack, cutting down a lot of bloat. You have been automatically added to each "
+                    "channel, but if you’re a veteran member you may have to join the channels manually. The list of channels are posted "
+                    "in a thread on this post."
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\n\n:wrench: *Get Involved:*\n\n"
+                    "You’re apart of CodeDevils, take advantage of it!\n"
+                    "\t- CodeDevils is a real club, with real memberships and perks. If you haven’t already, <https://asu.campuslabs.com/engage/organization/codedevils|register>."
+                    " This helps us with accurate headcounting, which can be used to justify funding from ASU for fun things.\n"
+                    "\t- Check out various channels with the button above!\n"
+                    "\t- Checkout the CodeDevils <https://github.com/ASU-CodeDevils|GitHub>\n"
+                ),
+            ),
+        ),
+    )
+    return block
+
+
+def get_contact_block() -> list:
+    """
+    Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
+    website.
+
+    :return: The onboarding message block as a list.
+    :rtype: list
+    """
+
+    block = get_blocks(
+        ActionsBlock(
+            elements=[
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "About", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "About",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Leadership",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Contact",
+                },
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "Channels",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "CodeDevils Website",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Link",
+                    "url": "https://www.codedevils.org",
+                },
+            ],
+        ),
+        DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "Welcome to *CodeDevils*! I'm Flameboi, and I'll help you get settled. "
+                    "\n\n*Our Leadership:*"
+                ),
+            ),
+        ),
+        DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "If you have questions or concerns, send an email to info@codedevils.org or reach out to any CodeDevils leadership on Slack or email"
+                ),
+            ),
+        ),
+        DividerBlock(),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=("President: David Welborn @dswelbor"),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=("Vice President: Jeremy Doubleday @jwdouble jwdouble@asu.edu"),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=("Treasurer: Pierson Brannan @pbrannan pbrannan@asu.edu"),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=("Secretary: Jerry Naylor @jnaylor3"),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "Webmasters: Tia Peruzzi  @vperuzzi, Joe Reynolds @jcreyno5, Jacob Lebrec @jlabrec"
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "Staff Advisor (ASU Professor): Professor Ruben Acuna @racuna1 racuna1@asu.edu"
+                ),
+            ),
+        ),
+    )
+    return block
+
+
+def get_channels_block() -> list:
     """
     Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
     website.
@@ -15,6 +225,44 @@ def get_onboarding_block() -> list:
     hacker_rank_current_url = "http://www.hackerrank.com/codedevils-summer-2020"
 
     block = get_blocks(
+        ActionsBlock(
+            elements=[
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "About", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "About",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Leadership",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Contact",
+                },
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
+                    "value": "click_me_123",
+                    "action_id": "Channels",
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "CodeDevils Website",
+                        "emoji": True,
+                    },
+                    "value": "click_me_123",
+                    "action_id": "Link",
+                    "url": "https://www.codedevils.org",
+                },
+            ],
+        ),
+        DividerBlock(),
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
