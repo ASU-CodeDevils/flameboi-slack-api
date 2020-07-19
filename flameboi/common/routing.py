@@ -49,7 +49,7 @@ class Router:
         dm_chan = (
             self.bot.conversations_open(users=self.jer_user)
             .get("channel", {})
-            .get("id"),
+            .get("id")
         )
 
         self.text_sender_test(dm_chan, reply)
