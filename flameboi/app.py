@@ -119,12 +119,22 @@ def slashcommand():
             text = request.form.get("text")
             channel_id = request.form.get("channel_id")
             user_id = request.form.get("user_id")
+            user_name = request.form.get("user_name")
+            response_url = request.form.get("response_url")
+            command = request.form.get("command")
+            trigger_id = request.form.get("trigger_id")
 
             reply = (
-                f"User: <@{user_id}>\n" f"Channel: <#{channel_id}>\n" f"Text: {text}\n"
+                f"User ID: <@{user_id}>\n"
+                f"User Name: {user_name}\n"
+                f"Channel: <#{channel_id}>\n"
+                f"Command: {command}\n"
+                f"Text: {text}\n"
+                f"Response URL: {response_url}\n"
+                f"Trigger ID: {trigger_id}\n"
             )
 
-            payload = {"text": reply, "response_type": "in_channel"}
+            payload = {"text": reply, "response_type": "ephemeral"}
 
         return Response(
             response=json.dumps(payload), status=200, mimetype="application/json"
