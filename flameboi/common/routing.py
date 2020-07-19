@@ -67,13 +67,13 @@ class Router:
                 already_posted = True
                 break
 
+        if event.item_channel != self.debug_chan:
+
+            self.text_sender_test(self.debug_chan, debug.reaction_add(event))
+
         if not already_posted and event.user_id != self.bot_user_id:
 
-            if event.item_channel != self.debug_chan:
-
-                self.text_sender_test(self.debug_chan, debug.reaction_add(event))
-
-            elif event.reaction and event.reaction == "parrot":
+            if event.reaction and event.reaction == "parrot":
                 for i in range(1, 10):
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
