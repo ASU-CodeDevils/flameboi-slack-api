@@ -30,3 +30,4 @@ class Parser:
         funcs_to_run = []
         for cmd in self._get_commands(message):
             funcs_to_run.append(self.commands[cmd])
+        return funcs_to_run
