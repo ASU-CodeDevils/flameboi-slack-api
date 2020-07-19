@@ -27,7 +27,6 @@ class Router:
         self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
         self.cd_team_id = os.getenv("CODE_DEVILS_TEAM_ID")
-
         self.home_channel = os.getenv("HOME_CHAN_ID")
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
         self.stu_user = os.getenv("STU_ID")
@@ -200,7 +199,7 @@ class Router:
 
             self.text_sender_test(self.debug_chan, deets)
 
-        if (
+        elif (
             event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
             and "lookup" in event.text.lower()
