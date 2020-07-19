@@ -100,3 +100,8 @@ class TeamJoinEvent:
 
         self.type = self.event.get("type")
         self.user = User(self.event.get("user", {}))
+
+
+# class SlashCommand:
+#     def __init__(self, payload):
+#         self.raw = payload

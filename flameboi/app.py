@@ -1,6 +1,8 @@
 from flameboi.common.flameboi import Flameboi
 from flameboi.common.routing import Router
-from flask import Flask
+from flask import Flask, request, Response, jsonify
+import json
+import os
 
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
@@ -101,12 +103,32 @@ def home_open(payload):
 # ============== Other Endpoints ============= #
 
 
-# @app.route('/slash/listener')
-# def slashcommand():
-#     """
-#     Triggers handler for when the bot received slash command..
-#     """
-#     router.handle_slash_command()
+@app.route("/slash/", methods=["GET", "POST"])
+def slashcommand():
+    """
+    Triggers handler for when the bot received slash command..
+    """
+
+    if request.method == "GET":
+        return "These are not the slackbots you're looking for."
+
+    elif request.method == "POST":
+
+        if request.form.get("token") == os.getenv("VERIFICATION_TOKEN"):
+
+            text = request.form.get("text")
+            channel_id = request.form.get("channel_id")
+            user_id = request.form.get("user_id")
+
+            reply = (
+                f"User: <@{user_id}>\n" f"Channel: <#{channel_id}>\n" f"Text: {text}\n"
+            )
+
+            payload = {"text": reply, "response_type": "in_channel"}
+
+        return Response(
+            response=json.dumps(payload), status=200, mimetype="application/json"
+        )
 
 
 # @app.route('/newuser')

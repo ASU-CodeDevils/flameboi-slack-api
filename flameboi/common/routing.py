@@ -32,6 +32,12 @@ class Router:
         self.stu_user = os.getenv("STU_ID")
         self.jer_user = os.getenv("JER_ID")
 
+    # def handle_slash_command(self, payload):
+
+    #     event = events.SlashCommand(payload)
+
+    #     self.text_sender_test(self.debug_chan, event.raw)
+
     def handle_team_join(self, payload):
         """
         Returns the list of channels available to the bot.
