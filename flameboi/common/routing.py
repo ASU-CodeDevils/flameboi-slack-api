@@ -30,6 +30,7 @@ class Router:
         self.home_channel = os.getenv("HOME_CHAN_ID")
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
         self.stu_user = os.getenv("STU_ID")
+        self.jer_user = os.getenv("JER_ID")
 
     def handle_team_join(self, payload):
         """
@@ -41,7 +42,17 @@ class Router:
 
         event = events.TeamJoinEvent(payload)
 
-        self.text_sender_test(self.debug_chan, debug.team_join(event))
+        reply = debug.team_join(event)
+
+        self.text_sender_test(self.debug_chan, reply)
+
+        dm_chan = (
+            self.bot.conversations_open(users=self.jer_user)
+            .get("channel", {})
+            .get("id"),
+        )
+
+        self.text_sender_test(dm_chan, reply)
 
     def handle_reaction_added(self, payload):
         """
