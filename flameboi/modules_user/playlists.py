@@ -13,26 +13,26 @@ def get_playlist_block():
                 text=(":partywizard: CodeDevils playlists on Spotify :partywizard:"),
             ),
             fields=[
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/0lHeOLHPtj3dZnI7hjbEiy?si=vsB1ABcPQZWLDfELbbcPSw|*CodeDevils*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/1d8nCeom1L86vGT2JgSkzN?si=TjIS1iVcTPqIaGwocuaywA|*ReggaeDevils*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/0GqMtAzxxETzI8NtRVST6l?si=inOzMz43QJWL6hgT_1rOnQ|*InstrumentalDevils*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/5jLaarFVeCvkHCAhKnfdod?si=2pJX95vtQv2Pbf81b16p9w|*HipHopDevils*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://www.youtube.com/watch?v=wNzdzqksyiQ|*Stu's Juke Box* :copyright:>",
-                },
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/0lHeOLHPtj3dZnI7hjbEiy?si|*CodeDevils*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/1d8nCeom1L86vGT2JgSkzN?si|*ReggaeDevils*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/0GqMtAzxxETzI8NtRVST6l?si|*InstrumentalDevils*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/5jLaarFVeCvkHCAhKnfdod?si|*HipHopDevils*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://www.youtube.com/watch?v=wNzdzqksyiQ|*Stu's Juke Box* :copyright:>",
+                ).render(),
             ],
         ),
         DividerBlock(),
@@ -42,26 +42,26 @@ def get_playlist_block():
                 text=("Other good playlists on Spotify"),
             ),
             fields=[
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/37i9dQZF1DWXLeA8Omikj7?si=kdJfP56gS1mAPYEcsOc5fg|*Brain Food*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn?si=SB-cPgIsTL-gvA9xWH3rrg|*LoFi Beats*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ?si=1VgEAzJmRF-nJ0qNRPd-1A|*Deep Focus*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/1VWJjbN7LBzM6M4FG76ImT|*Asian LoFi Hip Hop*>",
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "<https://open.spotify.com/playlist/08fTEpRNEn0FcyXOWZ60wO?si=xCjkW151TNuhsyjHswqlfQ|*Acid Jazz/Lounge/Dub/Triphop*>",
-                },
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/37i9dQZF1DWXLeA8Omikj7?si|*Brain Food*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn?si|*LoFi Beats*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ?si|*Deep Focus*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/1VWJjbN7LBzM6M4FG76ImT|*Asian LoFi Hip Hop*>",
+                ).render(),
+                TextObject(
+                    btype=TextObject.BTYPE_MARKDOWN,
+                    text="<https://open.spotify.com/playlist/08fTEpRNEn0FcyXOWZ60wO?si|*Acid Jazz/Lounge/Triphop*>",
+                ).render(),
             ],
         ),
         DividerBlock(),
