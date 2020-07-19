@@ -1,3 +1,6 @@
+from flameboi.common.objects import User
+
+
 class MessageEvent:
     def __init__(self, payload):
         self.event = payload.get("event", {})
@@ -96,4 +99,4 @@ class TeamJoinEvent:
         self.event = payload.get("event", {})
 
         self.type = self.event.get("type")
-        self.user = self.event.get("user", {})
+        self.user = User(self.event.get("user", {}))

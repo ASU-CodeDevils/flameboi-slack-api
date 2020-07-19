@@ -1,16 +1,12 @@
 import json
 import os
+import re
+import flameboi.modules_admin.debug as debug
+import flameboi.common.events as events
 
-from flameboi.common.events import (
-    AppHomeEvent,
-    AppMentionEvent,
-    MemberJoinedChannelEvent,
-    MessageEvent,
-    PinAddedEvent,
-    ReactionAddedEvent,
-    TeamJoinEvent,
-)
-from flameboi.modules.onboard import get_onboarding_block, get_sample_block
+from flameboi.common.objects import User
+from flameboi.modules_admin.onboard import get_onboarding_block, get_sample_block
+from flameboi.modules_user.playlists import get_playlist_block
 
 
 class Router:
@@ -21,8 +17,6 @@ class Router:
     :rtype: dict
     """
 
-    # TODO: instantiate a modrunner class that will run modules triggered
-
     def __init__(self, theBot):
         self.bot = theBot.getClient()
         self.admin = theBot.getAdmin()
@@ -32,6 +26,7 @@ class Router:
         self.bot_id = os.getenv("BOT_ID")
         self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
+        self.cd_team_id = os.getenv("CODE_DEVILS_TEAM_ID")
 
         self.home_channel = os.getenv("HOME_CHAN_ID")
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
@@ -45,37 +40,9 @@ class Router:
         :rtype: dict
         """
 
-        event = TeamJoinEvent(payload)
+        event = events.TeamJoinEvent(payload)
 
-        theUser = self.theBot.get_user_as_obj(event)
-        deets = ""
-        if theUser.is_ok:
-            deets = (
-                f"User ID: {theUser.id}\n"
-                f"Name: {theUser.name}\n"
-                f"Display Name: {theUser.displyname}\n"
-                f"Real Name: {theUser.real_name}\n"
-                f"Email: {theUser.email}\n"
-                f"Team: {theUser.team}\n"
-                f"Team ID: {theUser.team_id}\n"
-                f"Time Zone: {theUser.time_zone}\n"
-                f"Is Admin: {theUser.is_admin}\n"
-                f"Is Owner: {theUser.is_owner}\n"
-            )
-        else:
-            deets = "Invalid user information received!"
-
-        reply = (
-            f"Testing Event Triggered...\n"
-            f"Team Join Event\n"
-            f"\nAnticipated Response: \n"
-            f":tada: :partywizard: Welcome to CodeDevils, {theUser.real_name}! :partywizard: :tada:\n"
-            f"\nInformation on the User who joined: \n" + deets
-        )
-
-        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-
-        assert response["ok"]
+        self.text_sender_test(self.debug_chan, debug.team_join(event))
 
     def handle_reaction_added(self, payload):
         """
@@ -85,26 +52,28 @@ class Router:
         :rtype: dict
         """
 
-        event = ReactionAddedEvent(payload)
+        event = events.ReactionAddedEvent(payload)
 
-        if event.item_channel == self.debug_chan and event.user_id != self.bot_user_id:
-            reply = (
-                f"Event Type: {event.type}\n"
-                f"User ID: {event.user_id}\n"
-                f"Reaction: {event.reaction}\n"
-                f"Item User ID: {event.item_user}\n"
-                f"Item Channel: {event.item_channel}\n"
-                f"Item TS: {event.item_ts}\n"
-                f"Reaction TS: {event.event_ts}"
-            )
+        reactions_posted = (
+            self.bot.reactions_get(channel=event.item_channel, timestamp=event.item_ts)
+            .get("message", {})
+            .get("reactions", [])
+        )
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-            assert response["ok"]
+        already_posted = False
 
-        # Test function for looping reaction response
+        for react in reactions_posted:
+            if self.bot_user_id in react.get("users", []):
+                already_posted = True
+                break
 
-        elif event.user_id != self.bot_user_id:
-            if event.reaction and event.reaction == "parrot":
+        if not already_posted and event.user_id != self.bot_user_id:
+
+            if event.item_channel != self.debug_chan:
+
+                self.text_sender_test(self.debug_chan, debug.reaction_add(event))
+
+            elif event.reaction and event.reaction == "parrot":
                 for i in range(1, 10):
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
@@ -125,7 +94,11 @@ class Router:
                 )
                 assert response["ok"]
 
-    # TODO: implement this
+        elif already_posted and event.user_id != self.bot_user_id:
+            self.text_sender_test(
+                chan=self.debug_chan,
+                txt=f"Already reacted to item/message, not reacting to :{event.reaction}:.\n",
+            )
 
     def handle_pin_added(self, payload):
         """
@@ -135,19 +108,9 @@ class Router:
         :rtype: dict
         """
 
-        event = PinAddedEvent(payload)
+        event = events.PinAddedEvent(payload)
 
-        reply = (
-            f"Testing Event Triggered...\n"
-            f"Pin Added Event\n"
-            f"Event Type: {event.type}\n"
-            f"User ID: {event.user_id}\n"
-            f"Channel ID: {event.channel_id}\n"
-            f"Event_TS: {event.event_ts}\n"
-        )
-
-        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply)
-        assert response["ok"]
+        self.text_sender_test(self.debug_chan, debug.pin_add(event))
 
     def handle_message(self, payload):
         """
@@ -157,103 +120,15 @@ class Router:
         :rtype: dict
         """
 
-        event = MessageEvent(payload)
+        event = events.MessageEvent(payload)
 
-        if event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
-            reply = (
-                f"Event Type: {event.type}\n"
-                f"Sub Type: {event.subtype}\n"
-                f"Channel ID: {event.channel_id}\n"
-                f"User ID: {event.user_id}\n"
-                f"Message: {event.text}\n"
-                f"Timestamp: {event.ts}"
-            )
+        if event.subtype == None and event.channel_id != self.debug_chan:
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
+            self.text_sender_test(self.debug_chan, debug.message(event))
 
-            assert response["ok"]
-
-        # Test function for specific user and chain reaction response
-
-        if event.user_id == "USLACKBOT":
-
-            if event.text and "yes" in event.text.lower():
-
-                removal = self.admin.chat_delete(channel=event.channel_id, ts=event.ts,)
-                assert removal["ok"]
-
-                reply = "This response replaced by a better bot..."
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply,
-                )
-                assert response["ok"]
-            else:
-                badbot = ["b", "a1", "letterd", "btrain", "o", "latin_cross"]
-
-                for emote in badbot:
-                    response = self.bot.reactions_add(
-                        channel=event.channel_id, timestamp=event.ts, name=emote,
-                    )
-                    assert response["ok"]
-
-        if event.subtype != "bot_message" and event.subtype != "message_deleted":
-
-            # Test to see if flameboi responds quicker that slackbot (it does for now!)
-
-            # if details['text'] and details['text'].lower() == "jesus":
-
-            #     reply = f"Speedtest"
-
-            #     response = self.bot.chat_postMessage(
-            #         channel=details['channel_id'],
-            #         text=reply,
-            #     )
-
-            #       assert response["ok"]
-
-            # Test function for unthreaded response
+        if event.subtype != "bot_message" and event.channel_id == self.debug_chan:
 
             if event.text and event.text.lower() == "!test":
-
-                reply = f":tada: :partywizard: I'm here <@{event.user_id}>! :partywizard: :tada:"
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply,
-                )
-
-                assert response["ok"]
-
-            # Test function for threaded response
-
-            elif event.text and event.text.lower() == "!testthread":
-
-                reply = f":tada: :partywizard: I'm here <@{event.user_id}>! :partywizard: :tada:"
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply, thread_ts=event.ts,
-                )
-
-                assert response["ok"]
-
-            # Test function for block response
-
-            elif event.text and event.text.lower() == "!testblock":
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id,
-                    text="testing...",
-                    blocks=json.dumps(get_sample_block()),
-                )
-                assert response["ok"]
-
-            # Test function for reaction response
-
-            elif (
-                event.text
-                and "party" in event.text.lower()
-                and ":partywizard:" not in event.text
-            ):
 
                 reply = ":partywizard:"
 
@@ -263,34 +138,19 @@ class Router:
 
                 assert response["ok"]
 
-            # Test function for to get channel info and links
+            elif event.text and event.text.lower() == "!testthread":
 
-            elif event.text and event.text.lower() == "!channel":
-
-                name = self.bot.conversations_info(channel=event.channel_id)
-
-                usable = name.get("channel", {}).get("name")
-
-                reply = (
-                    f"Channel ID: {event.channel_id}\n"
-                    f"Channel Name: {usable}\n"
-                    f"Channel Link: <#{event.channel_id}>"
-                )
+                reply = ":partywizard:"
 
                 response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply,
+                    channel=event.channel_id, text=reply, thread_ts=event.ts,
                 )
 
                 assert response["ok"]
 
-            # TODO: Expand on block kit builder base (which is awesome Kevin!)
-            # Below is example use of blocks using !onboard to send the onboarding block
+            elif event.text and event.text.lower() == "!testblock":
 
-            # if details['text'] and details['text'].lower() == "!onboard":
-            #     assert self.bot.send_onboarding_DM(details['user_id'])["ok"]
-            #
-            # if details['text'] and details['text'].lower() == "!qod":
-            #     assert self.bot.send_qod(details['channel_id'])["ok"]
+                self.block_sender_test(event.channel_id, get_sample_block)
 
     def handle_channel_join(self, payload):
         """
@@ -300,30 +160,11 @@ class Router:
         :rtype: dict
         """
 
-        event = MemberJoinedChannelEvent(payload)
+        event = events.MemberJoinedChannelEvent(payload)
 
         theUser = self.theBot.get_user_as_obj(event.user_id)
 
-        reply = (
-            f"Testing Event Triggered...\n"
-            f"Channel Join Event\n"
-            f"Anticipated Response: \n"
-            f":tada: :partywizard: Welcome to <#{event.channel_id}>, {theUser.real_name}! :partywizard: :tada:\n"
-            f"\nInformation on the User who joined: \n"
-            f"User ID: {theUser.id}\n"
-            f"Name: {theUser.name}\n"
-            f"Display Name: {theUser.displyname}\n"
-            f"Real Name: {theUser.real_name}\n"
-            f"Email: {theUser.email}\n"
-            f"Team: {theUser.team}\n"
-            f"Team ID: {theUser.team_id}\n"
-            f"Time Zone: {theUser.time_zone}\n"
-            f"Is Admin: {theUser.is_admin}\n"
-            f"Is Owner: {theUser.is_owner}\n"
-        )
-
-        response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-        assert response["ok"]
+        self.text_sender_test(self.debug_chan, debug.channel_join(event, theUser))
 
     def handle_app_mention(self, payload):
         """
@@ -333,9 +174,7 @@ class Router:
         :rtype: dict
         """
 
-        event = AppMentionEvent(payload)
-
-        # Test function for app mention
+        event = events.AppMentionEvent(payload)
 
         if (
             event.channel_id == self.debug_chan
@@ -344,53 +183,76 @@ class Router:
         ):
 
             theUser = self.theBot.get_user_as_obj(event.user_id)
+            deets = ""
+            if theUser:
+                deets = (
+                    f"User ID: {theUser.id}\n"
+                    f"Name: {theUser.name}\n"
+                    f"Display Name: {theUser.profile.display_name}\n"
+                    f"Real Name: {theUser.real_name}\n"
+                    f"Email: {theUser.profile.email}\n"
+                    f"Time Zone: {theUser.time_zone}\n"
+                    f"Is Admin: {theUser.is_admin}\n"
+                    f"Is Owner: {theUser.is_owner}\n"
+                )
+            else:
+                deets = "Invalid user information received!"
 
-            reply = (
-                f"User ID: {theUser.id}\n"
-                f"Name: {theUser.name}\n"
-                f"Display Name: {theUser.displyname}\n"
-                f"Real Name: {theUser.real_name}\n"
-                f"Email: {theUser.email}\n"
-                f"Team: {theUser.team}\n"
-                f"Team ID: {theUser.team_id}\n"
-                f"Time Zone: {theUser.time_zone}\n"
-                f"Is Admin: {theUser.is_admin}\n"
-                f"Is Owner: {theUser.is_owner}\n"
-            )
+            self.text_sender_test(self.debug_chan, deets)
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
-
-            assert response["ok"]
-
-        elif (
+        if (
             event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
-            and "onboard" in event.text.lower()
+            and "lookup" in event.text.lower()
         ):
-            response = self.bot.chat_postMessage(
-                channel=self.debug_chan, blocks=json.dumps(get_onboarding_block())
-            )
-            assert response["ok"]
 
-        elif event.channel_id == self.debug_chan and event.user_id != self.bot_user_id:
-            reply = (
-                f"Event Type: {event.type}\n"
-                f"User ID: {event.user_id}\n"
-                f"Message: {event.text}\n"
-                f"Timestamp: {event.ts}\n"
-                f"Channel ID: {event.channel_id}\n"
-                f"Event TS: {event.event_ts}"
-            )
+            regex = r"[ ]*[a-z0-9]+[\._]?[a-z0-9]+[@]asu.edu"
+            comp = re.compile(regex)
+            eml = comp.search(event.text)
+            plain = eml.group().strip()
 
-            response = self.bot.chat_postMessage(channel=self.debug_chan, text=reply,)
+            theUser = User(self.bot.users_lookupByEmail(email=plain).get("user", {}))
 
-            assert response["ok"]
+            deets = ""
+            if theUser:
+                deets = (
+                    f"User ID: {theUser.id}\n"
+                    f"Name: {theUser.name}\n"
+                    f"Display Name: {theUser.profile.display_name}\n"
+                    f"Real Name: {theUser.real_name}\n"
+                    f"Email: {theUser.profile.email}\n"
+                    f"Time Zone: {theUser.time_zone}\n"
+                    f"Is Admin: {theUser.is_admin}\n"
+                    f"Is Owner: {theUser.is_owner}\n"
+                )
+            else:
+                deets = "Invalid user information received!"
 
-        else:
-            reply = f"You talking to me, <@{event.user_id}>?!?"
+            self.text_sender_test(self.debug_chan, deets)
 
-            response = self.bot.chat_postMessage(channel=event.channel_id, text=reply,)
-            assert response["ok"]
+        # elif (
+        #     event.channel_id == self.debug_chan
+        #     and event.user_id != self.bot_user_id
+        #     and "onboard" in event.text.lower()
+        # ):
+        #     self.block_sender_test(self.debug_chan, get_onboarding_block)
+
+        # elif event.user_id != self.bot_user_id and "qod" in event.text.lower():
+
+        #     self.ephemeral_sender(
+        #         user=event.user_id,
+        #         channel=event.channel_id,
+        #         text="",
+        #         func=get_qod_block,
+        #     )
+
+        elif event.user_id != self.bot_user_id and "playlists" in event.text.lower():
+
+            self.block_sender_test(event.channel_id, get_playlist_block)
+
+        if event.user_id != self.bot_user_id:
+
+            self.text_sender_test(self.debug_chan, debug.app_mention(event))
 
     def handle_app_home(self, payload):
         """
@@ -400,29 +262,50 @@ class Router:
         :rtype: dict
         """
 
-        event = AppHomeEvent(payload)
+        event = events.AppHomeEvent(payload)
 
-        response = (
-            self.bot.views_publish(
-                user_id=event.user_id,
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": get_onboarding_block(),
-                    },
-                ),
+        response = self.bot.views_publish(
+            user_id=event.user_id,
+            view=json.dumps(
+                {
+                    "type": "home",
+                    "title": {"type": "plain_text", "text": "Welcome!"},
+                    "blocks": get_onboarding_block(),
+                },
             ),
         )
 
         assert response["ok"]
 
-    # TODO: Add endpoint for easy trigger of simple functions (like existing slash commands)
-
-    # def handle_slash_command(self, payload):
-    #     """
-    #     Returns the list of channels available to the bot.
     #
-    #     :return: The list of channels as a dict.
-    #     :rtype: dict
-    #     """
+    #
+    #
+
+    def ephemeral_sender(
+        self, user: str, channel: str, text: str, func=None, attach: list = None,
+    ):
+
+        blkout = json.dumps(func()) if func else None
+        attout = json.dumps(attach) if attach else None
+
+        response = self.bot.chat_postEphemeral(
+            user=user, channel=channel, text=text, blocks=blkout, attachments=attout
+        )
+        assert response["ok"]
+
+    def block_sender_test(self, chan, get_blk):
+
+        response = self.bot.chat_postMessage(channel=chan, blocks=json.dumps(get_blk()))
+        assert response["ok"]
+
+    def text_sender_test(self, chan, txt):
+
+        response = self.bot.chat_postMessage(channel=chan, text=txt)
+        assert response["ok"]
+
+    def reaction_sender_test(self, reaction: str, channel: str, timestamp: str):
+
+        response = self.bot.reactions_add(
+            name=reaction, channel=channel, timestamp=timestamp,
+        )
+        assert response["ok"]

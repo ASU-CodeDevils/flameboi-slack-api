@@ -1,4 +1,39 @@
 # TODO: Split off messaging/posting/chatting functions to a Messenger class... keep the admin stuff in Flameboi
+import json
+
+
+class Messenger:
+    def __init__(self, bot_client):
+        self.bot = bot_client
+
+    def ephemeral_sender(
+        self, user: str, channel: str, text: str, func=None, attach: list = None,
+    ):
+
+        blkout = json.dumps(func()) if func else None
+        attout = json.dumps(attach) if attach else None
+
+        response = self.bot.chat_postEphemeral(
+            user=user, channel=channel, text=text, blocks=blkout, attachments=attout
+        )
+        assert response["ok"]
+
+    def block_sender_test(self, chan, get_blk):
+
+        response = self.bot.chat_postMessage(channel=chan, blocks=json.dumps(get_blk()))
+        assert response["ok"]
+
+    def text_sender_test(self, chan, txt):
+
+        response = self.bot.chat_postMessage(channel=chan, text=txt)
+        assert response["ok"]
+
+    def reaction_sender_test(self, reaction: str, channel: str, timestamp: str):
+
+        response = self.bot.reactions_add(
+            name=reaction, channel=channel, timestamp=timestamp,
+        )
+        assert response["ok"]
 
 
 def send_message(
@@ -41,17 +76,17 @@ def _send_block_message(self, message: dict, user_id: int = 0) -> dict:
     return self.bot_client.chat_postMessage(**message)
 
 
-# def get_welcome_block(self, channel: str) -> dict:
-#     """
-#     Sends the welcome message to the user.
+def get_welcome_block(self, channel: str) -> dict:
+    """
+    Sends the welcome message to the user.
 
-#     :param channel: The channel ID of the user as a string.
-#     :type channel: str
-#     :return: The response from the message payload.
-#     :rtype: dict
-#     """
-#     self.channel = channel
-#     return self.get_message_payload(blocks=get_onboarding_block())
+    :param channel: The channel ID of the user as a string.
+    :type channel: str
+    :return: The response from the message payload.
+    :rtype: dict
+    """
+    self.channel = channel
+    return self.get_message_payload(blocks=get_onboarding_block())
 
 
 def send_onboarding_message(self, user_email: str) -> dict:
