@@ -5,7 +5,7 @@ import flameboi.modules_admin.debug as debug
 import flameboi.common.events as events
 
 from flameboi.common.objects import User
-from flameboi.modules_admin.onboard import get_onboarding_block, get_sample_block
+import flameboi.views.app_home as views
 from flameboi.modules_user.playlists import get_playlist_block
 
 
@@ -27,22 +27,39 @@ class Router:
         self.bot_user_id = os.getenv("USER_ID")
         self.bot_app_id = os.getenv("APP_ID")
         self.cd_team_id = os.getenv("CODE_DEVILS_TEAM_ID")
-
         self.home_channel = os.getenv("HOME_CHAN_ID")
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
         self.stu_user = os.getenv("STU_ID")
+        self.jer_user = os.getenv("JER_ID")
+
+    # def handle_slash_command(self, payload):
+
+    #     event = events.SlashCommand(payload)
+
+    #     self.text_sender_test(self.debug_chan, event.raw)
 
     def handle_team_join(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a Member Joined Team event.  Currently passes event to a debug function which posts
+        various details on the user and channel involved to the logging channel. Also DM's specified 
+        admin the information of the new user.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
 
         event = events.TeamJoinEvent(payload)
 
-        self.text_sender_test(self.debug_chan, debug.team_join(event))
+        reply = debug.team_join(event)
+
+        self.text_sender_test(self.debug_chan, reply)
+
+        dm_chan = (
+            self.bot.conversations_open(users=self.jer_user)
+            .get("channel", {})
+            .get("id")
+        )
+
+        self.text_sender_test(dm_chan, reply)
 
     def handle_reaction_added(self, payload):
         """
@@ -67,13 +84,17 @@ class Router:
                 already_posted = True
                 break
 
-        if not already_posted and event.user_id != self.bot_user_id:
-
-            if event.item_channel != self.debug_chan:
-
+        if event.item_channel != self.debug_chan:
+            if event.user_id == self.bot_user_id:
+                self.text_sender_test(
+                    self.debug_chan, f"Not yet reacted, adding :{event.reaction}:\n"
+                )
+            else:
                 self.text_sender_test(self.debug_chan, debug.reaction_add(event))
 
-            elif event.reaction and event.reaction == "parrot":
+        if not already_posted and event.user_id != self.bot_user_id:
+
+            if event.reaction and event.reaction == "parrot":
                 for i in range(1, 10):
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
@@ -122,7 +143,7 @@ class Router:
 
         event = events.MessageEvent(payload)
 
-        if event.subtype == None and event.channel_id != self.debug_chan:
+        if event.subtype is None and event.channel_id != self.debug_chan:
 
             self.text_sender_test(self.debug_chan, debug.message(event))
 
@@ -150,14 +171,14 @@ class Router:
 
             elif event.text and event.text.lower() == "!testblock":
 
-                self.block_sender_test(event.channel_id, get_sample_block)
+                self.block_sender_test(event.channel_id, views.get_sample_block)
 
     def handle_channel_join(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a Member Joined Channel event.  Currently passes event to a debug function which posts
+        various details on the user and channel involved to the loggin channel.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
 
         event = events.MemberJoinedChannelEvent(payload)
@@ -200,7 +221,7 @@ class Router:
 
             self.text_sender_test(self.debug_chan, deets)
 
-        if (
+        elif (
             event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
             and "lookup" in event.text.lower()
@@ -256,29 +277,30 @@ class Router:
 
     def handle_app_home(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a App Home Opened event.  Tests to see if the user has a home or a home with an outdated
+        external_id (not conforming to the {user_id}_home syntax).  If true, calls a function to publish
+        a new view to the user's app home view.  If the view exists and is of the proper form, does nothing.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
-
         event = events.AppHomeEvent(payload)
 
-        response = self.bot.views_publish(
-            user_id=event.user_id,
-            view=json.dumps(
-                {
-                    "type": "home",
-                    "title": {"type": "plain_text", "text": "Welcome!"},
-                    "blocks": get_onboarding_block(),
-                },
-            ),
-        )
+        # # Debuggin output commented out.
+        # self.text_sender_test(
+        #     self.debug_chan,
+        #     f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
+        # )
 
-        assert response["ok"]
+        if event.ext_id is None or f"{event.user_id}_home" not in event.ext_id:
+
+            views.publish_init_home(event.user_id, self.theBot)
+        #     self.text_sender_test(self.debug_chan, "Home updated")
+
+        # else:
+        #     self.text_sender_test(self.debug_chan, "Home not updated.")
 
     #
-    #
+    # Just used here for experimentation... will be moved to Messenger once complete.
     #
 
     def ephemeral_sender(

@@ -1,6 +1,10 @@
 from flameboi.common.flameboi import Flameboi
 from flameboi.common.routing import Router
-from flask import Flask
+from flask import Flask, request, Response, jsonify
+import json
+import os
+from flameboi.views.app_home import choose_home_view
+
 
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
@@ -8,11 +12,9 @@ app = Flask(__name__)
 # Initialize a Web API client, Router and Slack Events adapter
 theBot = Flameboi(app)
 
-admin_client = theBot.getAdmin()
-bot_client = theBot.getClient()
-
 slack_events_adapter = theBot.getAdapter()
 router = Router(theBot)
+debug_chan = os.getenv("DEBUG_CHAN_ID")
 
 
 # ================ Team Join Event =============== #
@@ -101,12 +103,85 @@ def home_open(payload):
 # ============== Other Endpoints ============= #
 
 
-# @app.route('/slash/listener')
-# def slashcommand():
-#     """
-#     Triggers handler for when the bot received slash command..
-#     """
-#     router.handle_slash_command()
+@app.route("/slash/", methods=["GET", "POST"])
+def slashcommand():
+    """
+    Triggers handler for when the bot received slash command..
+    """
+
+    if request.method == "GET":
+        return "These are not the slackbots you're looking for."
+
+    elif request.method == "POST":
+
+        if request.form.get("token") == os.getenv("VERIFICATION_TOKEN"):
+
+            text = request.form.get("text")
+            channel_id = request.form.get("channel_id")
+            user_id = request.form.get("user_id")
+            user_name = request.form.get("user_name")
+            response_url = request.form.get("response_url")
+            command = request.form.get("command")
+            trigger_id = request.form.get("trigger_id")
+
+            reply = (
+                f"User ID: <@{user_id}>\n"
+                f"User Name: {user_name}\n"
+                f"Channel: <#{channel_id}>\n"
+                f"Command: {command}\n"
+                f"Text: {text}\n"
+                f"Response URL: {response_url}\n"
+                f"Trigger ID: {trigger_id}\n"
+            )
+
+            payload = {
+                "text": reply,
+                "response_type": "ephemeral",
+            }
+
+        return Response(
+            response=json.dumps(payload), status=200, mimetype="application/json"
+        )
+
+
+@app.route("/interactions/", methods=["GET", "POST"])
+def interactions():
+    """
+    Triggers handler for when the bot received slash command..
+    """
+
+    if request.method == "GET":
+        return "These are not the slackbots you're looking for."
+
+    elif request.method == "POST":
+
+        payload = request.form.get("payload")
+        py_json = json.loads(payload)
+
+        msg_type = py_json.get("type")
+        user = py_json.get("user", {})["id"]
+        cont_type = py_json.get("container", {})["type"]
+        view_id = py_json.get("container", {})["view_id"]
+        response_url = py_json.get("response_url")
+        action = py_json.get("actions", [])[0]["action_id"]
+
+        # # Debugging output
+        # reply = (
+        #     f"Home Button Pushed\n"
+        #     f"Type: {msg_type}\n"
+        #     f"User ID: {user}\n"
+        #     f"Container Type: {cont_type}\n"
+        #     f"View ID: {view_id}\n"
+        #     f"Response URL: {response_url}\n"
+        #     f"Action ID: {action}\n"
+        # )
+
+        # respond = theBot.bot_client.chat_postMessage(channel=debug_chan, text=reply)
+        # assert respond["ok"]
+
+        choose_home_view(action, user, theBot)
+
+        return Response(status=200, mimetype="application/json")
 
 
 # @app.route('/newuser')
