@@ -85,8 +85,12 @@ class Router:
                 break
 
         if event.item_channel != self.debug_chan:
-
-            self.text_sender_test(self.debug_chan, debug.reaction_add(event))
+            if event.user_id == self.bot_user_id:
+                self.text_sender_test(
+                    self.debug_chan, f"Not yet reacted, adding :{event.reaction}:\n"
+                )
+            else:
+                self.text_sender_test(self.debug_chan, debug.reaction_add(event))
 
         if not already_posted and event.user_id != self.bot_user_id:
 
@@ -139,7 +143,7 @@ class Router:
 
         event = events.MessageEvent(payload)
 
-        if event.subtype == None and event.channel_id != self.debug_chan:
+        if event.subtype is None and event.channel_id != self.debug_chan:
 
             self.text_sender_test(self.debug_chan, debug.message(event))
 
