@@ -3,7 +3,7 @@ from flameboi.common.routing import Router
 from flask import Flask, request, Response, jsonify
 import json
 import os
-import flameboi.modules_admin.onboard as views
+from flameboi.views.app_home import choose_home_view
 
 
 # Initialize a Flask app to host the events adapter
@@ -144,8 +144,8 @@ def slashcommand():
         )
 
 
-@app.route("/block/", methods=["GET", "POST"])
-def block_action():
+@app.route("/interactions/", methods=["GET", "POST"])
+def interactions():
     """
     Triggers handler for when the bot received slash command..
     """
@@ -164,66 +164,22 @@ def block_action():
         view_id = py_json.get("container", {})["view_id"]
         response_url = py_json.get("response_url")
         action = py_json.get("actions", [])[0]["action_id"]
-        action_val = py_json.get("actions", [])[0]["value"]
 
-        reply = (
-            f"Home Button Pushed\n"
-            f"Type: {msg_type}\n"
-            f"User ID: {user}\n"
-            f"Container Type: {cont_type}\n"
-            f"View ID: {view_id}\n"
-            f"Response URL: {response_url}\n"
-            f"Action ID: {action}\n"
-            f"Action Value: {action_val}\n"
-        )
+        # # Debugging output
+        # reply = (
+        #     f"Home Button Pushed\n"
+        #     f"Type: {msg_type}\n"
+        #     f"User ID: {user}\n"
+        #     f"Container Type: {cont_type}\n"
+        #     f"View ID: {view_id}\n"
+        #     f"Response URL: {response_url}\n"
+        #     f"Action ID: {action}\n"
+        # )
 
-        respond = theBot.bot_client.chat_postMessage(channel=debug_chan, text=reply)
-        assert respond["ok"]
+        # respond = theBot.bot_client.chat_postMessage(channel=debug_chan, text=reply)
+        # assert respond["ok"]
 
-        if action == "About":
-            response = theBot.bot_client.views_update(
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": views.get_about_block(),
-                        "external_id": f"{user}_home",
-                    },
-                ),
-                external_id=f"{user}_home",
-            )
-            assert response["ok"]
-
-        elif action == "Contact":
-
-            response = theBot.bot_client.views_update(
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": views.get_contact_block(),
-                        "external_id": f"{user}_home",
-                    },
-                ),
-                external_id=f"{user}_home",
-            )
-            assert response["ok"]
-
-        elif action == "Channels":
-
-            response = theBot.bot_client.views_update(
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": views.get_channels_block(),
-                        "external_id": f"{user}_home",
-                    },
-                ),
-                external_id=f"{user}_home",
-            )
-
-            assert response["ok"]
+        choose_home_view(action, user, theBot)
 
         return Response(status=200, mimetype="application/json")
 

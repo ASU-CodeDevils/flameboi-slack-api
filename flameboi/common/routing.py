@@ -5,7 +5,7 @@ import flameboi.modules_admin.debug as debug
 import flameboi.common.events as events
 
 from flameboi.common.objects import User
-import flameboi.modules_admin.onboard as views
+import flameboi.views.app_home as views
 from flameboi.modules_user.playlists import get_playlist_block
 
 
@@ -40,10 +40,11 @@ class Router:
 
     def handle_team_join(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a Member Joined Team event.  Currently passes event to a debug function which posts
+        various details on the user and channel involved to the logging channel. Also DM's specified 
+        admin the information of the new user.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
 
         event = events.TeamJoinEvent(payload)
@@ -170,10 +171,10 @@ class Router:
 
     def handle_channel_join(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a Member Joined Channel event.  Currently passes event to a debug function which posts
+        various details on the user and channel involved to the loggin channel.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
 
         event = events.MemberJoinedChannelEvent(payload)
@@ -272,38 +273,30 @@ class Router:
 
     def handle_app_home(self, payload):
         """
-        Returns the list of channels available to the bot.
+        Handles a App Home Opened event.  Tests to see if the user has a home or a home with an outdated
+        external_id (not conforming to the {user_id}_home syntax).  If true, calls a function to publish
+        a new view to the user's app home view.  If the view exists and is of the proper form, does nothing.
 
-        :return: The list of channels as a dict.
-        :rtype: dict
+        :return: None.
         """
         event = events.AppHomeEvent(payload)
 
-        self.text_sender_test(
-            self.debug_chan,
-            f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
-        )
+        # # Debuggin output commented out.
+        # self.text_sender_test(
+        #     self.debug_chan,
+        #     f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
+        # )
 
         if event.ext_id is None or f"{event.user_id}_home" not in event.ext_id:
-            self.text_sender_test(self.debug_chan, "Home updated")
-            response = self.bot.views_publish(
-                user_id=event.user_id,
-                view=json.dumps(
-                    {
-                        "type": "home",
-                        "title": {"type": "plain_text", "text": "Welcome!"},
-                        "blocks": views.get_about_block(),
-                        "external_id": f"{event.user_id}_home",
-                    },
-                ),
-            )
 
-            assert response["ok"]
-        else:
-            self.text_sender_test(self.debug_chan, "Home not updated.")
+            views.publish_init_home(event.user_id, self.theBot)
+        #     self.text_sender_test(self.debug_chan, "Home updated")
+
+        # else:
+        #     self.text_sender_test(self.debug_chan, "Home not updated.")
 
     #
-    #
+    # Just used here for experimentation... will be moved to Messenger once complete.
     #
 
     def ephemeral_sender(

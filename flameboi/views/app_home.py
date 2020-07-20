@@ -1,15 +1,134 @@
-from slack_blockkit.block_element import ButtonElement
+import json
+from flameboi.common.flameboi import Flameboi
+
+# from slack_blockkit.block_element import ButtonElement
 from slack_blockkit.composition_object import TextObject
 from slack_blockkit.layout_block import DividerBlock, SectionBlock, ActionsBlock
 from slack_blockkit.utils import get_blocks, get_text_block_with_image
 
 
-def get_about_block() -> list:
+def publish_init_home(user_id: str, theBot: Flameboi):
     """
-    Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
+    Publishes an initial app home view to the specified user and sets the external id
+    as the {user_id}_home.
+
+    :return: None.
+    """
+    response = theBot.bot_client.views_publish(
+        user_id=user_id,
+        view=json.dumps(
+            {
+                "type": "home",
+                "title": {"type": "plain_text", "text": "Welcome!"},
+                "blocks": _get_about_block(),
+                "external_id": f"{user_id}_home",
+            },
+        ),
+    )
+
+    assert response["ok"]
+
+
+def choose_home_view(action: str, user: str, theBot: Flameboi):
+    """
+    Updates an app home view to the specified external id.  Determined by the 
+    Action identified by the button as passed by argument.
+
+    :return: None.
+    """
+    if action == "About":
+        response = theBot.bot_client.views_update(
+            view=json.dumps(
+                {
+                    "type": "home",
+                    "title": {"type": "plain_text", "text": "Welcome!"},
+                    "blocks": _get_about_block(),
+                    "external_id": f"{user}_home",
+                },
+            ),
+            external_id=f"{user}_home",
+        )
+        assert response["ok"]
+
+    elif action == "Contact":
+
+        response = theBot.bot_client.views_update(
+            view=json.dumps(
+                {
+                    "type": "home",
+                    "title": {"type": "plain_text", "text": "Welcome!"},
+                    "blocks": _get_contact_block(),
+                    "external_id": f"{user}_home",
+                },
+            ),
+            external_id=f"{user}_home",
+        )
+        assert response["ok"]
+
+    elif action == "Channels":
+
+        response = theBot.bot_client.views_update(
+            view=json.dumps(
+                {
+                    "type": "home",
+                    "title": {"type": "plain_text", "text": "Welcome!"},
+                    "blocks": _get_channels_block(),
+                    "external_id": f"{user}_home",
+                },
+            ),
+            external_id=f"{user}_home",
+        )
+
+        assert response["ok"]
+
+
+# TODO: Get this working so that we can avoid repeating in the blocks below
+
+
+def _get_home_buttons() -> ActionsBlock:
+    """
+    Constructs a block, which contains buttons for easy navigation on flameboi home tab.
+
+    :return: ActionBlock containing 4 ButtonElements.
+    :rtype: ActionBlock
+    """
+    return ActionsBlock(
+        elements=[
+            {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "About", "emoji": True,},
+                "action_id": "About",
+            },
+            {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "Leadership", "emoji": True,},
+                "action_id": "Contact",
+            },
+            {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
+                "action_id": "Channels",
+            },
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "CodeDevils Website",
+                    "emoji": True,
+                },
+                "action_id": "Link",
+                "url": "https://www.codedevils.org",
+            },
+        ],
+    )
+
+
+def _get_about_block() -> list:
+    """
+    Constructs a block, which contains information on and  links to the CodeDevils
     website.
 
-    :return: The onboarding message block as a list.
+    :return: The about message block as a list.
     :rtype: list
     """
 
@@ -19,7 +138,6 @@ def get_about_block() -> list:
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "About", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "About",
                 },
                 {
@@ -29,13 +147,11 @@ def get_about_block() -> list:
                         "text": "Leadership",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Contact",
                 },
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "Channels",
                 },
                 {
@@ -45,7 +161,6 @@ def get_about_block() -> list:
                         "text": "CodeDevils Website",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Link",
                     "url": "https://www.codedevils.org",
                 },
@@ -66,33 +181,38 @@ def get_about_block() -> list:
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
-                    "\n\n:cop: *Rules:*\n\n\t- All of <https://eoss.asu.edu/dos/srr/codeofconduct|ASU's Code of Conduct> applies!\n"
-                    "\t- Be nice!\n\t- Be professional!\n\t- Be postin' in the correct channels!\n"
+                    "\n\n:cop: *Rules:*\n\n\t- All of <https://eoss.asu.edu/dos/srr/codeofconduct|"
+                    "ASU's Code of Conduct> applies!\n\t- Be nice!\n\t- Be professional!"
+                    "\n\t- Be postin' in the correct channels!\n"
                 ),
             ),
         ),
+        DividerBlock(),
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
                     "\n\n:scroll: *Good Info:*\n\n"
-                    "\t- General Body Meetings (GBMs) are open to all members, and occur every other Monday"
-                    " at 6pm AZ time via Slack video conference in #meetings. Occasional reminders are sent in #announcements.\n"
-                    "\t- Add the <https://calendar.google.com/calendar/b/2?cid=Y29kZWRldmlscy5pbmZvQGdtYWlsLmNvbQ|calendar> to your own. \n"
-                    "\t- We’ve recently reorganized the Slack, cutting down a lot of bloat. You have been automatically added to each "
-                    "channel, but if you’re a veteran member you may have to join the channels manually. The list of channels are posted "
-                    "in a thread on this post."
+                    "\t- General Body Meetings (GBMs) are open to all members\n\t\tThey occur every other Monday"
+                    " at 6pm AZ time via Slack video conference in #meetings. \n\t\tOccasional reminders are sent "
+                    "in #announcements.\n\t- Add the <https://calendar.google.com/calendar/b/2?cid=Y29kZWRldm"
+                    "lscy5pbmZvQGdtYWlsLmNvbQ|calendar> to your own.\n\t- We’ve recently reorganized the Slack, "
+                    "cutting down a lot of bloat. You have been automatically added to each channel, but if "
+                    "you’re a veteran member you may have to join the channels manually. The list of channels "
+                    "are posted in a thread on this post."
                 ),
             ),
         ),
+        DividerBlock(),
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
                     "\n\n:wrench: *Get Involved:*\n\n"
                     "You’re apart of CodeDevils, take advantage of it!\n"
-                    "\t- CodeDevils is a real club, with real memberships and perks. If you haven’t already, <https://asu.campuslabs.com/engage/organization/codedevils|register>."
-                    " This helps us with accurate headcounting, which can be used to justify funding from ASU for fun things.\n"
+                    "\t- CodeDevils is a real club, with real memberships and perks. \n\t\tIf you haven’t already, "
+                    "<https://asu.campuslabs.com/engage/organization/codedevils|register>. \n\t\tThis helps us with "
+                    "accurate headcounting, which can be used to justify \n\t\tfunding from ASU for fun things.\n"
                     "\t- Check out various channels with the button above!\n"
                     "\t- Checkout the CodeDevils <https://github.com/ASU-CodeDevils|GitHub>\n"
                 ),
@@ -102,12 +222,12 @@ def get_about_block() -> list:
     return block
 
 
-def get_contact_block() -> list:
+def _get_contact_block() -> list:
     """
-    Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
+    Constructs an contacts block, which contains information on the leadership of CodeDevils
     website.
 
-    :return: The onboarding message block as a list.
+    :return: The contacts message block as a list.
     :rtype: list
     """
 
@@ -117,7 +237,6 @@ def get_contact_block() -> list:
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "About", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "About",
                 },
                 {
@@ -127,13 +246,11 @@ def get_contact_block() -> list:
                         "text": "Leadership",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Contact",
                 },
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "Channels",
                 },
                 {
@@ -143,7 +260,6 @@ def get_contact_block() -> list:
                         "text": "CodeDevils Website",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Link",
                     "url": "https://www.codedevils.org",
                 },
@@ -164,7 +280,8 @@ def get_contact_block() -> list:
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
-                    "If you have questions or concerns, send an email to info@codedevils.org or reach out to any CodeDevils leadership on Slack or email"
+                    "If you have questions or concerns, send an email to info@codedevils.org or reach out "
+                    "to any CodeDevils leadership on Slack or email:"
                 ),
             ),
         ),
@@ -213,7 +330,7 @@ def get_contact_block() -> list:
     return block
 
 
-def get_channels_block() -> list:
+def _get_channels_block() -> list:
     """
     Constructs an onboarding block, which contains information on different channels and a link to the CodeDevils
     website.
@@ -230,7 +347,6 @@ def get_channels_block() -> list:
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "About", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "About",
                 },
                 {
@@ -240,13 +356,11 @@ def get_channels_block() -> list:
                         "text": "Leadership",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Contact",
                 },
                 {
                     "type": "button",
                     "text": {"type": "plain_text", "text": "Channels", "emoji": True,},
-                    "value": "click_me_123",
                     "action_id": "Channels",
                 },
                 {
@@ -256,7 +370,6 @@ def get_channels_block() -> list:
                         "text": "CodeDevils Website",
                         "emoji": True,
                     },
-                    "value": "click_me_123",
                     "action_id": "Link",
                     "url": "https://www.codedevils.org",
                 },
