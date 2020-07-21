@@ -177,46 +177,53 @@ def _get_about_block() -> list:
             ),
         ),
         DividerBlock(),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=(
-                    "\n\n:cop: *Rules:*\n\n\t- All of <https://eoss.asu.edu/dos/srr/codeofconduct|"
-                    "ASU's Code of Conduct> applies!\n\t- Be nice!\n\t- Be professional!"
-                    "\n\t- Be postin' in the correct channels!\n"
-                ),
+        get_text_block_with_image(
+            text=(
+                "\n\n*Rules:*"
+                "\n\n\t- All of <https://eoss.asu.edu/dos/srr/codeofconduct|"
+                "ASU's Code of Conduct> applies!"
+                "\n\t- Be nice!"
+                "\n\t- Be professional!"
+                "\n\t- Be postin' in the correct channels!\n"
             ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/media-flat-2/58/012_-_Settings-512.png"
+            ),
+            alt_text="Rules",
         ),
         DividerBlock(),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=(
-                    "\n\n:scroll: *Good Info:*\n\n"
-                    "\t- General Body Meetings (GBMs) are open to all members\n\t\tThey occur every other Monday"
-                    " at 6pm AZ time via Slack video conference in #meetings. \n\t\tOccasional reminders are sent "
-                    "in #announcements.\n\t- Add the <https://calendar.google.com/calendar/b/2?cid=Y29kZWRldm"
-                    "lscy5pbmZvQGdtYWlsLmNvbQ|calendar> to your own.\n\t- We’ve recently reorganized the Slack, "
-                    "cutting down a lot of bloat. You have been automatically added to each channel, but if "
-                    "you’re a veteran member you may have to join the channels manually. The list of channels "
-                    "are posted in a thread on this post."
-                ),
+        get_text_block_with_image(
+            text=(
+                "\n\n*Good Info:*"
+                "\n\nGeneral Body Meetings (GBMs) are open to all members and are held every other Monday, "
+                "at 6pm AZ time (except during summer) via Slack video conference in #meetings."
+                "\n\nPertinent news and reminders are posted in #announcements, be sure to check!"
+                "\n\nAdd the <https://calendar.google.com/calendar/b/2?cid=Y29kZWRldm"
+                "lscy5pbmZvQGdtYWlsLmNvbQ|calendar> to your own so you don't miss anything!"
+                "\n\nWe’ve recently reorganized the Slack, cutting down a lot of bloat. "
+                "New members have been automatically added to each channel, but if "
+                "you’re a veteran member you may have to join the channels manually.\n"
             ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/media-flat-2/58/001_-_play-512.png"
+            ),
+            alt_text="Info",
         ),
         DividerBlock(),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=(
-                    "\n\n:wrench: *Get Involved:*\n\n"
-                    "You’re apart of CodeDevils, take advantage of it!\n"
-                    "\t- CodeDevils is a real club, with real memberships and perks. \n\t\tIf you haven’t already, "
-                    "<https://asu.campuslabs.com/engage/organization/codedevils|register>. \n\t\tThis helps us with "
-                    "accurate headcounting, which can be used to justify \n\t\tfunding from ASU for fun things.\n"
-                    "\t- Check out various channels with the button above!\n"
-                    "\t- Checkout the CodeDevils <https://github.com/ASU-CodeDevils|GitHub>\n"
-                ),
+        get_text_block_with_image(
+            text=(
+                "\n\n*Get Involved:*"
+                "\n\nYou’re a part of CodeDevils, take advantage of it!\n"
+                "\n\nCodeDevils is a real club, with real memberships and perks. If you haven’t already, "
+                "<https://asu.campuslabs.com/engage/organization/codedevils|register> on SunDevil Sync. This helps us with "
+                "accurate headcounting, which can be used to justify funding from ASU for fun things.\n"
+                "\n\nCheck out various channels with the button above!\n"
+                "\n\nCheckout the CodeDevils <https://github.com/ASU-CodeDevils|GitHub>\n"
             ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/media-flat-2/58/007_-_Record-512.png"
+            ),
+            alt_text="Get Involved",
         ),
     )
     return block
@@ -289,32 +296,9 @@ def _get_contact_block() -> list:
         SectionBlock(
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
-                text=("President: David Welborn @dswelbor"),
-            ),
-        ),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=("Vice President: Jeremy Doubleday @jwdouble jwdouble@asu.edu"),
-            ),
-        ),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=("Treasurer: Pierson Brannan @pbrannan pbrannan@asu.edu"),
-            ),
-        ),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
-                text=("Secretary: Jerry Naylor @jnaylor3"),
-            ),
-        ),
-        SectionBlock(
-            text=TextObject(
-                btype=TextObject.BTYPE_MARKDOWN,
                 text=(
-                    "Webmasters: Tia Peruzzi  @vperuzzi, Joe Reynolds @jcreyno5, Jacob Lebrec @jlabrec"
+                    "\nPresident:"
+                    "\n\tDavid Welborn\n\t\tEmail: dswelbor@asu.edu\n\t\tSlack: @dswelbor"
                 ),
             ),
         ),
@@ -322,7 +306,46 @@ def _get_contact_block() -> list:
             text=TextObject(
                 btype=TextObject.BTYPE_MARKDOWN,
                 text=(
-                    "Staff Advisor (ASU Professor): Professor Ruben Acuna @racuna1 racuna1@asu.edu"
+                    "\nVice President:"
+                    "\n\tJeremy Doubleday\n\t\tEmail: jwdouble@asu.edu\n\t\tSlack: @jwdouble"
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\nTreasurer:"
+                    "\n\tPierson Brannan\n\t\tEmail: pbrannan@asu.edu\n\t\tSlack: @pbrannan "
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\nSecretary:"
+                    "\n\tJerry Naylor\n\t\tEmail: jnaylor3@asu.edu\n\t\tSlack: @jnaylor3"
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\nWebmasters:"
+                    "\n\tTia Peruzzi\n\t\tEmail: vperuzzi@asu.edu\n\t\tSlack: @vperuzzi"
+                    "\n\tJoe Reynolds\n\t\tEmail: jcreyno5@asu.edu\n\t\tSlack: @jcreyno5"
+                    "\n\tJacob Lebrec\n\t\tEmail: jlabrec@asu.edu\n\t\tSlack: @jlabrec"
+                ),
+            ),
+        ),
+        SectionBlock(
+            text=TextObject(
+                btype=TextObject.BTYPE_MARKDOWN,
+                text=(
+                    "\nStaff Advisor (ASU Professor):"
+                    "\n\tRuben Acuna \n\t\tEmail: racuna1@asu.edu\n\t\tSlack:@racuna1"
                 ),
             ),
         ),
@@ -393,7 +416,7 @@ def _get_channels_block() -> list:
                 " or funny meme."
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_85ui-128.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Messages-512.png"
             ),
             alt_text="Hangout",
         ),
@@ -404,7 +427,7 @@ def _get_channels_block() -> list:
                 " that interests you outside of your academic life!"
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_67ui-256.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Books-512.png"
             ),
             alt_text="Intro",
         ),
@@ -414,7 +437,7 @@ def _get_channels_block() -> list:
                 " from other members, and gain insight on how to succeed during interviews."
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_49ui-128.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Stock-512.png"
             ),
             alt_text="Careers",
         ),
@@ -425,7 +448,7 @@ def _get_channels_block() -> list:
                 "CodeDevil's swag!  We hold a new contest each term, jump in and get yourself a CodeDevils Tee!"
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_69ui-256.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Settings-512.png"
             ),
             alt_text="Coding Challenges",
         ),
@@ -436,7 +459,7 @@ def _get_channels_block() -> list:
                 " a project, discuss a problem, or even get something started."
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_8ui-256.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Store-512.png"
             ),
             alt_text="Projects and Debugging",
         ),
@@ -446,19 +469,31 @@ def _get_channels_block() -> list:
                 " CodeDevils!  Here you can find some people to team up with or team up against!"
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_53ui-256.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_iTunes-512.png"
             ),
             alt_text="Games",
         ),
         get_text_block_with_image(
             text=(
                 "*<#CT06NE2AV>*\nTake part in CodeDevils club meetings.  We hold/post"
-                " Virtual Study Halls, Organization meetings, etc here.  These are usually zoom based."
+                " Virtual Study Halls (usually 12-5pm AZ on Saturdays), club  meetings, etc here."
+                " These are usually zoom based."
             ),
             image_url=(
-                "https://cdn0.iconfinder.com/data/icons/ui-essence/32/_77ui-256.png"
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Whatsapp-512.png"
             ),
             alt_text="Meetings",
+        ),
+        get_text_block_with_image(
+            text=(
+                "*<#C30L07P18>*\nImportant announcements relating to the CodeDevils Club or "
+                "ASU student body can be found here.  Posts can include things such as virtual "
+                "study hall or club meetings links, important updates, cancelations, etc."
+            ),
+            image_url=(
+                "https://cdn0.iconfinder.com/data/icons/apple-apps/100/Apple_Note-512.png"
+            ),
+            alt_text="Announcements",
         ),
         DividerBlock(),
         get_text_block_with_image(
