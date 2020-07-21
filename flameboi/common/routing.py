@@ -96,17 +96,28 @@ class Router:
 
             if event.reaction and event.reaction == "parrot":
                 for i in range(1, 10):
+
                     response = self.bot.reactions_add(
                         name=f"parrotwave{i}",
                         channel=event.item_channel,
                         timestamp=event.item_ts,
                     )
                     assert response["ok"]
+
             elif event.reaction and event.reaction == "fuckyouadmin":
+
+                # res = self.admin.reactions_remove(
+                #     name="fuckyouadmin",
+                #     channel=event.item_channel,
+                #     timestamp=event.item_ts,
+                # )
+                # assert res["ok"]
+
                 response = self.bot.reactions_add(
                     name="heart", channel=event.item_channel, timestamp=event.item_ts,
                 )
                 assert response["ok"]
+
             else:
                 response = self.bot.reactions_add(
                     name=event.reaction,
@@ -150,6 +161,16 @@ class Router:
         ):
 
             self.text_sender_test(self.debug_chan, debug.message(event))
+
+            # if "delete this" in event.text:
+
+            #     delete = self.admin.chat_delete(channel=event.channel_id, ts=event.ts,)
+            #     assert delete["ok"]
+
+            #     response = self.bot.chat_postMessage(
+            #         channe=self.debug_chan, text="Deleted Message"
+            #     )
+            #     assert response["ok"]
 
         if event.subtype != "bot_message" and event.channel_id == self.debug_chan:
 
