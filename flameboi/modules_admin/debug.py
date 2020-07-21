@@ -6,7 +6,7 @@ def team_join(event):
             f"User ID: {theUser.id}\n"
             f"Name: {theUser.name}\n"
             f"Display Name: {theUser.profile.display_name}\n"
-            f"Real Name: {theUser.real_name}\n"
+            f"Real Name: {theUser.profile.real_name}\n"
             f"Email: {theUser.profile.email}\n"
             f"Time Zone: {theUser.time_zone}\n"
             f"Is Admin: {theUser.is_admin}\n"
@@ -65,6 +65,7 @@ def channel_join(event, user):
 
     reply = (
         f"Event Type: {event.type}\n"
+        f"Channel Joined: <#{event.channel_id}>"
         f"\nInformation on the User who joined: \n" + deets
     )
     return reply
