@@ -143,7 +143,11 @@ class Router:
 
         event = events.MessageEvent(payload)
 
-        if event.subtype is None and event.channel_id != self.debug_chan:
+        if (
+            event.subtype is None
+            and event.channel_id != self.debug_chan
+            and event.user_id != self.bot_user_id
+        ):
 
             self.text_sender_test(self.debug_chan, debug.message(event))
 
