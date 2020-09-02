@@ -2,6 +2,7 @@ import json
 import os
 import re
 import flameboi.modules_admin.debug as debug
+import flameboi.modules_admin.meeting as meeting
 import flameboi.common.events as events
 
 from flameboi.common.objects import User
@@ -295,6 +296,10 @@ class Router:
         elif event.user_id != self.bot_user_id and "playlists" in event.text.lower():
 
             self.block_sender_test(event.channel_id, get_playlist_block)
+
+        elif event.user_id == self.stu_user and "meeting" in event.text.lower():
+
+            self.block_sender_test(os.getenv("HOME_CHAN_ID"), meeting.get_meeting_block)
 
         if event.user_id != self.bot_user_id:
 
