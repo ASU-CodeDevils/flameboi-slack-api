@@ -1,9 +1,9 @@
 from flameboi.common.flameboi import Flameboi
 from flameboi.common.routing import Router
-from flask import Flask, request, Response, jsonify
+from flameboi.views.app_home import choose_home_view
+from flask import Flask, request, Response
 import json
 import os
-from flameboi.views.app_home import choose_home_view
 
 
 # Initialize a Flask app to host the events adapter
@@ -158,12 +158,13 @@ def interactions():
         payload = request.form.get("payload")
         py_json = json.loads(payload)
 
-        msg_type = py_json.get("type")
         user = py_json.get("user", {})["id"]
-        cont_type = py_json.get("container", {})["type"]
-        view_id = py_json.get("container", {})["view_id"]
-        response_url = py_json.get("response_url")
         action = py_json.get("actions", [])[0]["action_id"]
+
+        # response_url = py_json.get("response_url")
+        # msg_type = py_json.get("type")
+        # cont_type = py_json.get("container", {})["type"]
+        # view_id = py_json.get("container", {})["view_id"]
 
         # # Debugging output
         # reply = (
@@ -173,24 +174,34 @@ def interactions():
         #     f"Container Type: {cont_type}\n"
         #     f"View ID: {view_id}\n"
         #     f"Response URL: {response_url}\n"
-        #     f"Action ID: {action}\n"
-        # )
-
-        # respond = theBot.bot_client.chat_postMessage(channel=debug_chan, text=reply)
-        # assert respond["ok"]
-
+        #     f"Action ID: {action}\n"cold agglutinin disease
         choose_home_view(action, user, theBot)
 
         return Response(status=200, mimetype="application/json")
 
 
-# @app.route('/newuser')
-# def addNewUser():
+# @app.route("/getuser/", methods=["GET", "POST"])
+# def get_user():
 #     """
-#     Triggers slackbot to add new user to CodeDevils Slack (secured by jwt) using
-#     grid approved email
+#     Triggers slackbot to lookup user by posted email, returns to designated CodeDevils.org
+#     endpoint
 #     """
-#     # TODO: JWT Secured endpoint for web to add user
+
+#     cdss = os.getenv("CD_SIGNING_SECRET")
+
+#     if request.method == "GET":
+#         return "These are not the slackbots you're looking for."
+
+#     elif request.method == "POST":
+
+#         payload = request.form.get("payload")
+#         py_json = json.loads(payload)
+
+#         usr_email = py_json.get("email")
+
+#         resp = theBot.get_user_by_email(usr_email)
+
+#         return Response(status=200, mimetype="application/json", response=resp,)
 
 
 if __name__ == "__main__":
