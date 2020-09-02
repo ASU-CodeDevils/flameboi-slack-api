@@ -77,6 +77,7 @@ If you are using a virtual environment, *ensure that you have activated your env
 - [flask](http://flask.pocoo.org/) - Python web application framework
 - [python-slackclient](http://python-slackclient.readthedocs.io/en/latest/) - Python Slack API library
 - [serverless](https://www.serverless.com/framework/docs/) - npm deployment tool used to deploy slack app to AWS Lambda
+- [Slack Blockkit Builder](https://github.com/ASU-CodeDevils/slack-blockkit/) - Python library, written by Kevin, for building Slack blocks
 
 ### Documentation for Other Helpful Tools
 
