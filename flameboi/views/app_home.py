@@ -82,9 +82,6 @@ def choose_home_view(action: str, user: str, theBot: Flameboi):
         assert response["ok"]
 
 
-# TODO: Get this working so that we can avoid repeating in the blocks below
-
-
 def _get_home_buttons() -> ActionsBlock:
     """
     Constructs a block, which contains buttons for easy navigation on flameboi home tab.
@@ -218,12 +215,44 @@ def _get_about_block() -> list:
                 "<https://asu.campuslabs.com/engage/organization/codedevils|register> on SunDevil Sync. This helps us with "
                 "accurate headcounting, which can be used to justify funding from ASU for fun things.\n"
                 "\n\nCheck out various channels with the button above!\n"
-                "\n\nCheckout the CodeDevils <https://github.com/ASU-CodeDevils|GitHub>\n"
+                "\n\nCheckout the CodeDevils \n"
             ),
             image_url=(
                 "https://cdn0.iconfinder.com/data/icons/media-flat-2/58/007_-_Record-512.png"
             ),
             alt_text="Get Involved",
+        ),
+        DividerBlock(),
+        get_text_block_with_image(
+            text=("\n<https://github.com/ASU-CodeDevils|GitHub>\n"),
+            image_url=(
+                "https://cdn3.iconfinder.com/data/icons/social-media-2169/24/social_media_social_media_logo_github_2-512.png"
+            ),
+            alt_text="Twitter",
+        ),
+        DividerBlock(),
+        get_text_block_with_image(
+            text=("\n<https://twitter.com/code_devils|Twitter>\n"),
+            image_url=(
+                "https://cdn3.iconfinder.com/data/icons/social-media-2169/24/social_media_social_media_logo_twitter-512.png"
+            ),
+            alt_text="Twitter",
+        ),
+        DividerBlock(),
+        get_text_block_with_image(
+            text=("\n<https://www.instagram.com/code.devils/|Instagram>\n"),
+            image_url=(
+                "https://cdn3.iconfinder.com/data/icons/social-media-2169/24/social_media_social_media_logo_instagram-512.png"
+            ),
+            alt_text="Instagram",
+        ),
+        DividerBlock(),
+        get_text_block_with_image(
+            text=("\n<https://www.facebook.com/codedevils.asu|Facebook>\n"),
+            image_url=(
+                "https://cdn3.iconfinder.com/data/icons/social-media-2169/24/social_media_social_media_logo_facebook-512.png"
+            ),
+            alt_text="Facebook",
         ),
     )
     return block
@@ -362,7 +391,7 @@ def _get_channels_block() -> list:
     :rtype: list
     """
 
-    hacker_rank_current_url = "http://www.hackerrank.com/codedevils-summer-2020"
+    hacker_rank_current_url = "https://www.hackerrank.com/codedevils-fall-challenge"
 
     block = get_blocks(
         ActionsBlock(
