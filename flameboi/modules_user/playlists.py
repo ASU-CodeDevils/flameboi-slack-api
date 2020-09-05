@@ -31,7 +31,7 @@ def get_playlist_block():
                 ).render(),
                 TextObject(
                     btype=TextObject.BTYPE_MARKDOWN,
-                    text="<https://www.youtube.com/watch?v=wNzdzqksyiQ|*Stu's Juke Box* :copyright:>",
+                    text="<https://www.youtube.com/watch?v=wNzdzqksyiQ|*Stu's Jukebox* :copyright:>",
                 ).render(),
             ],
         ),
