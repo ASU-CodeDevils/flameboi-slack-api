@@ -32,6 +32,7 @@ class Router:
         self.debug_chan = os.getenv("DEBUG_CHAN_ID")
         self.stu_user = os.getenv("STU_ID")
         self.jer_user = os.getenv("JER_ID")
+        self.cal_user = os.getenv("GCAL_ID")
 
     # def handle_slash_command(self, payload):
 
@@ -156,8 +157,8 @@ class Router:
         event = events.MessageEvent(payload)
 
         if (
-            event.subtype is None
-            and event.channel_id != self.debug_chan
+            event.subtype == "None"
+            and event.channel_id == self.debug_chan
             and event.user_id != self.bot_user_id
         ):
 
@@ -172,6 +173,10 @@ class Router:
             #         channe=self.debug_chan, text="Deleted Message"
             #     )
             #     assert response["ok"]
+
+        # if event.channel_id == self.debug_chan and event.subtype == "bot_message":
+
+        #     self.text_sender_test(self.debug_chan, event.message.get("attachments"))
 
         if event.subtype != "bot_message" and event.channel_id == self.debug_chan:
 
