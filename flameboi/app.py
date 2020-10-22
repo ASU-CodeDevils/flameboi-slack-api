@@ -70,8 +70,7 @@ def message(payload):
 
 @slack_events_adapter.on("member_joined_channel")
 def member_joined(payload):
-    """Display the channel welcome message after someone joins a channel.
-    """
+    """Display the channel welcome message after someone joins a channel."""
 
     router.handle_channel_join(payload)
 
@@ -180,28 +179,18 @@ def interactions():
         return Response(status=200, mimetype="application/json")
 
 
-# @app.route("/getuser/", methods=["GET", "POST"])
-# def get_user():
-#     """
-#     Triggers slackbot to lookup user by posted email, returns to designated CodeDevils.org
-#     endpoint
-#     """
+@app.route("/getuser/", methods=["GET", "POST"])
+def get_user():
+    """
+    Triggers slackbot to lookup user by posted email, returns to designated CodeDevils.org
+    endpoint
+    """
 
-#     cdss = os.getenv("CD_SIGNING_SECRET")
+    if request.method == "GET":
+        return "These are not the slackbots you're looking for."
 
-#     if request.method == "GET":
-#         return "These are not the slackbots you're looking for."
-
-#     elif request.method == "POST":
-
-#         payload = request.form.get("payload")
-#         py_json = json.loads(payload)
-
-#         usr_email = py_json.get("email")
-
-#         resp = theBot.get_user_by_email(usr_email)
-
-#         return Response(status=200, mimetype="application/json", response=resp,)
+    elif request.method == "POST":
+        return "To Do!!!."
 
 
 if __name__ == "__main__":
