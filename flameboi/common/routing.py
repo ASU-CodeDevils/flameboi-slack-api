@@ -43,7 +43,7 @@ class Router:
     def handle_team_join(self, payload):
         """
         Handles a Member Joined Team event.  Currently passes event to a debug function which posts
-        various details on the user and channel involved to the logging channel. Also DM's specified 
+        various details on the user and channel involved to the logging channel. Also DM's specified
         admin the information of the new user.
 
         :return: None.
@@ -79,59 +79,64 @@ class Router:
             .get("reactions", [])
         )
 
-        already_posted = False
+        if event.user_id != self.bot_user_id:
 
-        for react in reactions_posted:
-            if self.bot_user_id in react.get("users", []):
-                already_posted = True
-                break
+            already_posted = False
 
-        if event.item_channel != self.debug_chan:
-            if event.user_id == self.bot_user_id:
-                self.text_sender_test(
-                    self.debug_chan, f"Not yet reacted, adding :{event.reaction}:\n"
-                )
-            else:
-                self.text_sender_test(self.debug_chan, debug.reaction_add(event))
+            for react in reactions_posted:
+                if self.bot_user_id in react.get("users", []):
+                    already_posted = True
+                    break
 
-        if not already_posted and event.user_id != self.bot_user_id:
+            if not already_posted:
 
-            if event.reaction and event.reaction == "parrot":
-                for i in range(1, 10):
+                if event.reaction and event.reaction == "parrot":
+                    for i in range(1, 10):
+
+                        response = self.bot.reactions_add(
+                            name=f"parrotwave{i}",
+                            channel=event.item_channel,
+                            timestamp=event.item_ts,
+                        )
+                        assert response["ok"]
+
+                elif event.reaction and "fuckyou" in event.reaction:
+
+                    # res = self.admin.reactions_remove(
+                    #     name="fuckyouadmin",
+                    #     channel=event.item_channel,
+                    #     timestamp=event.item_ts,
+                    # )
+                    # assert res["ok"]
 
                     response = self.bot.reactions_add(
-                        name=f"parrotwave{i}",
+                        name="heart",
                         channel=event.item_channel,
                         timestamp=event.item_ts,
                     )
                     assert response["ok"]
 
-            elif event.reaction and event.reaction == "fuckyouadmin":
+                else:
+                    self.text_sender_test(
+                        self.debug_chan, f"Not yet reacted, adding :{event.reaction}:\n"
+                    )
+                    response = self.bot.reactions_add(
+                        name=event.reaction,
+                        channel=event.item_channel,
+                        timestamp=event.item_ts,
+                    )
+                    assert response["ok"]
 
-                # res = self.admin.reactions_remove(
-                #     name="fuckyouadmin",
-                #     channel=event.item_channel,
-                #     timestamp=event.item_ts,
-                # )
-                # assert res["ok"]
-
-                response = self.bot.reactions_add(
-                    name="heart", channel=event.item_channel, timestamp=event.item_ts,
+            elif already_posted and event.user_id:
+                self.text_sender_test(
+                    chan=self.debug_chan,
+                    txt=f"Already reacted to item/message, not reacting to :{event.reaction}:.\n",
                 )
-                assert response["ok"]
 
-            else:
-                response = self.bot.reactions_add(
-                    name=event.reaction,
-                    channel=event.item_channel,
-                    timestamp=event.item_ts,
-                )
-                assert response["ok"]
-
-        elif already_posted and event.user_id != self.bot_user_id:
+        else:
             self.text_sender_test(
                 chan=self.debug_chan,
-                txt=f"Already reacted to item/message, not reacting to :{event.reaction}:.\n",
+                txt=f"Not responding to bot reaction :{event.reaction}:.\n",
             )
 
     def handle_pin_added(self, payload):
@@ -177,32 +182,6 @@ class Router:
         # if event.channel_id == self.debug_chan and event.subtype == "bot_message":
 
         #     self.text_sender_test(self.debug_chan, event.message.get("attachments"))
-
-        if event.subtype != "bot_message" and event.channel_id == self.debug_chan:
-
-            if event.text and event.text.lower() == "!test":
-
-                reply = ":partywizard:"
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply,
-                )
-
-                assert response["ok"]
-
-            elif event.text and event.text.lower() == "!testthread":
-
-                reply = ":partywizard:"
-
-                response = self.bot.chat_postMessage(
-                    channel=event.channel_id, text=reply, thread_ts=event.ts,
-                )
-
-                assert response["ok"]
-
-            elif event.text and event.text.lower() == "!testblock":
-
-                self.block_sender_test(event.channel_id, views.get_sample_block)
 
     def handle_channel_join(self, payload):
         """
@@ -323,7 +302,8 @@ class Router:
         # # Debuggin output commented out.
         # self.text_sender_test(
         #     self.debug_chan,
-        #     f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
+        #     f"Event: App Home Opened\nUser ID: <@{event.user_id}>\n
+        #     View ID: {event.view_id}\nExternal ID: {event.ext_id}\n",
         # )
 
         if event.ext_id is None or f"{event.user_id}_home" not in event.ext_id:
@@ -339,7 +319,12 @@ class Router:
     #
 
     def ephemeral_sender(
-        self, user: str, channel: str, text: str, func=None, attach: list = None,
+        self,
+        user: str,
+        channel: str,
+        text: str,
+        func=None,
+        attach: list = None,
     ):
 
         blkout = json.dumps(func()) if func else None
@@ -363,6 +348,8 @@ class Router:
     def reaction_sender_test(self, reaction: str, channel: str, timestamp: str):
 
         response = self.bot.reactions_add(
-            name=reaction, channel=channel, timestamp=timestamp,
+            name=reaction,
+            channel=channel,
+            timestamp=timestamp,
         )
         assert response["ok"]
