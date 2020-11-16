@@ -81,6 +81,8 @@ class Router:
 
         if event.user_id != self.bot_user_id:
 
+            self.text_sender_test(self.debug_chan, debug.reaction_add(event))
+
             already_posted = False
 
             for react in reactions_posted:
@@ -109,6 +111,11 @@ class Router:
                     # )
                     # assert res["ok"]
 
+                    self.text_sender_test(
+                        chan=event.item_channel,
+                        txt=f"That's not very nice <@{event.user_id}>!",
+                    )
+
                     response = self.bot.reactions_add(
                         name="heart",
                         channel=event.item_channel,
@@ -117,6 +124,7 @@ class Router:
                     assert response["ok"]
 
                 else:
+
                     self.text_sender_test(
                         self.debug_chan, f"Not yet reacted, adding :{event.reaction}:\n"
                     )
