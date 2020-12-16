@@ -33,6 +33,8 @@ class Router:
         self.stu_user = os.getenv("STU_ID")
         self.jer_user = os.getenv("JER_ID")
         self.cal_user = os.getenv("GCAL_ID")
+        self.seth_user = os.getenv("SETH_ID")
+        self.pol_chan = os.getenv("POL_CHAN")
 
     # def handle_slash_command(self, payload):
 
@@ -169,6 +171,16 @@ class Router:
 
         event = events.MessageEvent(payload)
 
+        if os.getenv("SWATTER") == "1" and event.user_id != self.bot_id:
+            if event.subtype == "bot_message" or event.user_id == os.getenv("BOT1"):
+                delete = self.admin.chat_delete(
+                    channel=event.channel_id,
+                    ts=event.ts,
+                )
+                assert delete["ok"]
+
+                self.text_sender_test(chan=event.channel_id, txt="One bot left...")
+
         if (
             event.subtype == "None"
             and event.channel_id == self.debug_chan
@@ -176,6 +188,15 @@ class Router:
         ):
 
             self.text_sender_test(self.debug_chan, debug.message(event))
+
+        if event.channel_id == self.pol_chan and event.user_id == "USLACKBOT":
+            delete = self.admin.chat_delete(channel=event.channel_id, ts=event.ts)
+            assert delete["ok"]
+
+            response = self.bot.chat_postMessage(
+                channel=event.channel_id, text="Get out of here..."
+            )
+            assert response["ok"]
 
             # if "delete this" in event.text:
 
@@ -187,9 +208,8 @@ class Router:
             #     )
             #     assert response["ok"]
 
-        # if event.channel_id == self.debug_chan and event.subtype == "bot_message":
-
-        #     self.text_sender_test(self.debug_chan, event.message.get("attachments"))
+        if event.channel_id != self.debug_chan:
+            self.text_sender_test(self.debug_chan, debug.message(event=event))
 
     def handle_channel_join(self, payload):
         """
@@ -214,6 +234,14 @@ class Router:
         """
 
         event = events.AppMentionEvent(payload)
+
+        if event.user_id == self.stu_user or event.user_id == self.seth_user:
+            if "bot-b-gone" in event.text.lower() and os.getenv("SWATTER") == "0":
+                os.environ["SWATTER"] = "1"
+                self.text_sender_test(chan=event.channel_id, txt="Bot-B-Gone Enabled")
+            elif "bot-b-gone" in event.text.lower() and os.getenv("SWATTER") == "1":
+                os.environ["SWATTER"] = "0"
+                self.text_sender_test(chan=event.channel_id, txt="Bot-B-Gone Disabled")
 
         if (
             event.channel_id == self.debug_chan
@@ -289,9 +317,17 @@ class Router:
 
             self.block_sender_test(event.channel_id, get_playlist_block)
 
-        elif event.user_id == self.stu_user and "meeting" in event.text.lower():
+        elif event.user_id == self.stu_user or event.user_id == self.seth_user:
+            if "meeting" in event.text.lower():
 
-            self.block_sender_test(os.getenv("HOME_CHAN_ID"), meeting.get_meeting_block)
+                if "now" in event.text.lower():
+                    self.block_sender_test(
+                        os.getenv("HOME_CHAN_ID"), meeting.get_meeting_now
+                    )
+                elif "hour" in event.text.lower():
+                    self.block_sender_test(
+                        os.getenv("HOME_CHAN_ID"), meeting.get_meeting_hour
+                    )
 
         if event.user_id != self.bot_user_id:
 
